@@ -1,0 +1,15 @@
+---
+AllCops:
+  RunRailsCops: true
+  Exclude:
+    - db/schema.rb
+Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*.rb
+
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/*.rb

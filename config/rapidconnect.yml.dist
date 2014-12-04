@@ -1,0 +1,5 @@
+---
+url: 'https://rapid.example.com/jwt/authnrequest/auresearch/1234abcd1234__'
+secret: 'Nv4>\"NQWHk=_I3LF&/^_k.>LZYd&|~}'
+issuer: 'https://rapid.example.com'
+audience: 'http://localhost:8080'
