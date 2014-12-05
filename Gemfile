@@ -4,7 +4,7 @@ source 'https://rails-assets.org'
 gem 'rails', '4.1.8'
 gem 'sass-rails', '~> 4.0.3'
 gem 'mysql2' # MySQL support
-# TODO: ENABLE THIS --- gem 'rapid-rack' # RapidConnect authenticator
+gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession' # Permissions for Ruby
 gem 'rails-assets-semantic-ui', '~> 1.0' # Semantic UI web framework
 gem 'rails-assets-jquery', '~> 1.11' # JQuery
