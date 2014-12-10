@@ -1,0 +1,15 @@
+<p>Hi!</p>
+
+<p>Here's what we know about you:</p>
+<%- if @subject -%>
+  <pre>
+eptid: <%= @subject.targeted_id %>
+aepst: <%= @subject.shared_token %>
+name:  <%= @subject.name %>
+email: <%= @subject.mail %>
+  </pre>
+<%- else -%>
+  Nothing.
+<%- end -%>
+<p></p>
+<p>See <a href="projects">Projects</a> (must be authenticated via RapidConnect) </p>
