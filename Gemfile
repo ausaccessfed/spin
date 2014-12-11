@@ -9,6 +9,7 @@ gem 'accession' # Permissions for Ruby
 gem 'rails-assets-semantic-ui', '~> 1.0' # Semantic UI web framework
 gem 'rails-assets-jquery', '~> 1.11' # JQuery
 gem 'unicorn', require: false # Web container
+gem 'redis'
 
 group :development, :test do
   gem 'spring',      '1.1.3'
