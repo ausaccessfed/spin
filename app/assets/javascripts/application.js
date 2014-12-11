@@ -12,3 +12,7 @@
 //
 //= require jquery
 //= require_tree .
+
+//= require jquery
+//= require semantic-ui
+//= require aaf-layout

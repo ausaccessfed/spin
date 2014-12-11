@@ -6,6 +6,15 @@ GIT
     guard-unicorn (0.1.2)
       guard (>= 1.1)
 
+GIT
+  remote: https://github.com/ausaccessfed/aaf-lipstick
+  revision: 23431506ae73ab9bbf2e1531055cfa101d3b0b79
+  branch: develop
+  specs:
+    aaf-lipstick (0.0.1)
+      actionview (~> 4.1.8)
+      kramdown (~> 1.5)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -102,6 +111,7 @@ GEM
       securecompare
       url_safe_base64
     kgio (2.9.2)
+    kramdown (1.5.0)
     listen (2.8.3)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -231,6 +241,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aaf-lipstick!
   accession
   brakeman (~> 2.6)
   factory_girl_rails
@@ -245,7 +256,7 @@ DEPENDENCIES
   pry
   rails (= 4.1.8)
   rails-assets-jquery (~> 1.11)
-  rails-assets-semantic-ui (~> 1.0)
+  rails-assets-semantic-ui
   rapid-rack
   redis
   rspec-rails (~> 3.1)

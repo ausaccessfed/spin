@@ -1,14 +1,34 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Spin</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
+<html lang="en">
+<head profile="http://www.w3.org/2005/10/profile">
+  <%= tag('link', rel: 'icon', type: 'image/png', href: image_path('favicon.png')) %>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPIN</title>
+
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag "application", :media => "all" %>
 </head>
 <body>
+<%= aaf_header(title: 'SPIN', environment: 'Rails') do -%>
+    <%= nav_bar do -%>
+        <%= nav_item('Dashboard', '/') %>
+        <%= nav_item('Projects', '/projects') %>
+    <%- end -%>
+<%- end -%>
 
-<%= yield %>
+<section class="content">
+  <main><%= yield %></main>
+</section>
 
+<%= aaf_footer do -%>
+    <p>
+      SPIN
+      <br/>
+      Developed for the <a href="http://www.aaf.edu.au">Australian Access Federation</a>
+      by Russell Ianniello
+    </p>
+<%- end -%>
 </body>
 </html>
