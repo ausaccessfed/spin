@@ -10,6 +10,7 @@ module Authentication
     # Rapid Connect, and returns a set of attributes appropriate for passing in
     # to the `subject` method.
     def map_attributes(_env, attrs)
+      Rails.logger.info("Mapping attributes: #{attrs.inspect}")
       {
         targeted_id: attrs['edupersontargetedid'],
         shared_token: attrs['auedupersonsharedtoken'],
@@ -25,9 +26,13 @@ module Authentication
     # Must return the subject, and the subject must have an `id` method to work
     # with the DefaultReceiver mixin.
     def subject(_env, attrs)
+      Rails.logger.info('Find or update Subject using attributes: ' \
+                            "#{attrs.inspect}")
       identifier = attrs.slice(:targeted_id)
+      Rails.logger.info("Using identifier: #{identifier}")
       Subject.find_or_initialize_by(identifier).tap do |subject|
         subject.update_attributes!(attrs)
+        Rails.logger.info('Updated or created Subject')
       end
     end
   end
