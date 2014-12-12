@@ -11,7 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210050533) do
+ActiveRecord::Schema.define(version: 20141212034841) do
+
+  create_table "organisations", force: true do |t|
+    t.string   "name"
+    t.string   "external_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "projects", force: true do |t|
+    t.string   "name"
+    t.string   "aws_account"
+    t.string   "state"
+    t.integer  "organisation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roles", force: true do |t|
+    t.string   "name"
+    t.string   "aws_identifier"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
+
+  create_table "subject_roles", id: false, force: true do |t|
+    t.integer "subject_id"
+    t.integer "role_id"
+  end
+
+  add_index "subject_roles", ["role_id"], name: "index_subject_roles_on_role_id", using: :btree
+  add_index "subject_roles", ["subject_id"], name: "index_subject_roles_on_subject_id", using: :btree
 
   create_table "subjects", force: true do |t|
     t.string   "name",                         null: false

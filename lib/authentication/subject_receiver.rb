@@ -35,5 +35,9 @@ module Authentication
         Rails.logger.info('Updated or created Subject')
       end
     end
+
+    def finish(_env)
+      redirect_to('/projects')
+    end
   end
 end
