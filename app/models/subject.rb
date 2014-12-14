@@ -1,4 +1,6 @@
 class Subject < ActiveRecord::Base
+  audited
+  has_associated_audits
   has_many :subject_roles
   has_many :roles, through: :subject_roles
   include Accession::Principal

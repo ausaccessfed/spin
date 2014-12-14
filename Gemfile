@@ -12,6 +12,7 @@ gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
                     branch: 'develop'
 gem 'unicorn', require: false # Web container
 gem 'redis'
+gem 'audited-activerecord'
 
 group :development, :test do
   gem 'spring',      '1.1.3'
