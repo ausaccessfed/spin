@@ -24,6 +24,7 @@ group :development, :test do
   gem 'pry', require: false # IRB alternative
   gem 'brakeman', '~> 2.6', require: false # Security scanner
   gem 'simplecov', require: false # Code coverage
+  gem 'shoulda-matchers'
 
   gem 'guard', require: false
   gem 'guard-rubocop', require: false

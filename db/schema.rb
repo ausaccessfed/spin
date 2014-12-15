@@ -62,9 +62,11 @@ ActiveRecord::Schema.define(version: 20141214233748) do
 
   add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
 
-  create_table "subject_roles", id: false, force: true do |t|
-    t.integer "subject_id"
-    t.integer "role_id"
+  create_table "subject_roles", force: true do |t|
+    t.integer  "subject_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "subject_roles", ["role_id"], name: "index_subject_roles_on_role_id", using: :btree

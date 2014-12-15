@@ -3,7 +3,7 @@ FactoryGirl.define do
     name 'MyString'
     aws_account 'MyString'
     state 'MyString'
-    organisation nil
+    association :organisation
   end
 
 end
