@@ -10,5 +10,4 @@ RSpec.describe Role, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:aws_identifier) }
   end
-
 end

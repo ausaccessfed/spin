@@ -19,5 +19,4 @@ RSpec.describe Subject, type: :model do
       it { is_expected.to validate_uniqueness_of(:shared_token) }
     end
   end
-
 end

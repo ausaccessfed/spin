@@ -8,12 +8,10 @@ FactoryGirl.define do
     end
 
     trait :authorized do
-
       after(:create) do |subject|
         role = create(:role)
         create(:subject_role, role: role, subject: subject)
       end
     end
-
   end
 end

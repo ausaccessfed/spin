@@ -4,5 +4,4 @@ FactoryGirl.define do
     aws_identifier 'MyString'
     association :project
   end
-
 end

@@ -3,5 +3,4 @@ FactoryGirl.define do
     name 'MyString'
     external_id 'MyString'
   end
-
 end

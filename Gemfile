@@ -25,6 +25,8 @@ group :development, :test do
   gem 'brakeman', '~> 2.6', require: false # Security scanner
   gem 'simplecov', require: false # Code coverage
   gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'capybara-webkit'
 
   gem 'guard', require: false
   gem 'guard-rubocop', require: false

@@ -3,5 +3,4 @@ FactoryGirl.define do
     association :subject
     association :role
   end
-
 end

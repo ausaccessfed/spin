@@ -1,5 +1,5 @@
 ---
-url: 'https://rapid.example.com/jwt/authnrequest/auresearch/1234abcd1234__'
-secret: 'Nv4>\"NQWHk=_I3LF&/^_k.>LZYd&|~}'
-issuer: 'https://rapid.example.com'
+url: 'https://rapid.test.aaf.edu.au/jwt/authnrequest/research/9gy6V8AJnz5W2K_P2FDbGw'
+secret: "&QP\\H,A&?DSp48TMU[H\'VF1+wG>k[(aV"
+issuer: 'https://rapid.test.aaf.edu.au'
 audience: 'http://localhost:8080'

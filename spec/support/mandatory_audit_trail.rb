@@ -26,5 +26,4 @@ RSpec.shared_examples 'an audited model' do
     expect { obj.destroy! }.to not_raise_error
       .and change(described_class, :count).by(-1)
   end
-
 end

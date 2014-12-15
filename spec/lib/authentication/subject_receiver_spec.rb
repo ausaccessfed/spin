@@ -45,7 +45,6 @@ module Authentication
         obj = subject.subject(env, attrs)
         expect(subject.subject(env, attrs)).to eq(obj)
       end
-
     end
   end
 end
