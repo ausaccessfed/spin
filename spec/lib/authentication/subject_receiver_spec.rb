@@ -35,8 +35,8 @@ module Authentication
       end
 
       it 'updates an existing subject' do
-        obj = subject.subject(env, attrs.merge(name: 'Wrong',
-                                               mail: 'wrong@example.com'))
+        obj = subject.subject(env, attrs.merge(name: Faker::Name.name,
+                                               mail: Faker::Internet.email))
         subject.subject(env, attrs)
         expect(obj.reload).to have_attributes(attrs)
       end
