@@ -3,10 +3,8 @@ require 'rails_helper'
 RSpec.describe SubjectRole, type: :model do
   it_behaves_like 'an audited model'
 
-  context 'validations' do
-    subject { create(:subject, :authorized).subject_roles.first! }
+  subject { create(:subject, :authorized).subject_roles.first! }
 
-    it { is_expected.to validate_presence_of(:subject) }
-    it { is_expected.to validate_presence_of(:role) }
-  end
+  it { is_expected.to validate_presence_of(:subject) }
+  it { is_expected.to validate_presence_of(:role) }
 end
