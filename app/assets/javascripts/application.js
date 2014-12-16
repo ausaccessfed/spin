@@ -11,8 +11,6 @@
 // about supported directives.
 //
 //= require jquery
-//= require_tree .
-
-//= require jquery
 //= require semantic-ui
 //= require aaf-layout
+//= require_tree .
