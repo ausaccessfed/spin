@@ -15,9 +15,15 @@ RSpec.shared_examples 'an audited model' do
       .and change(described_class, :count).by(1)
   end
 
-  it 'allows an edit' do
-    expect { subject.update_attributes!(attrs) }.not_to raise_error
-    expect(subject.reload).to have_attributes(attrs)
+  context 'allows edit' do
+    it 'without raising error' do
+      expect { subject.update_attributes!(attrs) }.not_to raise_error
+    end
+
+    it 'provides supplied attributes' do
+      subject.update_attributes!(attrs)
+      expect(subject.reload).to have_attributes(attrs)
+    end
   end
 
   it 'allows deletion' do
