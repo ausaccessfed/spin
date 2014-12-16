@@ -21,30 +21,32 @@ module Authentication
     end
 
     context '#subject' do
-      let(:attrs) do
+      let(:attributes) do
         attributes_for(:subject)
       end
-
-      it 'creates the subject' do
-        expect { receiver.subject(env, attrs) }.to change(Subject, :count).by(1)
+      let(:updated_attributes) do
+        attributes.merge(name: Faker::Name.name,
+                         mail: Faker::Internet.email)
       end
 
-      it 'returns the new subject' do
-        obj = receiver.subject(env, attrs)
-        expect(obj).to be_a(Subject)
-        expect(obj).to have_attributes(attrs)
+      context 'without an existing Subject' do
+        subject { receiver.subject(env, attributes) }
+
+        it 'stores a new Subject' do
+          expect { receiver.subject(env, attributes) }
+            .to change(Subject, :count).by(1)
+        end
+
+        it { is_expected.to be_a(Subject) }
+        it { is_expected.to have_attributes(attributes) }
       end
 
-      it 'updates an existing subject' do
-        obj = receiver.subject(env, attrs.merge(name: Faker::Name.name,
-                                                mail: Faker::Internet.email))
-        receiver.subject(env, attrs)
-        expect(obj.reload).to have_attributes(attrs)
-      end
+      context 'with an existing Subject' do
+        let!(:created_subject) { receiver.subject(env, attributes) }
+        subject { receiver.subject(env, updated_attributes).reload }
 
-      it 'returns the existing subject' do
-        obj = receiver.subject(env, attrs)
-        expect(receiver.subject(env, attrs)).to eq(obj)
+        it { is_expected.to eq(created_subject) }
+        it { is_expected.to have_attributes(updated_attributes) }
       end
     end
   end
