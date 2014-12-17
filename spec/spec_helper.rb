@@ -2,6 +2,7 @@ require 'simplecov'
 
 require 'factory_girl_rails'
 require 'faker'
+require 'mail'
 
 Dir['./spec/support/*.rb'].each { |f| require f }
 
@@ -22,6 +23,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
   config.include FactoryGirl::Syntax::Methods
+  config.include Mail::Matchers
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
+  RSpec::Matchers.define_negated_matcher :not_raise_error, :raise_error
 end

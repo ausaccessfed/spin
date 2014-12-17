@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
-
   describe 'GET index' do
-
     it 'redirects to login' do
       get :index
       expect(response).to redirect_to('/auth/login')
@@ -17,9 +15,6 @@ RSpec.describe ProjectsController, type: :controller do
         get :index
         expect(response).to have_http_status(:success)
       end
-
     end
-
   end
-
 end

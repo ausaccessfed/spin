@@ -6,9 +6,13 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'mysql2' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession' # Permissions for Ruby
-gem 'rails-assets-semantic-ui', '~> 1.0' # Semantic UI web framework
+gem 'rails-assets-semantic-ui'
 gem 'rails-assets-jquery', '~> 1.11' # JQuery
+gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
+                    branch: 'develop'
 gem 'unicorn', require: false # Web container
+gem 'redis'
+gem 'audited-activerecord'
 
 group :development, :test do
   gem 'spring',      '1.1.3'
@@ -20,6 +24,9 @@ group :development, :test do
   gem 'pry', require: false # IRB alternative
   gem 'brakeman', '~> 2.6', require: false # Security scanner
   gem 'simplecov', require: false # Code coverage
+  gem 'shoulda-matchers'
+  gem 'capybara'
+  gem 'capybara-webkit'
 
   gem 'guard', require: false
   gem 'guard-rubocop', require: false
