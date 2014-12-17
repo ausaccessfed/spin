@@ -8,5 +8,5 @@ class Subject < ActiveRecord::Base
 
   validates :name, :mail, presence: true
   validates :targeted_id, :shared_token, presence: true, if: :complete?
-  validates :shared_token, uniqueness: true
+  validates :shared_token, uniqueness: true, allow_nil: true
 end
