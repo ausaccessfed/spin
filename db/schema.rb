@@ -43,6 +43,16 @@ ActiveRecord::Schema.define(version: 20141214233748) do
     t.datetime "updated_at"
   end
 
+  create_table "project_roles", force: true do |t|
+    t.string   "name"
+    t.string   "aws_identifier"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "project_roles", ["project_id"], name: "index_project_roles_on_project_id", using: :btree
+
   create_table "projects", force: true do |t|
     t.string   "name"
     t.string   "aws_account"
@@ -52,25 +62,15 @@ ActiveRecord::Schema.define(version: 20141214233748) do
     t.datetime "updated_at"
   end
 
-  create_table "roles", force: true do |t|
-    t.string   "name"
-    t.string   "aws_identifier"
-    t.integer  "project_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "roles", ["project_id"], name: "index_roles_on_project_id", using: :btree
-
-  create_table "subject_roles", force: true do |t|
+  create_table "subject_project_roles", force: true do |t|
     t.integer  "subject_id"
-    t.integer  "role_id"
+    t.integer  "project_role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "subject_roles", ["role_id"], name: "index_subject_roles_on_role_id", using: :btree
-  add_index "subject_roles", ["subject_id"], name: "index_subject_roles_on_subject_id", using: :btree
+  add_index "subject_project_roles", ["project_role_id"], name: "index_subject_project_roles_on_project_role_id", using: :btree
+  add_index "subject_project_roles", ["subject_id"], name: "index_subject_project_roles_on_subject_id", using: :btree
 
   create_table "subjects", force: true do |t|
     t.string   "name",                         null: false

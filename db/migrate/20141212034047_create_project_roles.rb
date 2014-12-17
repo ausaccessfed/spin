@@ -1,6 +1,6 @@
-class CreateRoles < ActiveRecord::Migration
+class CreateProjectRoles < ActiveRecord::Migration
   def change
-    create_table :roles do |t|
+    create_table :project_roles do |t|
       t.string :name
       t.string :aws_identifier
       t.references :project, index: true

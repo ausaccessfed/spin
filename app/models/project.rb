@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   has_associated_audits
 
   belongs_to :organisation
-  has_many :roles
+  has_many :project_roles
 
   validates :organisation, :name, :aws_account, :state, presence: true
 end

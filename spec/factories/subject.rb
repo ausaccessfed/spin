@@ -9,8 +9,9 @@ FactoryGirl.define do
 
     trait :authorized do
       after(:create) do |subject|
-        role = create(:role)
-        create(:subject_role, role: role, subject: subject)
+        project_role = create(:project_role)
+        create(:subject_project_role, project_role: project_role,
+                                      subject: subject)
       end
     end
   end
