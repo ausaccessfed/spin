@@ -1,15 +1,57 @@
-<p>Hi!</p>
+<%= javascript_include_tag params[:controller] %>
 
-<p>Here's what we know about you:</p>
-<%- if @subject -%>
-  <pre>
-eptid: <%= @subject.targeted_id %>
-aepst: <%= @subject.shared_token %>
-name:  <%= @subject.name %>
-email: <%= @subject.mail %>
-  </pre>
-<%- else -%>
-  Nothing.
-<%- end -%>
-<p></p>
-<p>See <a href="projects">Projects</a> (must be authenticated via RapidConnect) </p>
+<%= page_header('Welcome to SPIN') %>
+
+<%= divider_tag %>
+<div class="ui grid">
+
+  <div class="eight wide column">
+
+    SPIN provides a means for researchers to authenticate via the AAF to access
+    to a project account in Amazon Web Services (AWS)
+    <ul>
+      <li>Sample point</li>
+      <li>Sample point</li>
+      <li>Sample point</li>
+    </ul>
+    Here is some sample links <a href="#">Here</a>
+    <br />
+    And another one <a href="#">Here</a>
+
+  </div>
+  <div class="eight wide column">
+
+    <h3 class="ui block top attached header">Log In</h3>
+    <div class="ui bottom attached secondary segment">
+      <div class="grouped fields">
+
+        <%= info_message('You must review and accept the following to continue') do -%>
+        <%- end -%>
+
+        <div class="ui form">
+          <div class="field">
+            <label></label>
+            <textarea></textarea>
+          </div>
+        </div>
+
+        <div class="ui checkbox">
+          <input type="checkbox" name="agree">
+          <label>I agree</label>
+        </div>
+        <p></p>
+        <%= button_link_to('Log In', '/auth/login', class: 'large') %>
+
+        <h4 class="muted">How else can we help?</h4>
+        <ul class="muted">
+          <li>Sample link <a href="#">Here</a>
+          <li>Another sample link <a href="#">Here</a>
+        </ul>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+

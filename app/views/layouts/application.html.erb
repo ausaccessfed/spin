@@ -13,17 +13,11 @@
 <body>
 <%= aaf_header(title: 'SPIN', environment: 'Rails') do -%>
     <%= nav_bar do -%>
-        <%= nav_item('Dashboard', '/') %>
-
-        <%- if @subject -%>
-            <%= nav_item('Projects', '/projects') %>
-        <%- end -%>
+        <%= nav_item('Welcome', '/') %>
 
         <%= nav_items_right do -%>
             <%- if @subject -%>
                 <%= nav_item('Log out', '/auth/logout') %>
-            <%- else -%>
-                <%= nav_item('Log in', '/auth/login') %>
             <%- end -%>
         <%- end -%>
 
