@@ -49,5 +49,12 @@ module Authentication
         it { is_expected.to have_attributes(updated_attributes) }
       end
     end
+
+    context '#finish' do
+      it 'redirects_to /projects' do
+        expect(receiver.finish(env))
+          .to eq([302, { 'Location' => '/projects' }, []])
+      end
+    end
   end
 end
