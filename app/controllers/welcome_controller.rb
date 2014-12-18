@@ -5,5 +5,4 @@ class WelcomeController < ApplicationController
   def index
     @consent = CONSENT_HTML
   end
-
 end
