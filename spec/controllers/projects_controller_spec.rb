@@ -4,7 +4,7 @@ RSpec.describe ProjectsController, type: :controller do
   describe 'GET index' do
     it 'redirects to login' do
       get :index
-      expect(response).to redirect_to('/auth/login')
+      expect(response).to redirect_to(root_path)
     end
 
     context 'as a permitted user' do

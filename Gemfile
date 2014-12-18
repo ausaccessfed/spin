@@ -28,6 +28,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'capybara-webkit'
+  gem 'sanitize'
 
   gem 'guard', require: false
   gem 'guard-rubocop', require: false

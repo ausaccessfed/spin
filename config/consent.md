@@ -49,7 +49,7 @@ define foobar() {
 }
 ~~~
 
-(which makes copying & pasting easier). You can optionally mark the
+(which makes copying and pasting easier). You can optionally mark the
 delimited block for Pandoc to syntax highlight it:
 
 ~~~python
@@ -146,7 +146,7 @@ Here's a "line block":
 
 and images can be specified like so:
 
-![example image](example-image.jpg "An exemplary image")
+![example image](http://aaf.edu.au/wp-content/uploads/2010/01/aaf_logo.gif "An exemplary image")
 
 Inline math equations go in like so: $\omega = d\phi / dt$. Display
 math should get its own line and be put in in double-dollarsigns:
