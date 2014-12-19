@@ -36,8 +36,16 @@ module Authentication
       end
     end
 
-    def finish(_env)
-      redirect_to('/projects')
+    def finish(env)
+      return unless env['rack.session']
+      subject = Subject.find(env['rack.session']['subject_id'])
+      distinct_project_roles = subject.project_roles
+                               .select(:project_id).distinct
+      if (distinct_project_roles.count == 1)
+        redirect_to('/aws-idp')
+      else
+        redirect_to('/projects')
+      end
     end
   end
 end

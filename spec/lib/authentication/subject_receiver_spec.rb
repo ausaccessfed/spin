@@ -50,11 +50,42 @@ module Authentication
       end
     end
 
-    context '#finish' do
-      it 'redirects_to /projects' do
-        expect(receiver.finish(env))
-          .to eq([302, { 'Location' => '/projects' }, []])
-      end
+    context 'after authenticating with idP' do
+      # TODO: Work in progress!
+      # organisation = Organisation.create(name: "Test Org", external_id: "ID1")
+      #
+      # project = Project.create(name: "Test Proj 1", aws_account: "AWS_ACC1",
+      #                           state: "A", organisation_id: organisation.id)
+      #
+      # subject = Subject.create(mail: "russell.ianniello@aaf.edu.au",
+      #                           name: "Russell Ianniello",
+      #                           targeted_id: "target_id")
+      #
+      # project_role = ProjectRole.create(name: "ALL for Test Proj 1",
+      #                                    aws_identifier: "TP1",
+      #                                    project_id: project.id)
+      #
+      # SubjectProjectRole.create(subject_id: subject.id,
+      #                           project_role_id: project_role.id)
+
+      # let(:env) do
+      #   {'rack.session' => {'subject_id' => Subject.first}}
+      # end
+      #
+      # it 'redirects to projects if subject has 0 projects' do
+      #   expect(receiver.finish(env))
+      #       .to eq([302, {'Location' => '/projects'}, []])
+      # end
+      #
+      # it 'redirects to aws auth if subject has exactly 1 project' do
+      #   expect(receiver.finish(env))
+      #       .to eq([302, {'Location' => '/aws-idp'}, []])
+      # end
+      #
+      # it 'redirects to projects if subject has > 1 projects' do
+      #   expect(receiver.finish(env))
+      #       .to eq([302, {'Location' => '/projects'}, []])
+      # end
     end
   end
 end
