@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.feature 'Visiting the welcome page', type: :feature do
   background do
     attrs = create(:aaf_attributes)
-
     RapidRack::TestAuthenticator.jwt = create(:jwt, aaf_attributes: attrs)
   end
 
@@ -35,7 +34,7 @@ RSpec.feature 'Visiting the welcome page', type: :feature do
     expect(current_path).to eq('/auth/login')
   end
 
-  scenario 'disallows access without session' do
+  scenario 'disallows access without being logged in' do
     visit '/projects'
     expect(current_path).to eq('/')
   end

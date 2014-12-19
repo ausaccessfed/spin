@@ -11,5 +11,6 @@ module Spin
     config.autoload_paths << File.join(config.root, 'lib')
     config.rapid_rack.receiver = 'Authentication::SubjectReceiver'
     # config.rapid_rack.error_handler = 'MyApplication::MyErrorHandler'
+    config.middleware.use 'Session::UserConsentChecker'
   end
 end
