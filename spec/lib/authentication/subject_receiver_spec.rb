@@ -51,41 +51,75 @@ module Authentication
     end
 
     context 'after authenticating with idP' do
-      # TODO: Work in progress!
-      # organisation = Organisation.create(name: "Test Org", external_id: "ID1")
-      #
-      # project = Project.create(name: "Test Proj 1", aws_account: "AWS_ACC1",
-      #                           state: "A", organisation_id: organisation.id)
-      #
-      # subject = Subject.create(mail: "russell.ianniello@aaf.edu.au",
-      #                           name: "Russell Ianniello",
-      #                           targeted_id: "target_id")
-      #
-      # project_role = ProjectRole.create(name: "ALL for Test Proj 1",
-      #                                    aws_identifier: "TP1",
-      #                                    project_id: project.id)
-      #
-      # SubjectProjectRole.create(subject_id: subject.id,
-      #                           project_role_id: project_role.id)
+      let(:Subject) { double }
+      let(:subject_for_session) { double }
+      let(:project_roles) { double }
+      let(:select_projects_association) { double }
 
-      # let(:env) do
-      #   {'rack.session' => {'subject_id' => Subject.first}}
-      # end
-      #
-      # it 'redirects to projects if subject has 0 projects' do
-      #   expect(receiver.finish(env))
-      #       .to eq([302, {'Location' => '/projects'}, []])
-      # end
-      #
-      # it 'redirects to aws auth if subject has exactly 1 project' do
-      #   expect(receiver.finish(env))
-      #       .to eq([302, {'Location' => '/aws-idp'}, []])
-      # end
-      #
-      # it 'redirects to projects if subject has > 1 projects' do
-      #   expect(receiver.finish(env))
-      #       .to eq([302, {'Location' => '/projects'}, []])
-      # end
+      before do
+        allow(Subject)
+          .to receive(:find)
+          .and_return(subject_for_session)
+      end
+
+      before do
+        allow(subject_for_session)
+          .to receive(:project_roles)
+          .and_return(project_roles)
+      end
+
+      before do
+        allow(project_roles)
+          .to receive(:select)
+          .and_return(select_projects_association)
+      end
+
+      let(:env) do
+        { 'rack.session' => { 'subject_id' => 1 } }
+      end
+
+      context 'with no projects' do
+        before do
+          allow(select_projects_association)
+            .to receive(:distinct)
+            .and_return({})
+        end
+
+        it 'redirects to no projects assigned page' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/no_projects_assigned' }, []])
+        end
+      end
+
+      context 'with exactly 1 project' do
+        let(:projects) { [create(:project)] }
+
+        before do
+          allow(select_projects_association)
+            .to receive(:distinct)
+            .and_return(projects)
+        end
+
+        it 'redirects to aws auth' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/aws-idp' }, []])
+        end
+      end
+
+      context 'with more than 1 project' do
+        let(:projects) { Array.new(3) { create(:project) } }
+
+        before do
+          allow(select_projects_association)
+            .to receive(:distinct)
+            .and_return(projects)
+        end
+
+        it 'redirects to projects page' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/projects' }, []])
+        end
+      end
     end
   end
 end
