@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Visiting the projects page', type: :feature do
+RSpec.feature 'After the user has authenticated with idP', type: :feature do
   background do
     attrs = create(:aaf_attributes)
     RapidRack::TestAuthenticator.jwt = create(:jwt, aaf_attributes: attrs)
@@ -16,15 +16,14 @@ RSpec.feature 'Visiting the projects page', type: :feature do
     visit '/'
     check 'agree_to_consent'
     click_button 'Log In'
+    expect(current_path).to eq('/auth/login')
   end
 
   context 'with no projects assigned' do
     include_context 'with no projects'
 
     scenario 'redirects to no projects page' do
-      expect(current_path).to eq('/auth/login')
       click_button 'Login'
-
       expect(current_path).to eq('/no_projects_assigned')
     end
   end
@@ -33,9 +32,7 @@ RSpec.feature 'Visiting the projects page', type: :feature do
     include_context 'with 1 project'
 
     scenario 'redirects to aws auth' do
-      expect(current_path).to eq('/auth/login')
       click_button 'Login'
-
       expect(current_path).to eq('/aws_idp')
     end
   end
@@ -44,9 +41,7 @@ RSpec.feature 'Visiting the projects page', type: :feature do
     include_context 'with 3 projects'
 
     scenario 'redirects to projects page' do
-      expect(current_path).to eq('/auth/login')
       click_button 'Login'
-
       expect(current_path).to eq('/projects')
     end
   end
