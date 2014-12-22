@@ -1,28 +1,15 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# SPIN
 
-Things you may want to cover:
+Here is some rails/console scripts to test with ...
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+<span id="aaf_header">
+```erb
+o = Organisation.create!(name: "Test Org", external_id: "ID1" )
+p = Project.create!(name:"Test Proj 1", aws_account: "AWS_ACC1", state: "A", organisation_id: 1)
+s = Subject.create!(mail: "russell.ianniello@aaf.edu.au", name: "Russell Ianniello", targeted_id: "https://rapid.test.aaf.edu.au!http://localhost:8080!sVU8U1bEIkdK+FTWuGQEv9aEJ+o=", shared_token: nil)
+r = ProjectRole.create!(name:"ALL for Test Proj 1", aws_identifier: "TP1", project_id: 1)
+spr = SubjectProjectRole.create!(subject_id: 1, project_role_id: 1)
+```
+</span>
