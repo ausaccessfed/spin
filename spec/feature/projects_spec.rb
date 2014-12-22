@@ -1,0 +1,53 @@
+require 'rails_helper'
+
+RSpec.feature 'Visiting the projects page', type: :feature do
+  background do
+    attrs = create(:aaf_attributes)
+    RapidRack::TestAuthenticator.jwt = create(:jwt, aaf_attributes: attrs)
+  end
+
+  include_context 'a mocked subject'
+
+  let(:env) do
+    { 'rack.session' => { 'subject_id' => 1 } }
+  end
+
+  before do
+    visit '/'
+    check 'agree_to_consent'
+    click_button 'Log In'
+  end
+
+  context 'with no projects assigned' do
+    include_context 'with no projects'
+
+    scenario 'redirects to no projects page' do
+      expect(current_path).to eq('/auth/login')
+      click_button 'Login'
+
+      expect(current_path).to eq('/no_projects_assigned')
+    end
+  end
+
+  context 'with exactly 1 project' do
+    include_context 'with 1 project'
+
+    scenario 'redirects to aws auth' do
+      expect(current_path).to eq('/auth/login')
+      click_button 'Login'
+
+      expect(current_path).to eq('/aws_idp')
+    end
+  end
+
+  context 'with more than 1 project' do
+    include_context 'with 3 projects'
+
+    scenario 'redirects to projects page' do
+      expect(current_path).to eq('/auth/login')
+      click_button 'Login'
+
+      expect(current_path).to eq('/projects')
+    end
+  end
+end

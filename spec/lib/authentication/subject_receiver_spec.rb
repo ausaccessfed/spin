@@ -51,39 +51,14 @@ module Authentication
     end
 
     context 'after authenticating with idP' do
-      let(:Subject) { double }
-      let(:subject_for_session) { double }
-      let(:project_roles) { double }
-      let(:select_projects_association) { double }
-
-      before do
-        allow(Subject)
-          .to receive(:find)
-          .and_return(subject_for_session)
-      end
-
-      before do
-        allow(subject_for_session)
-          .to receive(:project_roles)
-          .and_return(project_roles)
-      end
-
-      before do
-        allow(project_roles)
-          .to receive(:select)
-          .and_return(select_projects_association)
-      end
+      include_context 'a mocked subject'
 
       let(:env) do
         { 'rack.session' => { 'subject_id' => 1 } }
       end
 
       context 'with no projects' do
-        before do
-          allow(select_projects_association)
-            .to receive(:distinct)
-            .and_return({})
-        end
+        include_context 'with no projects'
 
         it 'redirects to no projects assigned page' do
           expect(receiver.finish(env))
@@ -91,29 +66,17 @@ module Authentication
         end
       end
 
-      context 'with exactly 1 project' do
-        let(:projects) { [create(:project)] }
-
-        before do
-          allow(select_projects_association)
-            .to receive(:distinct)
-            .and_return(projects)
-        end
+      context 'with 1 project' do
+        include_context 'with 1 project'
 
         it 'redirects to aws auth' do
           expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/aws-idp' }, []])
+            .to eq([302, { 'Location' => '/aws_idp' }, []])
         end
       end
 
       context 'with more than 1 project' do
-        let(:projects) { Array.new(3) { create(:project) } }
-
-        before do
-          allow(select_projects_association)
-            .to receive(:distinct)
-            .and_return(projects)
-        end
+        include_context 'with 3 projects'
 
         it 'redirects to projects page' do
           expect(receiver.finish(env))

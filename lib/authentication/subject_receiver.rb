@@ -43,7 +43,7 @@ module Authentication
       if (distinct_project_roles.count == 0)
         redirect_to('/no_projects_assigned')
       elsif (distinct_project_roles.count == 1)
-        redirect_to('/aws-idp')
+        redirect_to('/aws_idp')
       else
         redirect_to('/projects')
       end
