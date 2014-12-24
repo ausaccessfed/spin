@@ -21,10 +21,11 @@ RSpec.feature 'Visiting the welcome page', type: :feature do
     expect(page).to have_button('Log In')
   end
 
-  scenario 'disallows log in when consent is not agreed' do
+  scenario 'disallows log in when consent is not agreed', js: true do
     visit '/'
     click_button 'Log In'
     expect(current_path).to eq('/')
+    expect(page).to have_content('You must agree to the terms and conditions')
   end
 
   scenario 'allows log in when consent is agreed' do
