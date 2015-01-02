@@ -38,11 +38,11 @@ module Authentication
 
     def finish(env)
       return unless env['rack.session']
-      subj = Subject.find(env['rack.session']['subject_id'])
-      distinct_project_roles = subj.project_roles.select(:project_id).distinct
-      if (distinct_project_roles.count == 0)
+      subject = Subject.find(env['rack.session']['subject_id'])
+      case subject.active_project_count
+      when 0
         redirect_to('/no_projects_assigned')
-      elsif (distinct_project_roles.count == 1)
+      when 1
         redirect_to('/aws_idp')
       else
         redirect_to('/projects')
