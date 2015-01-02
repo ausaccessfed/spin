@@ -39,4 +39,11 @@ RSpec.feature 'Visiting the welcome page', type: :feature do
     visit '/projects'
     expect(current_path).to eq('/')
   end
+
+  scenario 'displays the environment text' do
+    visit '/'
+    spin_cfg_hash = YAML.load_file(Rails.root.join('config/spin_service.yml'))
+    spin_cfg_os = OpenStruct.new(spin_cfg_hash)
+    expect(page).to have_text(spin_cfg_os.environment_string)
+  end
 end

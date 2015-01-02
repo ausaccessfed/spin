@@ -11,7 +11,7 @@
   <%= stylesheet_link_tag "application", :media => "all" %>
 </head>
 <body>
-<%= aaf_header(title: 'SPIN', environment: 'Rails') do -%>
+<%= aaf_header(title: 'SPIN', environment: environment_string) do -%>
     <%= nav_bar do -%>
         <%= nav_item('Welcome', '/') %>
 

@@ -1,4 +1,5 @@
 config/rapidconnect.yml
+config/spin_service.yml
 
 log
 coverage
