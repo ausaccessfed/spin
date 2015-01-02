@@ -13,6 +13,6 @@ class SessionsController < ApplicationController
 
   def set_user_consent
     Rails.logger.info('User has consented, setting in rack session')
-    env['rack.session'][:consent] = true if env['rack.session']
+    session[:consent] = true
   end
 end
