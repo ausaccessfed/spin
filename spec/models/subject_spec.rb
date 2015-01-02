@@ -35,9 +35,9 @@ RSpec.describe Subject, type: :model do
 
     it 'contains one project role' do
       expect(authorized_subject.distinct_project_roles.count)
-          .to eq(1)
+        .to eq(1)
       expect(authorized_subject.distinct_project_roles.first)
-          .to be_a ProjectRole
+        .to be_a ProjectRole
     end
   end
 end
