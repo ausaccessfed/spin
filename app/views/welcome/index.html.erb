@@ -29,7 +29,7 @@
         <%= info_message('You must review and accept the following to continue') do -%>
         <%- end -%>
 
-        <%= form_tag(login_path, method: "post", :id => 'consent-form', class: "ui form segment") do %>
+        <%= form_tag(login_path, method: "post", id: 'consent-form', class: 'ui form segment') do %>
 
             <div class="consent">
               <%= raw @consent %>
@@ -47,7 +47,7 @@
 
             <%= error_messages_tag %>
 
-            <%= submit_tag("Log In", :class => "large ui primary button") %>
+            <%= submit_tag("Log In", class: 'large ui primary button') %>
 
         <% end %>
 
