@@ -10,11 +10,15 @@ RSpec.describe ProjectsController, type: :controller do
     context 'as a permitted user' do
       context 'with no projects assigned' do
         let(:subject) { create(:subject) }
-        before { session[:subject_id] = subject.id }
-        it 'has no projects' do
+        before do
+          session[:subject_id] = subject.id
           get :index
-          expect(response).to have_http_status(:success)
+        end
+        it 'has no projects' do
           expect(assigns(:projects)).to eq([])
+        end
+        it 'has 200 response' do
+          expect(response).to have_http_status(:success)
         end
       end
 

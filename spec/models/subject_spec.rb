@@ -34,10 +34,8 @@ RSpec.describe Subject, type: :model do
     end
 
     it 'contains one project role' do
-      expect(authorized_subject.projects.count)
-        .to eq(1)
-      expect(authorized_subject.projects.first)
-        .to be_a Project
+      expect(authorized_subject.projects)
+        .to contain_exactly(an_instance_of(Project))
     end
   end
 end
