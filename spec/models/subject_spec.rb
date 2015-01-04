@@ -15,7 +15,7 @@ RSpec.describe Subject, type: :model do
   end
 
   it 'contains no project roles' do
-    expect(subject.distinct_project_roles).to eq([])
+    expect(subject.projects).to eq([])
   end
 
   context 'with a complete subject' do
@@ -34,10 +34,10 @@ RSpec.describe Subject, type: :model do
     end
 
     it 'contains one project role' do
-      expect(authorized_subject.distinct_project_roles.count)
+      expect(authorized_subject.projects.count)
         .to eq(1)
-      expect(authorized_subject.distinct_project_roles.first)
-        .to be_a ProjectRole
+      expect(authorized_subject.projects.first)
+        .to be_a Project
     end
   end
 end

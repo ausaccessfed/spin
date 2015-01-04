@@ -26,7 +26,7 @@ RSpec.shared_examples 'with 1 project' do
       .and_return(1)
 
     allow(subject_for_session)
-      .to receive(:distinct_project_roles)
+      .to receive(:projects)
       .and_return(projects)
   end
 end
@@ -40,7 +40,7 @@ RSpec.shared_examples 'with 3 projects' do
       .and_return(3)
 
     allow(subject_for_session)
-      .to receive(:distinct_project_roles)
+      .to receive(:projects)
       .and_return(projects)
   end
 end
