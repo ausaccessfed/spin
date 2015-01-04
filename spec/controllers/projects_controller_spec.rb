@@ -27,15 +27,19 @@ RSpec.describe ProjectsController, type: :controller do
           create(:subject,
                  :authorized_for_many_projects)
         end
-        before { session[:subject_id] = authorized_subject.id }
-        it 'has a unique set of projects' do
+
+        before do
+          session[:subject_id] = authorized_subject.id
           get :index
+        end
+
+        it 'has 200 response' do
           expect(response).to have_http_status(:success)
-          expect(assigns(:projects)).to be_a Array
-          expect(assigns(:projects).size).to be 2
-          assigns(:projects).each do | p |
-            expect(p).to be_a Project
-          end
+        end
+
+        it 'has a unique set of projects' do
+          expect(assigns(:projects)).to contain_exactly(an_instance_of(Project),
+                                                        an_instance_of(Project))
         end
       end
     end
