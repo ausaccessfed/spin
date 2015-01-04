@@ -36,8 +36,17 @@ module Authentication
       end
     end
 
-    def finish(_env)
-      redirect_to('/projects')
+    def finish(env)
+      return unless env['rack.session']
+      subject = Subject.find(env['rack.session']['subject_id'])
+      case subject.active_project_count
+      when 0
+        redirect_to('/no_projects_assigned')
+      when 1
+        redirect_to('/aws_idp')
+      else
+        redirect_to('/projects')
+      end
     end
   end
 end

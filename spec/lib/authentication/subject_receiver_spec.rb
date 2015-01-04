@@ -50,10 +50,38 @@ module Authentication
       end
     end
 
-    context '#finish' do
-      it 'redirects_to /projects' do
-        expect(receiver.finish(env))
-          .to eq([302, { 'Location' => '/projects' }, []])
+    context 'after authenticating with idP' do
+      include_context 'a mocked subject'
+
+      let(:env) do
+        { 'rack.session' => { 'subject_id' => 1 } }
+      end
+
+      context 'with no projects' do
+        include_context 'with no projects'
+
+        it 'redirects to no projects assigned page' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/no_projects_assigned' }, []])
+        end
+      end
+
+      context 'with 1 project' do
+        include_context 'with 1 project'
+
+        it 'redirects to aws auth' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/aws_idp' }, []])
+        end
+      end
+
+      context 'with more than 1 project' do
+        include_context 'with 3 projects'
+
+        it 'redirects to projects page' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/projects' }, []])
+        end
       end
     end
   end

@@ -1,0 +1,15 @@
+<%= page_header('No projects assigned') %>
+
+<%= divider_tag %>
+<div class="ui grid">
+
+  <div class="eight wide column">
+    <%= error_message('You must have a project assigned to continue') do -%>
+    <%- end -%>
+
+    <%= raw @support %>
+
+
+  </div>
+</div>
+

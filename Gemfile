@@ -12,6 +12,7 @@ gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
                     branch: 'develop'
 gem 'unicorn', require: false # Web container
 gem 'redis'
+gem 'kramdown'
 gem 'audited-activerecord'
 
 group :development, :test do
@@ -27,6 +28,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'capybara-webkit'
+  gem 'sanitize'
 
   gem 'guard', require: false
   gem 'guard-rubocop', require: false

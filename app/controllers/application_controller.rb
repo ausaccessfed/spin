@@ -8,6 +8,6 @@ class ApplicationController < ActionController::Base
   end
 
   def require_subject
-    subject || redirect_to('/auth/login')
+    subject || redirect_to(root_path)
   end
 end

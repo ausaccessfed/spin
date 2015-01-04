@@ -7,23 +7,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPIN</title>
 
-  <%= javascript_include_tag "application" %>
-  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
 </head>
 <body>
-<%= aaf_header(title: 'SPIN', environment: 'Rails') do -%>
+<%= aaf_header(title: 'SPIN', environment: environment_string) do -%>
     <%= nav_bar do -%>
-        <%= nav_item('Dashboard', '/') %>
-
-        <%- if @subject -%>
-            <%= nav_item('Projects', '/projects') %>
-        <%- end -%>
+        <%= nav_item('Welcome', '/') %>
 
         <%= nav_items_right do -%>
             <%- if @subject -%>
                 <%= nav_item('Log out', '/auth/logout') %>
-            <%- else -%>
-                <%= nav_item('Log in', '/auth/login') %>
             <%- end -%>
         <%- end -%>
 
