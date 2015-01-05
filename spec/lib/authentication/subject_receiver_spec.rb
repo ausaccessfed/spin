@@ -74,6 +74,47 @@ module Authentication
           it { is_expected.to eq(created_subject) }
           it { is_expected.to have_attributes(updated_attributes) }
         end
+
+        context 'when the SubjectSession fails to save' do
+          let(:SubjectSession) { double }
+
+          context 'with an existing Subject' do
+            let!(:created_subject) { receiver.subject(env, attributes) }
+            before do
+              allow(SubjectSession)
+                .to receive(:create!)
+                .and_raise('a failure')
+            end
+
+            subject { receiver.subject(env, updated_attributes).reload }
+
+            it 'preserves the subject' do
+              expect { subject }
+                .to raise_error(/a failure/)
+                .and not_change { Subject.last.reload.attributes }
+            end
+
+            it 'does not create a new subject' do
+              expect { subject }
+                .to raise_error(/a failure/)
+                .and not_change(Subject, :count)
+            end
+          end
+
+          context 'with no existing Subject' do
+            before do
+              allow(SubjectSession)
+                .to receive(:create!)
+                .and_raise('a failure')
+            end
+
+            it 'does not create a new subject' do
+              expect { subject }
+                .to raise_error(/a failure/)
+                .and not_change(Subject, :count)
+            end
+          end
+        end
       end
     end
 
