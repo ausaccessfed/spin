@@ -30,9 +30,11 @@ module Authentication
                             "#{attrs.inspect}")
       identifier = attrs.slice(:targeted_id)
       Rails.logger.info("Using identifier: #{identifier}")
-      Subject.find_or_initialize_by(identifier).tap do |subject|
-        subject.update_attributes!(attrs)
-        create_session_record(env, subject)
+      Subject.transaction do
+        Subject.find_or_initialize_by(identifier).tap do |subject|
+          subject.update_attributes!(attrs)
+          create_session_record(env, subject)
+        end
       end
     end
 
