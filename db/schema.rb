@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214233748) do
+ActiveRecord::Schema.define(version: 20141223005854) do
 
   create_table "audits", force: true do |t|
     t.integer  "auditable_id"
@@ -71,6 +71,17 @@ ActiveRecord::Schema.define(version: 20141214233748) do
 
   add_index "subject_project_roles", ["project_role_id"], name: "index_subject_project_roles_on_project_role_id", using: :btree
   add_index "subject_project_roles", ["subject_id"], name: "index_subject_project_roles_on_subject_id", using: :btree
+
+  create_table "subject_sessions", force: true do |t|
+    t.string   "remote_host"
+    t.string   "remote_addr",     null: false
+    t.string   "http_user_agent"
+    t.integer  "subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subject_sessions", ["subject_id"], name: "index_subject_sessions_on_subject_id", using: :btree
 
   create_table "subjects", force: true do |t|
     t.string   "name",                         null: false

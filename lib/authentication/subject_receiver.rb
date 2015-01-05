@@ -25,15 +25,24 @@ module Authentication
     #
     # Must return the subject, and the subject must have an `id` method to work
     # with the DefaultReceiver mixin.
-    def subject(_env, attrs)
+    def subject(env, attrs)
       Rails.logger.info('Find or update Subject using attributes: ' \
                             "#{attrs.inspect}")
       identifier = attrs.slice(:targeted_id)
       Rails.logger.info("Using identifier: #{identifier}")
-      Subject.find_or_initialize_by(identifier).tap do |subject|
-        subject.update_attributes!(attrs)
-        Rails.logger.info('Updated or created Subject')
+      Subject.transaction do
+        Subject.find_or_initialize_by(identifier).tap do |subject|
+          subject.update_attributes!(attrs)
+          create_session_record(env, subject)
+        end
       end
+    end
+
+    def create_session_record(env, subject)
+      SubjectSession.create!(remote_host: env['REMOTE_HOST'],
+                             remote_addr: env['REMOTE_ADDR'],
+                             http_user_agent:  env['HTTP_USER_AGENT'],
+                             subject: subject)
     end
 
     def finish(env)
