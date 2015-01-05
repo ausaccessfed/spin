@@ -50,11 +50,11 @@ module Authentication
           receiver.subject(env, attributes)
 
           expect(SubjectSession.last)
-            .to eq(SubjectSession.new(id: SubjectSession.last.id,
-                                      remote_host: remote_host,
-                                      remote_addr: remote_addr,
-                                      http_user_agent: user_agent,
-                                      subject_id: subject.id))
+            .to have_attributes(id: SubjectSession.last.id,
+                                remote_host: remote_host,
+                                remote_addr: remote_addr,
+                                http_user_agent: user_agent,
+                                subject_id: subject.id)
         end
 
         context 'without an existing Subject' do
