@@ -22,7 +22,7 @@ module Session
       let(:app) { double }
       let(:env) do
         { 'REQUEST_PATH' => '/auth/login',
-          'rack.session' => { consent: true } }
+          'rack.session' => { 'consent' => true } }
       end
       before { allow(app).to receive(:call).and_return('requested path') }
 

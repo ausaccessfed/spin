@@ -6,7 +6,7 @@ module Session
 
     def call(env)
       if env['REQUEST_PATH'] == '/auth/login'
-        unless env['rack.session'] && env['rack.session'][:consent]
+        unless env['rack.session'] && env['rack.session']['consent']
           Rails.logger.info('Request sent to /auth/login without consent!')
           return [301, { 'Location' => '/', 'Content-Type' => 'text/html' }, []]
         end

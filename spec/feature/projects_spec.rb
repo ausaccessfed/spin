@@ -8,10 +8,6 @@ RSpec.feature 'After the user has authenticated with idP', type: :feature do
 
   include_context 'a mocked subject'
 
-  let(:env) do
-    { 'rack.session' => { 'subject_id' => 1 } }
-  end
-
   before do
     visit '/'
     check 'agree_to_consent'

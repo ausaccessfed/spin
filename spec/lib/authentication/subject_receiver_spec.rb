@@ -29,24 +29,51 @@ module Authentication
                          mail: Faker::Internet.email)
       end
 
-      context 'without an existing Subject' do
-        subject { receiver.subject(env, attributes) }
-
-        it 'stores a new Subject' do
-          expect { receiver.subject(env, attributes) }
-            .to change(Subject, :count).by(1)
+      context 'with mocked http session vars' do
+        let(:remote_host) { Faker::Internet.url }
+        let(:remote_addr) { Faker::Internet.ip_v4_address }
+        let(:user_agent) { Faker::Lorem.characters }
+        let(:env) do
+          { 'REMOTE_HOST' => remote_host,
+            'REMOTE_ADDR' => remote_addr,
+            'HTTP_USER_AGENT' => user_agent }
         end
 
-        it { is_expected.to be_a(Subject) }
-        it { is_expected.to have_attributes(attributes) }
-      end
+        subject { receiver.subject(env, attributes) }
 
-      context 'with an existing Subject' do
-        let!(:created_subject) { receiver.subject(env, attributes) }
-        subject { receiver.subject(env, updated_attributes).reload }
+        it 'changes the SubjectSession count' do
+          expect { subject }
+            .to change(SubjectSession, :count).by(1)
+        end
 
-        it { is_expected.to eq(created_subject) }
-        it { is_expected.to have_attributes(updated_attributes) }
+        it 'contains the fields from the http session' do
+          receiver.subject(env, attributes)
+
+          expect(SubjectSession.last)
+            .to eq(SubjectSession.new(id: SubjectSession.last.id,
+                                      remote_host: remote_host,
+                                      remote_addr: remote_addr,
+                                      http_user_agent: user_agent,
+                                      subject_id: subject.id))
+        end
+
+        context 'without an existing Subject' do
+          it 'stores a new Subject' do
+            expect { subject }
+              .to change(Subject, :count).by(1)
+          end
+
+          it { is_expected.to be_a(Subject) }
+          it { is_expected.to have_attributes(attributes) }
+        end
+
+        context 'with an existing Subject' do
+          let!(:created_subject) { receiver.subject(env, attributes) }
+          subject { receiver.subject(env, updated_attributes).reload }
+
+          it { is_expected.to eq(created_subject) }
+          it { is_expected.to have_attributes(updated_attributes) }
+        end
       end
     end
 
