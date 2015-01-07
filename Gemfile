@@ -38,4 +38,6 @@ group :development, :test do
   gem 'guard-unicorn', require: false, ref: 'ca5177dd',
                        github: 'andreimaxim/guard-unicorn'
   gem 'terminal-notifier-guard', require: false
+  gem 'aaf-gumboot', git: 'https://github.com/ausaccessfed/aaf-gumboot',
+                     branch: 'develop'
 end
