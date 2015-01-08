@@ -3,5 +3,4 @@ FactoryGirl.define do
     association :api_subject
     association :role
   end
-
 end

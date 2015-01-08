@@ -9,5 +9,5 @@ class Permission < ActiveRecord::Base
   SEGMENT = /([\w-]+|\*)/
   private_constant :SEGMENT
   validates :value, presence: true,
-            format: { with: /\A(#{SEGMENT}:)*#{SEGMENT}\z/ }
+                    format: { with: /\A(#{SEGMENT}:)*#{SEGMENT}\z/ }
 end

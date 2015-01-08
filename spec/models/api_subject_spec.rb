@@ -2,7 +2,7 @@ require 'rails_helper'
 
 require 'gumboot/shared_examples/api_subjects'
 
-RSpec.describe APISubject, :type => :model do
+RSpec.describe APISubject, type: :model do
   include_examples 'API Subjects'
   it_behaves_like 'an audited model'
 
@@ -59,5 +59,4 @@ RSpec.describe APISubject, :type => :model do
       expect(subject.permits?('a:b:c')).to be_falsey
     end
   end
-
 end

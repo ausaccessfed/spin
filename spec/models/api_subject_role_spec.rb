@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe APISubjectRole, :type => :model do
+RSpec.describe APISubjectRole, type: :model do
   it_behaves_like 'an audited model'
 
   subject { create(:api_subject_role) }
@@ -14,5 +14,4 @@ RSpec.describe APISubjectRole, :type => :model do
 
     expect(other).not_to be_valid
   end
-
 end

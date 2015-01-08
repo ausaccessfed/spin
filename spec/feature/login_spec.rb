@@ -37,7 +37,7 @@ RSpec.feature 'Visiting the welcome page', type: :feature do
 
   scenario 'disallows access without being logged in' do
     visit '/projects'
-    expect(current_path).to eq('/')
+    expect(current_path).to eq('/auth/login')
   end
 
   scenario 'displays the environment text' do

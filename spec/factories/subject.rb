@@ -7,7 +7,7 @@ FactoryGirl.define do
       "https://rapid.example.com!https://ide.example.com!#{SecureRandom.hex}"
     end
 
-    trait :authorized do
+    trait :assigned_to_project do
       after(:create) do |subject|
         project_role = create(:project_role)
         create(:subject_project_role, project_role: project_role,
@@ -15,12 +15,12 @@ FactoryGirl.define do
       end
     end
 
-    # Trait for multiple roles across multiple projects
+    # Trait for multiple project roles across multiple projects
     #
     # Subject -> project_1 -> {role_1, role_2}
     #         -> project_2 -> {role_1}
     #
-    trait :authorized_for_many_projects do
+    trait :assigned_to_many_projects do
       after(:create) do |subject|
         project_1 = create(:project)
         project_1_role_1 = create(:project_role, project: project_1)
@@ -36,10 +36,12 @@ FactoryGirl.define do
       end
     end
 
-    trait :admin do
-      after(:create) do |subject|
-        role = create(:role)
-        create(:subject_role, role: role, subject: subject)
+    trait :authorized do
+      transient { permission '*' }
+
+      after(:create) do |subject, attrs|
+        perm = create(:permission, value: attrs.permission)
+        create(:subject_role, role: perm.role, subject: subject)
       end
     end
   end

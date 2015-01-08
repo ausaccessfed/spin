@@ -10,7 +10,7 @@ class APISubject < ActiveRecord::Base
   validates :description, :contact_name, :contact_mail,
             presence: true
   validates :x509_cn, presence: true, format: { with: /\A[\w-]+\z/ },
-            uniqueness: true
+                      uniqueness: true
   validates :enabled, inclusion: { in: [true, false] }
 
   def permissions

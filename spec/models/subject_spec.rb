@@ -31,8 +31,8 @@ RSpec.describe Subject, type: :model do
     end
   end
 
-  context 'with an authorized subject' do
-    let(:authorized_subject) { create(:subject, :authorized) }
+  context 'assigned to project' do
+    let(:authorized_subject) { create(:subject, :assigned_to_project) }
 
     it 'contains one active project' do
       expect(authorized_subject.active_project_count).to eq(1)

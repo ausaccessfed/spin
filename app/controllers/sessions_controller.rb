@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
+  skip_before_action :ensure_authenticated
   def create
+    public_action
     # User has consented, time to authenticate...
     if (params['agree_to_consent'] == 'on')
       set_user_consent
