@@ -5,4 +5,5 @@ class SubjectProjectRole < ActiveRecord::Base
   belongs_to :project_role
 
   validates :subject, :project_role, presence: true
+  validates :project_role, uniqueness: { scope: :subject }
 end
