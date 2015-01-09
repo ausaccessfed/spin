@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150107051228) do
+ActiveRecord::Schema.define(version: 20150108223246) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -20,18 +20,21 @@ ActiveRecord::Schema.define(version: 20150107051228) do
     t.datetime "updated_at"
   end
 
+  add_index "api_subject_roles", ["api_subject_id", "role_id"], name: "index_api_subject_roles_on_api_subject_id_and_role_id", unique: true, using: :btree
   add_index "api_subject_roles", ["api_subject_id"], name: "index_api_subject_roles_on_api_subject_id", using: :btree
   add_index "api_subject_roles", ["role_id"], name: "index_api_subject_roles_on_role_id", using: :btree
 
   create_table "api_subjects", force: true do |t|
     t.string   "x509_cn",                     null: false
-    t.string   "description",                 null: false
+    t.string   "description",  default: "",   null: false
     t.string   "contact_name",                null: false
     t.string   "contact_mail",                null: false
     t.boolean  "enabled",      default: true, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "api_subjects", ["x509_cn"], name: "index_api_subjects_on_x509_cn", unique: true, using: :btree
 
   create_table "audits", force: true do |t|
     t.integer  "auditable_id"
@@ -57,11 +60,13 @@ ActiveRecord::Schema.define(version: 20150107051228) do
   add_index "audits", ["user_id", "user_type"], name: "user_index", using: :btree
 
   create_table "organisations", force: true do |t|
-    t.string   "name"
-    t.string   "external_id"
+    t.string   "name",        null: false
+    t.string   "external_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "organisations", ["external_id"], name: "index_organisations_on_external_id", unique: true, using: :btree
 
   create_table "permissions", force: true do |t|
     t.integer  "role_id",    null: false
@@ -70,12 +75,13 @@ ActiveRecord::Schema.define(version: 20150107051228) do
     t.datetime "updated_at"
   end
 
+  add_index "permissions", ["role_id", "value"], name: "index_permissions_on_role_id_and_value", unique: true, using: :btree
   add_index "permissions", ["role_id"], name: "index_permissions_on_role_id", using: :btree
 
   create_table "project_roles", force: true do |t|
-    t.string   "name"
-    t.string   "aws_identifier"
-    t.integer  "project_id"
+    t.string   "name",           null: false
+    t.string   "aws_identifier", null: false
+    t.integer  "project_id",     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -83,10 +89,10 @@ ActiveRecord::Schema.define(version: 20150107051228) do
   add_index "project_roles", ["project_id"], name: "index_project_roles_on_project_id", using: :btree
 
   create_table "projects", force: true do |t|
-    t.string   "name"
-    t.string   "aws_account"
-    t.string   "state"
-    t.integer  "organisation_id"
+    t.string   "name",            null: false
+    t.string   "aws_account",     null: false
+    t.string   "state",           null: false
+    t.integer  "organisation_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -98,23 +104,25 @@ ActiveRecord::Schema.define(version: 20150107051228) do
   end
 
   create_table "subject_project_roles", force: true do |t|
-    t.integer  "subject_id"
-    t.integer  "project_role_id"
+    t.integer  "subject_id",      null: false
+    t.integer  "project_role_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "subject_project_roles", ["project_role_id"], name: "index_subject_project_roles_on_project_role_id", using: :btree
+  add_index "subject_project_roles", ["subject_id", "project_role_id"], name: "index_subject_project_roles_on_subject_id_and_project_role_id", unique: true, using: :btree
   add_index "subject_project_roles", ["subject_id"], name: "index_subject_project_roles_on_subject_id", using: :btree
 
   create_table "subject_roles", force: true do |t|
-    t.integer  "subject_id"
-    t.integer  "role_id"
+    t.integer  "subject_id", null: false
+    t.integer  "role_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "subject_roles", ["role_id"], name: "index_subject_roles_on_role_id", using: :btree
+  add_index "subject_roles", ["subject_id", "role_id"], name: "index_subject_roles_on_subject_id_and_role_id", unique: true, using: :btree
   add_index "subject_roles", ["subject_id"], name: "index_subject_roles_on_subject_id", using: :btree
 
   create_table "subject_sessions", force: true do |t|
@@ -139,6 +147,7 @@ ActiveRecord::Schema.define(version: 20150107051228) do
     t.boolean  "enabled",      default: true,  null: false
   end
 
+  add_index "subjects", ["mail"], name: "index_subjects_on_mail", unique: true, using: :btree
   add_index "subjects", ["shared_token"], name: "index_subjects_on_shared_token", unique: true, using: :btree
   add_index "subjects", ["targeted_id"], name: "index_subjects_on_targeted_id", using: :btree
 
