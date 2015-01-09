@@ -1,7 +1,4 @@
 class ProjectsController < ApplicationController
-  SUPPORT_MD = Rails.root.join('config/support.md').read
-  SUPPORT_HTML = Kramdown::Document.new(SUPPORT_MD).to_html
-
   def index
     public_action
     @projects = @subject.projects
@@ -10,6 +7,5 @@ class ProjectsController < ApplicationController
 
   def no_projects_assigned
     public_action
-    @support = SUPPORT_HTML
   end
 end

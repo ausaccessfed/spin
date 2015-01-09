@@ -51,5 +51,4 @@ class ApplicationController < ActionController::Base
   def forbidden
     render 'errors/forbidden', status: :forbidden
   end
-
 end
