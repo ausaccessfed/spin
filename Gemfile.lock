@@ -7,6 +7,14 @@ GIT
       guard (>= 1.1)
 
 GIT
+  remote: https://github.com/ausaccessfed/aaf-gumboot
+  revision: 08bc25445630e8fce89c67b1c98d5e52937dd65a
+  branch: develop
+  specs:
+    aaf-gumboot (0.0.1)
+      accession
+
+GIT
   remote: https://github.com/ausaccessfed/aaf-lipstick
   revision: 2608c7cfe7e12710394a9de332c2d409b854cd9c
   branch: develop
@@ -276,6 +284,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aaf-gumboot!
   aaf-lipstick!
   accession
   audited-activerecord
