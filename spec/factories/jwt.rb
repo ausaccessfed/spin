@@ -11,6 +11,15 @@ FactoryGirl.define do
     skip_create
   end
 
+  trait :from_subject do
+    transient { association :subject }
+
+    displayname { subject.name }
+    mail { subject.mail }
+    auedupersonsharedtoken { subject.shared_token }
+    edupersontargetedid { subject.targeted_id }
+  end
+
   factory :jwt, class: 'JSON::JWT' do
     iat { Time.now.to_i }
     nbf { 30.seconds.ago.to_i }

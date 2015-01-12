@@ -3,6 +3,7 @@ source 'https://rails-assets.org'
 
 gem 'rails', '4.1.8'
 gem 'sass-rails', '~> 4.0.3'
+gem 'jquery-rails'
 gem 'mysql2' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession' # Permissions for Ruby
