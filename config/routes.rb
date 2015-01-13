@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   scope '/admin' do
     resources :subjects, only: %i(index show destroy)
+    resources :api_subjects
   end
 
   root to: 'welcome#index'

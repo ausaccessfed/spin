@@ -1,0 +1,14 @@
+<%=
+  breadcrumbs(
+    { 'Administration' => root_path },
+    { 'API Accounts' => api_subjects_path },
+    { @api_subject.x509_cn => api_subject_path(@api_subject) },
+    'Edit'
+  )
+%>
+
+<%= page_header('Edit API Account') %>
+
+<h3 class="ui header"><%= @api_subject.x509_cn %></h3>
+
+<%= render(partial: 'form', locals: { submit_label: 'Save' }) %>

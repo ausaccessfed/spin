@@ -16,6 +16,13 @@
     <%= nav_bar do -%>
         <%= nav_item('Welcome', '/') %>
 
+        <%- if permitted?('admin') -%>
+            <%= nav_dropdown('Administration') do -%>
+                <%= nav_item('Subjects', subjects_path) %>
+                <%= nav_item('API Accounts', api_subjects_path) %>
+            <%- end -%>
+        <%- end -%>
+
         <%= nav_items_right do -%>
             <%- if @subject -%>
                 <%= nav_item('Log out', '/auth/logout') %>
@@ -26,6 +33,11 @@
 <%- end -%>
 
 <section class="content">
+
+  <section class="flash">
+    <%= render(partial: 'layouts/flashes') %>
+  </section>
+
   <main><%= yield %></main>
 </section>
 

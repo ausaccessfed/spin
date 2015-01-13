@@ -11,26 +11,24 @@ RSpec.feature 'Managing the Subjects', type: :feature do
     click_button 'Log In'
     expect(current_path).to eq('/auth/login')
     click_button 'Login'
+
+    click_link('Subjects')
+    expect(current_path).to eq('/admin/subjects')
   end
 
   scenario 'allows access' do
-    visit '/admin/subjects'
     expect(current_path).to eq('/admin/subjects')
   end
 
   scenario 'shows the subject list' do
-    visit '/admin/subjects'
     expect(page).to have_css('table tr td', text: user.name)
   end
 
   scenario 'shows actions' do
-    visit '/admin/subjects'
     expect(page).to have_content('View Delete')
   end
 
   scenario 'viewing a subject record' do
-    visit '/admin/subjects'
-
     within('table tr', text: user.name) do
       click_link('View')
     end
@@ -44,8 +42,6 @@ RSpec.feature 'Managing the Subjects', type: :feature do
   end
 
   scenario 'deleting a subject record' do
-    visit '/admin/subjects'
-
     within('table tr', text: user.name) do
       click_delete_button
     end

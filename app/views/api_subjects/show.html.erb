@@ -1,0 +1,36 @@
+<%=
+    breadcrumbs(
+            { 'Administration' => root_path },
+            { 'API Accounts' => api_subjects_path },
+            @api_subject.description
+    )
+%>
+
+<%= page_header('API Accounts', 'View API Account') %>
+
+<table class="ui definition table">
+  <tbody>
+  <tr>
+    <td>Description</td>
+    <td><%= @api_subject.description %></td>
+  </tr>
+  <tr>
+    <td> X.509 CN</td>
+    <td><%= @api_subject.x509_cn %></td>
+  </tr>
+  <tr>
+    <td>Contact Name</td>
+    <td><%= @api_subject.contact_name %></td>
+  </tr>
+  <tr>
+    <td>Contact Email Address</td>
+    <td><%= @api_subject.contact_mail %></td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="line-of-buttons">
+  <%- if permitted?('admin:api_subjects:delete') -%>
+      <%= delete_button_tag(@api_subject, class: 'large') %>
+  <%- end -%>
+</div>
