@@ -1,0 +1,14 @@
+<%=
+  breadcrumbs(
+    { 'Administration' => root_path},
+    { 'Organisations' => organisations_path },
+    { @organisation.name => organisation_path(@organisation) },
+    'Edit'
+  )
+%>
+
+<%= page_header('Edit Organisation') %>
+
+<h3 class="ui header"><%= @organisation.name %></h3>
+
+<%= render(partial: 'form', locals: { submit_label: 'Save' }) %>

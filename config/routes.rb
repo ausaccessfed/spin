@@ -15,6 +15,8 @@ Rails.application.routes.draw do
                               only: %i(new create destroy)
       resources :permissions, only: %i(index create destroy)
     end
+    resources :organisations do
+    end
   end
 
   root to: 'welcome#index'

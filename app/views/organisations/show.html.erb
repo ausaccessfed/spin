@@ -1,0 +1,44 @@
+<%=
+  breadcrumbs(
+    { 'Administration' => root_path},
+    { 'Organisations' => organisations_path },
+    @organisation.name
+  )
+%>
+
+<%= page_header('View Organisation') %>
+
+<h3 class="ui header"><%= @organisation.name %></h3>
+
+<table class="ui basic compact table">
+  <thead>
+    <tr>
+      <th>Projects</th>
+      <th/>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @organisation.projects.each do |project| -%>
+      <tr>
+        <td><%= project.name %></td>
+        <td>
+          Delete Project
+        </td>
+      </tr>
+    <%- end -%>
+
+  </tbody>
+</table>
+
+<div class="line-of-buttons">
+  <%- if permitted?('admin:organisations:update') -%>
+    <%= button_link_to(edit_organisation_path(@organisation), class: 'large icon') do -%>
+      <%= icon_tag('edit') %>
+      Edit
+    <%- end -%>
+  <%- end -%>
+
+
+          Add Project
+
+</div>

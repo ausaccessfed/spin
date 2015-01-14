@@ -1,0 +1,11 @@
+<%=
+  breadcrumbs(
+    { 'Administration' => root_path},
+    { 'Organisations' => organisations_path },
+    'New Organisation'
+  )
+%>
+
+<%= page_header('New Organisation') %>
+
+<%= render(partial: 'form', locals: { submit_label: 'Create' }) %>

@@ -1,0 +1,31 @@
+<%= form_for(@organisation, html: { id: 'organisation-form' }) do |f| -%>
+
+    <%= field_block do -%>
+        <%= f.label :name do -%>
+            Name
+            <%= field_help_text('The Organisation name, as per AWS') %>
+        <%- end -%>
+        <%= f.text_field :name %>
+    <%- end -%>
+
+    <%= field_block do -%>
+        <%= f.label :external_id do -%>
+            External ID
+            <%= field_help_text('The External ID, as per AWS. This value must be unique.') %>
+        <%- end -%>
+        <%= f.text_field :external_id %>
+    <%- end -%>
+
+
+  <div class="line-of-buttons">
+    <%= f.button(class: 'large green icon') do -%>
+      <%= icon_tag('checkmark') %>
+      <%= submit_label %>
+    <%- end -%>
+
+    <%= button_link_to(organisations_path, class: 'large icon') do -%>
+      <%= icon_tag('cancel') %>
+      Cancel
+    <%- end -%>
+  </div>
+<%- end -%>

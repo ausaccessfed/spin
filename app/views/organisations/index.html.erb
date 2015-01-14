@@ -1,0 +1,55 @@
+<%=
+  breadcrumbs(
+    { 'Administration' => root_path},
+    'Organisations'
+  )
+%>
+
+<%= page_header('Organisations') %>
+
+<table class="ui basic compact table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>External ID</th>
+      <th/>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @organisations.each do |organisation| -%>
+      <tr>
+        <td><%= organisation.name %></td>
+        <td><%= organisation.external_id %></td>
+        <td>
+          <%- if permitted?('admin:organisations:read') -%>
+            <%= button_link_to(organisation, class: 'tiny icon') do -%>
+              <%= icon_tag('folder outline icon') %>
+              Projects
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('admin:organisations:update') -%>
+
+            <%= button_link_to([:edit, organisation], class: 'tiny icon') do -%>
+              <%= icon_tag('edit') %>
+              Edit
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('admin:organisations:delete') -%>
+            <%= delete_button_tag(organisation) %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+  </tbody>
+</table>
+
+<%- if permitted?('admin:organisations:create') -%>
+  <div class="line-of-buttons">
+    <%= button_link_to(new_organisation_path, class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      New Organisation
+    <%- end -%>
+  </div>
+<%- end -%>

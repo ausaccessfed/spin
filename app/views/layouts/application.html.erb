@@ -17,6 +17,7 @@
         <%= nav_item('Welcome', '/') %>
 
         <%- if permitted?('admin') -%>
+            <%= nav_item('Organisations', organisations_path) %>
             <%= nav_dropdown('Administration') do -%>
                 <%= nav_item('Subjects', subjects_path) %>
                 <%= nav_item('API Accounts', api_subjects_path) %>
