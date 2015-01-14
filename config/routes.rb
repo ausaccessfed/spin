@@ -8,6 +8,13 @@ Rails.application.routes.draw do
   scope '/admin' do
     resources :subjects, only: %i(index show destroy)
     resources :api_subjects
+    resources :roles do
+      resources :members, controller: 'subject_roles',
+                          only: %i(new create destroy)
+      resources :api_members, controller: 'api_subject_roles',
+                              only: %i(new create destroy)
+      resources :permissions, only: %i(index create destroy)
+    end
   end
 
   root to: 'welcome#index'

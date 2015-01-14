@@ -1,0 +1,14 @@
+<%=
+  breadcrumbs(
+    { 'Administration' => root_path},
+    { 'Roles' => roles_path },
+    { @role.name => role_path(@role) },
+    'Edit'
+  )
+%>
+
+<%= page_header('Edit Role') %>
+
+<h3 class="ui header"><%= @role.name %></h3>
+
+<%= render(partial: 'form', locals: { submit_label: 'Save' }) %>

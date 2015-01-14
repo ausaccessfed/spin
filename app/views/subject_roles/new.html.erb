@@ -1,0 +1,53 @@
+<%=
+    breadcrumbs(
+            {'Administration' => root_path},
+            {'Roles' => roles_path},
+            {@role.name => role_path(@role)},
+            'Add Subject'
+    )
+%>
+
+<%= page_header('Grant Role to Subject') %>
+
+<h3 class="ui header"><%= @role.name %></h3>
+
+<table class="ui basic compact table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th/>
+  </tr>
+  </thead>
+  <tbody>
+  <%- @subjects.each do |subject| -%>
+      <tr>
+        <td><%= subject.name %></td>
+        <td><%= subject.mail %></td>
+        <td>
+          <%- if permitted?("admin:roles:grant") -%>
+              <%- if SubjectRole.exists?(role_id: @role.id,
+                                          subject_id: subject.id) -%>
+
+                  <%= button_tag(name: 'subject_roles[subject_id]',
+                                 value: subject.id, class: 'tiny grey icon disabled') do -%>
+                      <%= icon_tag('checkmark') %>
+                      Granted
+                  <%- end -%>
+              <%- else -%>
+                  <%= form_for([@role, @assoc], url: role_members_path(@role),
+                               html: {class: 'inline'}) do |f| -%>
+
+                      <%= button_tag(name: 'subject_roles[subject_id]',
+                                     value: subject.id, class: 'tiny green icon') do -%>
+                          <%= icon_tag('checkmark') %>
+                          Grant
+                      <%- end -%>
+                  <%- end -%>
+              <%- end -%>
+          <%- end -%>
+        </td>
+      </tr>
+  <%- end -%>
+  </tbody>
+</table>

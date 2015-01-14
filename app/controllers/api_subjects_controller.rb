@@ -48,7 +48,7 @@ class APISubjectsController < ApplicationController
     check_access!('admin:api_subjects:delete')
     @api_subject = APISubject.find(params[:id])
     @api_subject.destroy!
-    flash[:success] = "Deleted API Account: #{@api_subject.x509_cn}"
+    flash[:success] = "Deleted API Account: #{@api_subject.description}"
     redirect_to(api_subjects_path)
   end
 
