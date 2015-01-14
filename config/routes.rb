@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :permissions, only: %i(index create destroy)
     end
     resources :organisations do
+      resources :projects, controller: 'projects_admin'
     end
   end
 
