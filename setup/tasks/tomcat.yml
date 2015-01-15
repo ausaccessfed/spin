@@ -1,0 +1,114 @@
+---
+- name: 'Download Tomcat'
+  get_url:
+    url: 'http://archive.apache.org/dist/tomcat/tomcat-{{ tomcat.major }}/v{{ tomcat.version }}/bin/apache-tomcat-{{ tomcat.version }}.tar.gz'
+    dest: '/opt/spin/downloads/apache-tomcat-{{ tomcat.version }}.tar.gz'
+    sha256sum: '{{ tomcat.sha256sum }}'
+
+- name: 'Extract Tomcat distribution'
+  shell: >
+    umask 0022;
+    tar zx -C /opt/spin/tomcat -f /opt/spin/downloads/apache-tomcat-{{ tomcat.version }}.tar.gz
+    creates=/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/
+
+- name: 'Download MariaDB connector library'
+  get_url:
+    url: 'http://mirror.aarnet.edu.au/pub/MariaDB/client-java-{{ tomcat.mariadb.version }}/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
+    dest: '/opt/spin/downloads/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
+    sha256sum: '{{ tomcat.mariadb.sha256sum }}'
+    owner: root
+    group: spin
+    mode: 0640
+
+- name: 'Symlink MariaDB connector library'
+  file:
+    name: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/lib/mariadb-java-client.jar'
+    src: '/opt/spin/downloads/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
+    owner: root
+    group: root
+    state: link
+    force: yes
+
+- name: 'Fix Tomcat file permissions'
+  file:
+    name: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/{{ item }}'
+    owner: root
+    group: spin
+    mode: 0640
+  with_items:
+    - conf/catalina.policy
+    - conf/catalina.properties
+    - conf/context.xml
+    - conf/logging.properties
+    - conf/web.xml
+
+- name: 'Create context directories'
+  file:
+    name: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/{{ item }}'
+    owner: root
+    group: spin
+    mode: 0750
+    state: directory
+  with_items:
+    - conf/Catalina
+    - conf/Catalina/localhost
+
+- name: 'Fix Tomcat writable directory permissions'
+  file:
+    name: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/{{ item }}'
+    owner: spin
+    group: spin
+    mode: 0700
+  with_items:
+    - temp
+    - webapps
+
+- name: 'Remove unnecessary Tomcat files'
+  file:
+    name: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/{{ item }}'
+    state: absent
+  with_items:
+    - config/tomcat-users.xml
+    - config/tomcat-users.xsd
+    - webapps/docs
+    - webapps/examples
+    - webapps/host-manager
+    - webapps/manager
+    - webapps/ROOT
+    - temp/safeToDelete.tmp
+
+- name: 'Create Tomcat log directory'
+  file:
+    name: '/var/log/spin/tomcat'
+    owner: spin
+    group: spin
+    mode: 0700
+    state: directory
+
+- name: 'Symlink Tomcat log directory'
+  file:
+    name: '/opt/spin/tomcat/current/logs'
+    src: '/var/log/spin/tomcat'
+    owner: root
+    group: root
+    state: link
+    force: yes
+
+- name: 'Install Tomcat configuration'
+  template:
+    dest: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/conf/{{ item }}'
+    src: 'templates/tomcat/{{ item }}.j2'
+    owner: root
+    group: spin
+    mode: 0640
+  with_items:
+    - server.xml
+
+- name: 'Symlink current Tomcat version'
+  file:
+    name: '/opt/spin/tomcat/current'
+    src: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}'
+    owner: root
+    group: root
+    state: link
+    force: yes
