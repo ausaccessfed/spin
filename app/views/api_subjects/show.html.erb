@@ -6,7 +6,7 @@
     )
 %>
 
-<%= page_header('API Accounts', 'View API Account') %>
+<%= page_header('View API Account') %>
 
 <table class="ui definition table">
   <tbody>
@@ -30,6 +30,13 @@
 </table>
 
 <div class="line-of-buttons">
+  <%- if permitted?('admin:api_subjects:edit') -%>
+      <%= button_link_to([:edit, @api_subject], class: 'large') do -%>
+          <%= icon_tag('edit') %>
+          Edit
+      <%- end -%>
+  <%- end -%>
+
   <%- if permitted?('admin:api_subjects:delete') -%>
       <%= delete_button_tag(@api_subject, class: 'large') %>
   <%- end -%>

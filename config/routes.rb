@@ -15,8 +15,13 @@ Rails.application.routes.draw do
                               only: %i(new create destroy)
       resources :permissions, only: %i(index create destroy)
     end
-    resources :organisations do
-      resources :projects, controller: 'projects_admin'
+    resources :organisations, except: 'show' do
+      resources :projects, except: 'show', controller: 'projects_admin' do
+        resources :roles, controller: 'project_role' do
+          resources :members, controller: 'subject_project_roles',
+                              only: %i(new create destroy)
+        end
+      end
     end
   end
 

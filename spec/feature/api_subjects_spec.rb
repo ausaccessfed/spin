@@ -28,7 +28,6 @@ RSpec.feature 'API Subjects Admin', type: :feature do
 
     expect(current_path)
       .to eq("/admin/api_subjects/#{api_subject.id}/edit")
-    expect(page).to have_css('.header', text: api_subject.x509_cn)
 
     old_cn = api_subject.x509_cn
     attrs = attributes_for(:api_subject)

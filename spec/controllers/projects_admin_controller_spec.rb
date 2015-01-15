@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ProjectsAdminController, type: :controller do
-  let(:user) { create(:subject, :authorized, permission: 'admin:projects:*') }
+  let(:user) { create(:subject, :authorized, permission: 'admin:*') }
   let(:orig_attrs) { attributes_for(:project).except(:organisation) }
   let(:organisation) { create(:organisation) }
   let(:project) do
@@ -67,6 +67,10 @@ RSpec.describe ProjectsAdminController, type: :controller do
       before { run }
       subject { response }
 
+      it 'sets the flash message' do
+        expect(flash[:success])
+          .to eq("Created Project #{project.name} for #{organisation.name}")
+      end
       it do
         is_expected
           .to redirect_to(organisation_projects_path(organisation))
@@ -83,24 +87,22 @@ RSpec.describe ProjectsAdminController, type: :controller do
         it { is_expected.to have_http_status(:forbidden) }
       end
     end
-  end
 
-  context 'get :show' do
-    before { get :show, organisation_id: organisation.id, id: project.id }
+    context 'with invalid attributes' do
+      before do
+        post :create, organisation_id: organisation.id,
+                      project: attrs.merge(name: nil)
+      end
 
-    let(:user) do
-      create(:subject, :authorized,
-             permission: "admin:organisations:#{organisation.id}:projects:*")
-    end
+      subject { response }
 
-    it { is_expected.to have_http_status(:ok) }
-    it { is_expected.to render_template('projects_admin/show') }
-    it { is_expected.to have_assigned(:organisation, organisation) }
-    it { is_expected.to have_assigned(:project, project) }
+      it { is_expected.to have_http_status(:success) }
+      it { is_expected.to render_template('projects_admin/new') }
 
-    context 'as a non-admin' do
-      let(:user) { create(:subject) }
-      it { is_expected.to have_http_status(:forbidden) }
+      it 'sets the flash message' do
+        expect(flash[:error])
+          .to eq("Unable to save Project\n\nName can't be blank")
+      end
     end
   end
 
@@ -132,6 +134,11 @@ RSpec.describe ProjectsAdminController, type: :controller do
     it { is_expected.to have_assigned(:organisation, organisation) }
     it { is_expected.to have_assigned(:project, project) }
 
+    it 'sets the flash message' do
+      expect(flash[:success])
+        .to eq("Updated Project #{project.name} for #{organisation.name}")
+    end
+
     context 'the project' do
       subject { project.reload }
       it { is_expected.to have_attributes(attrs) }
@@ -144,6 +151,21 @@ RSpec.describe ProjectsAdminController, type: :controller do
       context 'the project' do
         subject { project.reload }
         it { is_expected.to have_attributes(orig_attrs) }
+      end
+    end
+
+    context 'with invalid attributes' do
+      before do
+        patch :update, organisation_id: organisation.id, id: project.id,
+                       project: attrs.merge(name: nil)
+      end
+
+      it { is_expected.to have_http_status(:success) }
+      it { is_expected.to render_template('projects_admin/edit') }
+
+      it 'sets the flash message' do
+        expect(flash[:error])
+          .to eq("Unable to save Project\n\nName can't be blank")
       end
     end
   end
@@ -163,6 +185,12 @@ RSpec.describe ProjectsAdminController, type: :controller do
     context 'the response' do
       before { run }
       subject { response }
+
+      it 'sets the flash message' do
+        expect(flash[:success])
+          .to eq("Deleted Project #{project.name}")
+      end
+
       it do
         is_expected
           .to redirect_to(organisation_projects_path(organisation))

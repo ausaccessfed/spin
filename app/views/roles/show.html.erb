@@ -6,9 +6,7 @@
   )
 %>
 
-<%= page_header('View Role') %>
-
-<h3 class="ui header"><%= @role.name %></h3>
+<%= page_header("Members for #{@role.name}" ) %>
 
 <table class="ui basic compact table">
   <thead>
@@ -44,13 +42,6 @@
 </table>
 
 <div class="line-of-buttons">
-  <%- if permitted?('admin:roles:update') -%>
-    <%= button_link_to(edit_role_path(@role), class: 'large icon') do -%>
-      <%= icon_tag('edit') %>
-      Edit
-    <%- end -%>
-  <%- end -%>
-
   <%- if permitted?("admin:roles:grant") -%>
       <%= button_link_to(new_role_member_path(@role), class: 'large green icon') do -%>
           <%= icon_tag('add') %>

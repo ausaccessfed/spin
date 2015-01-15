@@ -1,12 +1,11 @@
 <%=
   breadcrumbs(
     { 'Organisations' => organisations_path },
-    { @organisation.name => organisation_path(@organisation) },
     { 'Projects' => organisation_projects_path(@organisation) },
     'New Project'
   )
 %>
 
-<%= page_header(@organisation.name, 'New Project') %>
+<%= page_header('New Project') %>
 
 <%= render(partial: 'form', locals: { submit_label: 'Create' }) %>

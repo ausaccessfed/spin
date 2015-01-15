@@ -24,5 +24,4 @@ RSpec.describe RolesHelper, type: :helper do
       it { is_expected.to eq(3) }
     end
   end
-
 end

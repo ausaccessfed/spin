@@ -9,26 +9,6 @@ RSpec.describe OrganisationsController, type: :controller do
   before { session[:subject_id] = user.try(:id) }
   subject { response }
 
-  context 'get :show' do
-    let(:organisation) { create(:organisation) }
-
-    before { get :show, id: organisation.id }
-
-    it { is_expected.to have_http_status(:ok) }
-    it { is_expected.to render_template('organisations/show') }
-    it { is_expected.to have_assigned(:organisation, organisation) }
-
-    context 'as a non-admin' do
-      let(:user) { create(:subject) }
-      it { is_expected.to have_http_status(:forbidden) }
-    end
-
-    context 'with no user' do
-      let(:user) {}
-      it { is_expected.to have_http_status(:redirect) }
-    end
-  end
-
   context 'patch :update' do
     let!(:organisation) { create(:organisation) }
 

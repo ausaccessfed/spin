@@ -39,11 +39,6 @@ class OrganisationsController < ApplicationController
     redirect_to(:organisations)
   end
 
-  def show
-    check_access!('admin:organisations:read')
-    @organisation = Organisation.find(params[:id])
-  end
-
   def destroy
     check_access!('admin:organisations:delete')
     @organisation = Organisation.find(params[:id])

@@ -7,39 +7,41 @@ class ProjectsAdminController < ApplicationController
   end
 
   def new
-    check_access!('admin:projects:create')
+    check_access!("admin:organisations:#{@organisation.id}:projects:create")
     @project = @organisation.projects.new
   end
 
   def create
-    check_access!('admin:projects:create')
-    @project = @organisation.projects.create!(project_params)
+    check_access!("admin:organisations:#{@organisation.id}:projects:create")
+    @project = @organisation.projects.new(project_params)
 
-    flash[:success] = "Created Project #{@project.name} \
-                       at #{@organisation.name}"
+    unless @project.save
+      return form_error('new', 'Unable to save Project', @project)
+    end
+
+    flash[:success] = "Created Project #{@project.name} " \
+                       "for #{@organisation.name}"
 
     redirect_to([@organisation, :projects])
   end
 
   def edit
-    check_access!('admin:projects:update')
+    check_access!("admin:organisations:#{@organisation.id}:projects:update")
     @project = @organisation.projects.find(params[:id])
   end
 
   def update
-    check_access!('admin:projects:update')
+    check_access!("admin:organisations:#{@organisation.id}:projects:update")
     @project = @organisation.projects.find(params[:id])
-    @project.update_attributes!(project_params)
 
-    flash[:success] = "Updated Project #{@project.name} \
-                       at #{@organisation.name}"
+    unless @project.update_attributes(project_params)
+      return form_error('edit', 'Unable to save Project', @project)
+    end
+
+    flash[:success] = "Updated Project #{@project.name}" \
+                       " for #{@organisation.name}"
 
     redirect_to([@organisation, :projects])
-  end
-
-  def show
-    check_access!("admin:organisations:#{@organisation.id}:projects:read")
-    @project = @organisation.projects.find(params[:id])
   end
 
   def destroy
@@ -47,8 +49,7 @@ class ProjectsAdminController < ApplicationController
     @project = @organisation.projects.find(params[:id])
     @project.destroy!
 
-    flash[:success] = "Deleted Project #{@project.name} \
-                       from #{@organisation.name}"
+    flash[:success] = "Deleted Project #{@project.name}"
 
     redirect_to([@organisation, :projects])
   end

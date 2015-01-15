@@ -16,11 +16,6 @@ RSpec.describe OrganisationsController, type: :routing do
     it { is_expected.to route_to('organisations#create') }
   end
 
-  context 'get /admin/organisations/:id' do
-    subject { { get: '/admin/organisations/2' } }
-    it { is_expected.to route_to('organisations#show', id: '2') }
-  end
-
   context 'get /admin/organisations/edit' do
     subject { { get: '/admin/organisations/2/edit' } }
     it { is_expected.to route_to('organisations#edit', id: '2') }

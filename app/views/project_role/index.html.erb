@@ -1,0 +1,55 @@
+<%=
+  breadcrumbs(
+          { 'Organisations' => organisations_path },
+          { 'Projects' => organisation_projects_path(@organisation) },
+          'Project Roles'
+  )
+%>
+
+<%= page_header("Project Roles for '#{@project.name}'") %>
+
+<table class="ui basic compact table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>AWS Identifier</th>
+      <th/>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @project_roles.each do |project_role| -%>
+      <tr>
+        <td><%= project_role.name %></td>
+        <td><%= project_role.aws_identifier %></td>
+        <td>
+          <%- if permitted?('admin:project_roles:read') -%>
+            <%= button_link_to(organisation_project_role_path(@organisation, @project, project_role), class: 'tiny icon') do -%>
+              <%= icon_tag('users') %>
+                  Members <em>(<%= project_role.subjects.count %>)</em>
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('admin:project_roles:update') -%>
+            <%= button_link_to(edit_organisation_project_role_path(@organisation, @project, project_role), class: 'tiny icon') do -%>
+              <%= icon_tag('edit') %>
+              Edit
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('admin:project_roles:delete') -%>
+            <%= delete_button_tag(organisation_project_role_path(@organisation, @project, project_role)) %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+  </tbody>
+</table>
+
+<%- if permitted?('admin:project_roles:create') -%>
+  <div class="line-of-buttons">
+    <%= button_link_to(new_organisation_project_role_path, class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      New Project Role
+    <%- end -%>
+  </div>
+<%- end -%>

@@ -1,7 +1,6 @@
 <%=
   breadcrumbs(
-    { 'Administration' => root_path},
-    'Organisations'
+          'Organisations'
   )
 %>
 
@@ -22,10 +21,10 @@
         <td><%= organisation.external_id %></td>
         <td>
           <%- if permitted?('admin:organisations:read') -%>
-            <%= button_link_to(organisation, class: 'tiny icon') do -%>
-              <%= icon_tag('content') %>
-              View
-            <%- end -%>
+              <%= button_link_to([organisation, :projects], class: 'tiny icon') do -%>
+                  <%= icon_tag('folder outline icon') %>
+                  Projects <em>(<%= organisation.projects.count %>)</em>
+              <%- end -%>
           <%- end -%>
 
           <%- if permitted?('admin:organisations:update') -%>
@@ -39,6 +38,7 @@
           <%- if permitted?('admin:organisations:delete') -%>
             <%= delete_button_tag(organisation) %>
           <%- end -%>
+
         </td>
       </tr>
     <%- end -%>

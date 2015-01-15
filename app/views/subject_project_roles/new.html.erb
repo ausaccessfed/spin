@@ -1,15 +1,14 @@
 <%=
     breadcrumbs(
-            {'Administration' => root_path},
-            {'Roles' => roles_path},
-            {@role.name => role_path(@role)},
+            { 'Organisations' => organisations_path },
+            { 'Projects' => organisation_projects_path(@organisation) },
+            { 'Project Roles' => organisation_project_roles_path(@organisation, @project) },
+            { @project_role.name => organisation_project_role_path(@organisation, @project, @project_role) },
             'Add Subject'
     )
 %>
 
-<%= page_header("Grant Role '#{@role.name}' to Subject") %>
-
-<h3 class="ui header"><%= @role.name %></h3>
+<%= page_header("Grant Project Role '#{@project_role.name}'") %>
 
 <table class="ui basic compact table">
   <thead>
@@ -25,20 +24,20 @@
         <td><%= subject.name %></td>
         <td><%= subject.mail %></td>
         <td>
-          <%- if permitted?("admin:roles:grant") -%>
-              <%- if SubjectRole.exists?(role_id: @role.id,
+          <%- if permitted?("admin:subject_role:grant") -%>
+              <%- if SubjectProjectRole.exists?(project_role_id: @project_role.id,
                                           subject_id: subject.id) -%>
 
-                  <%= button_tag(name: 'subject_roles[subject_id]',
+                  <%= button_tag(name: 'subject_project_roles[subject_id]',
                                  value: subject.id, class: 'tiny grey icon disabled') do -%>
                       <%= icon_tag('checkmark') %>
                       Granted
                   <%- end -%>
               <%- else -%>
-                  <%= form_for([@role, @assoc], url: role_members_path(@role),
+                  <%= form_for(@assoc, url: organisation_project_role_members_path(@organisation, @project, @project_role),
                                html: {class: 'inline'}) do |f| -%>
 
-                      <%= button_tag(name: 'subject_roles[subject_id]',
+                      <%= button_tag(name: 'subject_project_roles[subject_id]',
                                      value: subject.id, class: 'tiny green icon') do -%>
                           <%= icon_tag('checkmark') %>
                           Grant
