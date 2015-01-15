@@ -1,2 +1,53 @@
-<h1>ProjectsAdmin#index</h1>
-<p>Find me in app/views/projects_admin/index.html.erb</p>
+<%=
+  breadcrumbs(
+    { 'Organisations' => organisations_path },
+    { @organisation.name => organisation_path(@organisation) },
+    'Projects'
+  )
+%>
+
+<%= page_header(@organisation.name, 'Projects') %>
+
+<table class="ui basic compact table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th/>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @projects.each do |project| -%>
+      <tr>
+        <td><%= project.name %></td>
+        <td>
+          <%- if permitted?("admin:organisations:#{@organisation.id}:read") -%>
+            <%= button_link_to([@organisation, project], class: 'tiny icon') do -%>
+              <%= icon_tag('content') %>
+              View
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('admin:projects:update') -%>
+            <%= button_link_to([:edit, @organisation, project], class: 'tiny icon') do -%>
+              <%= icon_tag('edit') %>
+              Edit
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('admin:projects:delete') -%>
+            <%= delete_button_tag([@organisation, project]) %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+  </tbody>
+</table>
+
+<%- if permitted?('admin:projects:create') -%>
+  <div class="line-of-buttons">
+    <%= button_link_to(new_organisation_project_path(@organisation), class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      New Project
+    <%- end -%>
+  </div>
+<%- end -%>

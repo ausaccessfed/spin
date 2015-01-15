@@ -1,2 +1,15 @@
-<h1>ProjectsAdmin#edit</h1>
-<p>Find me in app/views/projects_admin/edit.html.erb</p>
+<%=
+  breadcrumbs(
+    { 'Organisations' => organisations_path },
+    { @organisation.name => organisation_path(@organisation) },
+        { 'Projects' => organisation_projects_path(@organisation) },
+    { @project.name => organisation_project_path(@organisation, @project) },
+    'Edit'
+  )
+%>
+
+<%= page_header(@organisation.name, 'Edit Project') %>
+
+<h3 class="ui header"><%= @project.name %></h3>
+
+<%= render(partial: 'form', locals: { submit_label: 'Save' }) %>

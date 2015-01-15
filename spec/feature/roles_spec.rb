@@ -114,7 +114,7 @@ RSpec.feature 'Roles Admin', type: :feature do
 
   scenario 'revoking a role from a subject' do
     other_subject.subject_roles
-      .create!(role: role, audit_comment: 'Granted role for test case')
+      .create!(role: role)
 
     within('tr', text: role.name) do
       click_link('Members')

@@ -15,7 +15,7 @@ class ProjectsAdminController < ApplicationController
     check_access!('admin:projects:create')
     @project = @organisation.projects.create!(project_params)
 
-    flash[:success] = "Created project #{@project.name} \
+    flash[:success] = "Created Project #{@project.name} \
                        at #{@organisation.name}"
 
     redirect_to([@organisation, :projects])
@@ -31,7 +31,7 @@ class ProjectsAdminController < ApplicationController
     @project = @organisation.projects.find(params[:id])
     @project.update_attributes!(project_params)
 
-    flash[:success] = "Updated project #{@project.name} \
+    flash[:success] = "Updated Project #{@project.name} \
                        at #{@organisation.name}"
 
     redirect_to([@organisation, :projects])
@@ -45,10 +45,9 @@ class ProjectsAdminController < ApplicationController
   def destroy
     check_access!('admin:projects:delete')
     @project = @organisation.projects.find(params[:id])
-    @project.audit_comment = 'Deleted from organisations interface'
     @project.destroy!
 
-    flash[:success] = "Deleted project #{@project.name} \
+    flash[:success] = "Deleted Project #{@project.name} \
                        from #{@organisation.name}"
 
     redirect_to([@organisation, :projects])

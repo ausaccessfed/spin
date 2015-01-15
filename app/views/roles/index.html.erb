@@ -22,7 +22,7 @@
           <%- if permitted?('admin:roles:read') -%>
             <%= button_link_to(role, class: 'tiny icon') do -%>
               <%= icon_tag('users') %>
-              Members
+              Members <em>(<%= member_count(role) %>)</em>
             <%- end -%>
           <%- end -%>
 

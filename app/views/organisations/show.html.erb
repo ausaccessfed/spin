@@ -10,27 +10,28 @@
 
 <h3 class="ui header"><%= @organisation.name %></h3>
 
-<table class="ui basic compact table">
-  <thead>
-    <tr>
-      <th>Projects</th>
-      <th/>
-    </tr>
-  </thead>
+<table class="ui definition table">
   <tbody>
-    <%- @organisation.projects.each do |project| -%>
-      <tr>
-        <td><%= project.name %></td>
-        <td>
-          Delete Project
-        </td>
-      </tr>
-    <%- end -%>
-
+  <tr>
+    <td>Name</td>
+    <td><%= @organisation.name %></td>
+  </tr>
+  <tr>
+    <td>External ID</td>
+    <td><%= @organisation.external_id %></td>
+  </tr>
   </tbody>
 </table>
 
+
 <div class="line-of-buttons">
+  <%- if permitted?('admin:organisations:read') -%>
+      <%= button_link_to([@organisation, :projects], class: 'large') do -%>
+          <%= icon_tag('folder outline icon') %>
+          Projects <em>(<%= @organisation.projects.count %>)</em>
+      <%- end -%>
+  <%- end -%>
+
   <%- if permitted?('admin:organisations:update') -%>
     <%= button_link_to(edit_organisation_path(@organisation), class: 'large icon') do -%>
       <%= icon_tag('edit') %>
@@ -38,7 +39,8 @@
     <%- end -%>
   <%- end -%>
 
-
-          Add Project
+  <%- if permitted?('admin:organisations:delete') -%>
+      <%= delete_button_tag(@organisation, class: 'large') %>
+  <%- end -%>
 
 </div>
