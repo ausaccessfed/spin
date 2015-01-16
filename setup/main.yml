@@ -44,23 +44,28 @@
       with_items:
         - /opt/spin
         - /opt/spin/app
+        - /opt/spin/app/setup
         - /opt/spin/downloads
         - /opt/spin/tomcat
         - /opt/spin/shibboleth
         - /opt/spin/shibboleth/shibboleth-dist
         - /opt/spin/shibboleth/shibboleth-idp
 
-    # Ensures the generated credentials are not readable by the webapp.
-    - name: 'Lock down setup directories'
+    - name: 'Create credentials directory'
       file:
-        name: '{{ item }}'
+        name: /opt/spin/passwords
         state: directory
         owner: root
         group: root
         mode: 0700
-      with_items:
-        - /opt/spin/app/setup
-        - /opt/spin/app/setup/passwords
+
+    - name: 'Symlink credentials directory'
+      file:
+        name: /opt/spin/app/setup/passwords
+        src: /opt/spin/passwords
+        state: link
+        owner: root
+        group: root
 
     - name: 'Install required packages'
       yum: pkg={{ item }} state=installed
