@@ -1,0 +1,93 @@
+---
+- name: 'Download Shibboleth IdP'
+  get_url:
+    url: 'http://shibboleth.net/downloads/identity-provider/{{ idp.version }}/shibboleth-identityprovider-{{ idp.version }}-bin.tar.gz'
+    dest: '/opt/spin/downloads/shibboleth-identityprovider-{{ idp.version }}-bin.tar.gz'
+    sha256sum: '{{ idp.sha256sum }}'
+
+- name: 'Extract IdP distribution'
+  command: >
+    tar zxvf /opt/spin/downloads/shibboleth-identityprovider-{{ idp.version }}-bin.tar.gz
+    -C /opt/spin/shibboleth/shibboleth-dist/
+    creates=/opt/spin/shibboleth/shibboleth-dist/shibboleth-identityprovider-{{ idp.version }}
+
+- name: 'Resolve IdP passwords'
+  set_fact:
+    idp_db_password: "{{ lookup('password', '../passwords/idp_db_password chars=letters,digits length=64') }}"
+    idp_keystore_password: "{{ lookup('password', '../passwords/idp_keystore_password chars=letters,digits length=64') }}"
+
+- name: 'Create IdP install script'
+  template:
+    src: templates/idp/install-idp.sh.j2
+    dest: '/opt/spin/shibboleth/shibboleth-dist/install-{{ idp.version }}.sh'
+    owner: root
+    group: root
+    mode: 0700
+
+- name: 'Install IdP'
+  command: >
+    /opt/spin/shibboleth/shibboleth-dist/install-{{ idp.version }}.sh
+    creates=/opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}
+
+- name: 'Fix IdP directory permissions'
+  file:
+    name: '/opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/{{ item }}'
+    owner: root
+    group: spin
+    mode: 0750
+    state: directory
+  with_items:
+  - bin
+  - conf
+  - credentials
+  - extra
+  - lib
+  - war
+
+- name: 'Create IdP log directory'
+  file:
+    name: /var/log/spin/shibboleth-idp
+    owner: spin
+    group: spin
+    mode: 0700
+    state: directory
+
+- name: 'Symlink IdP log directory'
+  file:
+    name: /opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/logs
+    src: /var/log/spin/shibboleth-idp
+    state: link
+    owner: root
+    group: root
+
+- name: 'Install IdP configuration'
+  template:
+    src: templates/idp/{{ item }}.j2
+    dest: /opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/conf/{{ item }}
+    owner: root
+    group: spin
+    mode: 0640
+  with_items:
+    - relying-party.xml
+    - attribute-resolver.xml
+    - attribute-filter.xml
+    - service.xml
+    - logging.xml
+  notify: Restart spin-idp
+
+- name: 'Install IdP context configuration'
+  template:
+    src: templates/idp/tomcat-context.xml.j2
+    dest: /opt/spin/tomcat/current/conf/Catalina/localhost/idp.xml
+    owner: root
+    group: spin
+    mode: 0640
+  notify: Restart spin-idp
+
+- name: 'Create IdP database user'
+  mysql_user:
+    name: '{{ db.idp_username }}'
+    password: '{{ idp_db_password }}'
+    priv: '{{ db.name }}.*:SELECT'
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    state: present
