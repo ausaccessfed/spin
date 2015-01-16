@@ -30,7 +30,7 @@
 </table>
 
 <div class="line-of-buttons">
-  <%- if permitted?('admin:api_subjects:edit') -%>
+  <%- if permitted?('admin:api_subjects:update') -%>
       <%= button_link_to([:edit, @api_subject], class: 'large') do -%>
           <%= icon_tag('edit') %>
           Edit

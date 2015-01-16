@@ -1,16 +1,16 @@
 class OrganisationsController < ApplicationController
   def index
-    check_access!('admin:organisations:list')
+    check_access!('organisations:list')
     @organisations = Organisation.all
   end
 
   def new
-    check_access!('admin:organisations:create')
+    check_access!('organisations:create')
     @organisation = Organisation.new
   end
 
   def create
-    check_access!('admin:organisations:create')
+    check_access!('organisations:create')
     @organisation = Organisation.new(organisation_params)
 
     unless @organisation.save
@@ -23,12 +23,12 @@ class OrganisationsController < ApplicationController
   end
 
   def edit
-    check_access!('admin:organisations:update')
+    check_access!('organisations:update')
     @organisation = Organisation.find(params[:id])
   end
 
   def update
-    check_access!('admin:organisations:update')
+    check_access!('organisations:update')
     @organisation = Organisation.find(params[:id])
 
     unless @organisation.update_attributes(organisation_params)
@@ -40,7 +40,7 @@ class OrganisationsController < ApplicationController
   end
 
   def destroy
-    check_access!('admin:organisations:delete')
+    check_access!('organisations:delete')
     @organisation = Organisation.find(params[:id])
     @organisation.destroy!
     flash[:success] = "Deleted Organisation: #{@organisation.name}"

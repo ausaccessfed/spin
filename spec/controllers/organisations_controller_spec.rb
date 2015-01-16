@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe OrganisationsController, type: :controller do
   let(:user) do
     create(:subject, :authorized,
-           permission: 'admin:organisations:*')
+           permission: 'organisations:*')
   end
 
   before { session[:subject_id] = user.try(:id) }

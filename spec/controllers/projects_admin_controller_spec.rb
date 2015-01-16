@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe ProjectsAdminController, type: :controller do
-  let(:user) { create(:subject, :authorized, permission: 'admin:*') }
+  let(:user) do
+    create(:subject, :authorized,
+           permission: "organisations:#{organisation.id}:*")
+  end
   let(:orig_attrs) { attributes_for(:project).except(:organisation) }
-  let(:organisation) { create(:organisation) }
+  let!(:organisation) { create(:organisation) }
   let(:project) do
     create(:project,
            orig_attrs.merge(organisation: organisation))
@@ -17,7 +20,7 @@ RSpec.describe ProjectsAdminController, type: :controller do
 
     let(:user) do
       create(:subject, :authorized,
-             permission: "admin:organisations:#{organisation.id}:projects:*")
+             permission: "organisations:#{organisation.id}:projects:*")
     end
 
     it { is_expected.to have_http_status(:ok) }

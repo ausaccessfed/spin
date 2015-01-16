@@ -23,21 +23,21 @@
         <td><%= project.aws_account %></td>
         <td><%= project.state %></td>
         <td>
-          <%- if permitted?("admin:organisations:#{@organisation.id}:project_roles:read") -%>
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{project.id}:roles:list") -%>
               <%= button_link_to(organisation_project_roles_path(@organisation, project), class: 'tiny icon') do -%>
                   <%= icon_tag('lock icon') %>
                   Project Roles <em>(<%= project.project_roles.count %>)</em>
               <%- end -%>
           <%- end -%>
 
-          <%- if permitted?("admin:organisations:#{@organisation.id}:update") -%>
+          <%- if permitted?("organisations:#{@organisation.id}:projects:update") -%>
             <%= button_link_to([:edit, @organisation, project], class: 'tiny icon') do -%>
               <%= icon_tag('edit') %>
               Edit
             <%- end -%>
           <%- end -%>
 
-          <%- if permitted?("admin:organisations:#{@organisation.id}:delete") -%>
+          <%- if permitted?("organisations:#{@organisation.id}:projects:delete") -%>
             <%= delete_button_tag([@organisation, project]) %>
           <%- end -%>
         </td>
@@ -46,7 +46,7 @@
   </tbody>
 </table>
 
-<%- if permitted?("admin:organisations:#{@organisation.id}:create") -%>
+<%- if permitted?("organisations:#{@organisation.id}:projects:create") -%>
   <div class="line-of-buttons">
     <%= button_link_to(new_organisation_project_path(@organisation), class: 'large green icon') do -%>
       <%= icon_tag('add') %>

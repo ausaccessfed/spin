@@ -6,24 +6,29 @@ class SubjectProjectRolesController < ApplicationController
   end
 
   def new
-    check_access!('admin:project_roles:grant')
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:grant")
     @subjects = Subject.all
     @assoc = @project_role.subject_project_roles.new
   end
 
   def create
-    check_access!('admin:project_roles:grant')
-    @assoc = @project_role.subject_project_roles.build(assoc_params)
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:grant")
 
+    @assoc = @project_role.subject_project_roles.build(assoc_params)
     unless @assoc.save
       assign_error_flash
       return redirect_to(new_organisation_project_role_path(@project_role))
     end
 
-    flash[:success] = creation_message(@assoc)
-
+    assign_creation_message
     redirect_to(organisation_project_role_path(@organisation, @project,
                                                @project_role))
+  end
+
+  def assign_creation_message
+    flash[:success] = creation_message(@assoc)
   end
 
   def assign_error_flash
@@ -31,7 +36,8 @@ class SubjectProjectRolesController < ApplicationController
   end
 
   def destroy
-    check_access!('admin:project_roles:revoke')
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:revoke")
     @assoc = @project_role.subject_project_roles.find(params[:id])
     @assoc.destroy!
 

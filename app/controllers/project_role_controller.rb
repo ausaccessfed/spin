@@ -5,17 +5,20 @@ class ProjectRoleController < ApplicationController
   end
 
   def index
-    check_access!("admin:projects:#{@project.id}:list")
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:list")
     @project_roles = @project.project_roles.all
   end
 
   def new
-    check_access!("admin:projects:#{@project.id}:roles:create")
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:create")
     @project_role = @project.project_roles.new
   end
 
   def create
-    check_access!("admin:projects:#{@project.id}:roles:create")
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:create")
     @project_role = @project.project_roles.new(project_params)
 
     unless @project_role.save
@@ -28,12 +31,14 @@ class ProjectRoleController < ApplicationController
   end
 
   def edit
-    check_access!("admin:projects:#{@project.id}:roles:update")
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:update")
     @project_role = @project.project_roles.find(params[:id])
   end
 
   def update
-    check_access!("admin:projects:#{@project.id}:roles:update")
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:update")
     @project_role = @project.project_roles.find(params[:id])
     unless @project_role.update_attributes(project_params)
       return form_error('edit', 'Unable to save Project Role', @project_role)
@@ -45,12 +50,14 @@ class ProjectRoleController < ApplicationController
   end
 
   def show
-    check_access!('admin:projects:roles:show')
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:read")
     @project_role = @project.project_roles.find(params[:id])
   end
 
   def destroy
-    check_access!("admin:projects:#{@project.id}:roles:delete")
+    check_access!("organisations:#{@organisation.id}:" \
+                  "projects:#{@project.id}:roles:delete")
     @project_role = @project.project_roles.find(params[:id])
     @project_role.destroy!
 

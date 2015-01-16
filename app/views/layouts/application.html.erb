@@ -16,12 +16,21 @@
     <%= nav_bar do -%>
         <%= nav_item('Welcome', '/') %>
 
-        <%- if permitted?('admin') -%>
+        <%- if permitted?('organisations:list') -%>
             <%= nav_item('Organisations', organisations_path) %>
+        <%- end -%>
+
+        <%- if permitted?('admin') -%>
             <%= nav_dropdown('Administration') do -%>
-                <%= nav_item('Subjects', subjects_path) %>
-                <%= nav_item('API Accounts', api_subjects_path) %>
-                <%= nav_item('Roles', roles_path) %>
+                <%- if permitted?('admin:subjects:list') -%>
+                    <%= nav_item('Subjects', subjects_path) %>
+                <%- end -%>
+                <%- if permitted?('admin:api_subjects:list') -%>
+                    <%= nav_item('API Accounts', api_subjects_path) %>
+                <%- end -%>
+                <%- if permitted?('admin:roles:list') -%>
+                    <%= nav_item('Roles', roles_path) %>
+                <%- end -%>
             <%- end -%>
         <%- end -%>
 

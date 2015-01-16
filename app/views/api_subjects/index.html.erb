@@ -29,21 +29,21 @@
         <%- end -%>
       </td>
       <td>
-        <%- if permitted?('admin:subjects:read') -%>
+        <%- if permitted?('admin:api_subjects:read') -%>
             <%= button_link_to(api_subject, class: 'tiny icon') do -%>
                 <%= icon_tag('content') %>
                 View
             <%- end -%>
         <%- end -%>
 
-        <%- if permitted?('admin:subjects:update') -%>
+        <%- if permitted?('admin:api_subjects:update') -%>
             <%= button_link_to([:edit, api_subject], class: 'tiny icon') do -%>
                 <%= icon_tag('edit') %>
                 Edit
             <%- end -%>
         <%- end -%>
 
-        <%- if permitted?('admin:subjects:delete') -%>
+        <%- if permitted?('admin:api_subjects:delete') -%>
             <%= delete_button_tag(api_subject) %>
         <%- end -%>
       </td>

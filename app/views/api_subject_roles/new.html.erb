@@ -26,7 +26,7 @@
         <td><%= api_subject.description %></td>
         <td>
 
-          <%- if permitted?("admin:roles:grant") -%>
+          <%- if permitted?('admin:roles:grant') -%>
               <%- if APISubjectRole.exists?(role_id: @role.id,
                                             api_subject_id: api_subject.id) -%>
 

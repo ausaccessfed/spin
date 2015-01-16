@@ -20,14 +20,14 @@
         <td><%= organisation.name %></td>
         <td><%= organisation.external_id %></td>
         <td>
-          <%- if permitted?('admin:organisations:read') -%>
+          <%- if permitted?("organisations:#{organisation.id}:projects:list") -%>
               <%= button_link_to([organisation, :projects], class: 'tiny icon') do -%>
                   <%= icon_tag('folder outline icon') %>
                   Projects <em>(<%= organisation.projects.count %>)</em>
               <%- end -%>
           <%- end -%>
 
-          <%- if permitted?('admin:organisations:update') -%>
+          <%- if permitted?('organisations:update') -%>
 
             <%= button_link_to([:edit, organisation], class: 'tiny icon') do -%>
               <%= icon_tag('edit') %>
@@ -35,7 +35,7 @@
             <%- end -%>
           <%- end -%>
 
-          <%- if permitted?('admin:organisations:delete') -%>
+          <%- if permitted?('organisations:delete') -%>
             <%= delete_button_tag(organisation) %>
           <%- end -%>
 
@@ -45,7 +45,7 @@
   </tbody>
 </table>
 
-<%- if permitted?('admin:organisations:create') -%>
+<%- if permitted?('organisations:create') -%>
   <div class="line-of-buttons">
     <%= button_link_to(new_organisation_path, class: 'large green icon') do -%>
       <%= icon_tag('add') %>

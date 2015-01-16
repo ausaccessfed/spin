@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ProjectRoleController, type: :controller do
-  let!(:user) { create(:subject, :authorized, permission: 'admin:*') }
+  let!(:user) do
+    create(:subject, :authorized,
+           permission: "organisations:#{organisation.id}:" \
+                       "projects:#{project.id}:*")
+  end
   let!(:orig_attrs) { attributes_for(:project).except(:organisation) }
   let!(:organisation) { create(:organisation) }
   let!(:project) do

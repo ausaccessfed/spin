@@ -24,7 +24,7 @@
         <td><%= subject.name %></td>
         <td><%= subject.mail %></td>
         <td>
-          <%- if permitted?("admin:subject_role:grant") -%>
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
               <%- if SubjectProjectRole.exists?(project_role_id: @project_role.id,
                                           subject_id: subject.id) -%>
 
