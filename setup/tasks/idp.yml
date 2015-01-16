@@ -73,7 +73,7 @@
     - attribute-filter.xml
     - service.xml
     - logging.xml
-  notify: Restart spin-idp
+  notify: 'Restart spin-idp'
 
 - name: 'Install IdP context configuration'
   template:
@@ -82,7 +82,7 @@
     owner: root
     group: spin
     mode: 0640
-  notify: Restart spin-idp
+  notify: 'Restart spin-idp'
 
 - name: 'Create IdP database user'
   mysql_user:
@@ -91,3 +91,14 @@
     priv: '{{ db.name }}.*:SELECT'
     login_unix_socket: /var/lib/mysql/mysql.sock
     state: present
+
+- name: 'Install IdP systemd unit'
+  template:
+    src: templates/idp/spin-idp.service.j2
+    dest: /lib/systemd/system/spin-idp.service
+    owner: root
+    group: root
+    mode: 0600
+
+- name: 'Enable spin-idp service'
+  service: name=spin-idp state=started enabled=yes

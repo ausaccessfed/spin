@@ -86,4 +86,4 @@
       debug: "msg=TODO: service: name=spin state=restarted"
 
     - name: Restart spin-idp
-      debug: "msg=TODO: service: name=spin-idp state=restarted"
+      service: name=spin-idp state=restarted
