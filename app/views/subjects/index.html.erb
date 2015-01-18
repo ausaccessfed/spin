@@ -12,7 +12,6 @@
   <tr>
     <th>Name</th>
     <th>Email Address</th>
-    <th>State</th>
     <th>Functioning</th>
     <th/>
   </tr>
@@ -23,13 +22,6 @@
       <tr>
         <td><%= object.name %></td>
         <td><%= link_to(object.mail, "mailto:#{object.mail}") %></td>
-        <td>
-          <%- if object.complete? -%>
-              <%= icon_tag('green checkmark') %> Active
-          <%- else -%>
-              <%= icon_tag('yellow warning sign') %> Pending
-          <%- end -%>
-        </td>
         <td>
           <%- if object.functioning? -%>
               <%= icon_tag('green checkmark') %> Yes
