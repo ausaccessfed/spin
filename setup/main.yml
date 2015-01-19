@@ -20,6 +20,11 @@
   vars_files:
     - spin.config
   tasks:
+    - name: 'Set SELinux to permissive'
+      selinux:
+        policy: targeted
+        state: permissive
+
     - name: 'Ensure SPIN distribution has been extracted correctly'
       shell: >
         if [ ! -e /opt/spin/app/config/application.rb ]; then
