@@ -60,7 +60,7 @@ RSpec.describe SubjectRolesController, type: :controller do
 
         it 'sets the flash message' do
           expect(flash[:error])
-            .to eq('Role has already been taken')
+            .to eq('Subject already has this role granted')
         end
       end
 

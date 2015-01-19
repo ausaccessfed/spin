@@ -74,7 +74,7 @@ RSpec.describe PermissionsController, type: :controller do
 
       it 'sets the flash message' do
         expect(flash[:error])
-          .to eq('Role has already been taken')
+          .to eq('Value has already been taken')
       end
     end
   end

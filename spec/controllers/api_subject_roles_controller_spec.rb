@@ -71,7 +71,7 @@ RSpec.describe APISubjectRolesController, type: :controller do
 
         it 'sets the flash message' do
           expect(flash[:error])
-            .to eq('Role has already been taken')
+            .to eq('API subject already has this role granted')
         end
       end
     end
