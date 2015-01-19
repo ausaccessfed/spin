@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   mount RapidRack::Engine => '/auth'
   get 'projects', to: 'projects#index'
   get 'aws_idp', to: 'aws_idp#index' # Placeholder for now ...
-  get 'no_projects_assigned', to: 'projects#no_projects_assigned'
+  get 'dashboard', to: 'dashboard#index'
   post 'login', to: 'sessions#create'
 
   scope '/admin' do

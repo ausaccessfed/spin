@@ -14,7 +14,11 @@
 <body>
 <%= aaf_header(title: 'SPIN', environment: environment_string) do -%>
     <%= nav_bar do -%>
-        <%= nav_item('Welcome', '/') %>
+        <%- if @subject -%>
+            <%= nav_item('Dashboard', dashboard_path) %>
+        <%- else -%>
+            <%= nav_item('Welcome', root_path) %>
+        <%- end -%>
 
         <%- if permitted?('organisations:list') -%>
             <%= nav_item('Organisations', organisations_path) %>

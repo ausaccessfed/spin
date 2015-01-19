@@ -24,7 +24,7 @@ RSpec.feature 'Roles Admin', type: :feature do
     expect(current_path).to eq('/auth/login')
     click_button 'Login'
 
-    click_link('Roles')
+    click_link('Roles', match: :first)
     expect(current_path).to eq('/admin/roles')
   end
 

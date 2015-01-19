@@ -20,7 +20,7 @@ RSpec.feature 'After the user has authenticated with idP', type: :feature do
 
     scenario 'redirects to no projects page' do
       click_button 'Login'
-      expect(current_path).to eq('/no_projects_assigned')
+      expect(current_path).to eq('/dashboard')
       support_md = Rails.root.join('config/support.md').read
       support_html = Kramdown::Document.new(support_md).to_html
       sanitised_support_text = Sanitize.clean(support_html)

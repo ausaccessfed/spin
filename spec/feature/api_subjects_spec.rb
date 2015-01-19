@@ -13,7 +13,7 @@ RSpec.feature 'API Subjects Admin', type: :feature do
     expect(current_path).to eq('/auth/login')
     click_button 'Login'
 
-    click_link('API Accounts')
+    click_link('API Accounts', match: :first)
     expect(current_path).to eq('/admin/api_subjects')
   end
 
