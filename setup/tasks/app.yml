@@ -67,9 +67,10 @@
     - consent.md
     - support.md
 
-- name: 'Generate database password'
+- name: 'Generate passwords'
   set_fact:
     app_db_password: "{{ lookup('password', '../passwords/app_db_password chars=letters,digits length=64') }}"
+    secret_key_base: "{{ lookup('password', '../passwords/secret_key_base chars=letters,digits length=128') }}"
 
 - name: 'Create database user'
   mysql_user:
