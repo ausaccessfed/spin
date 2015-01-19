@@ -1,0 +1,21 @@
+[Unit]
+Description=SPIN
+
+[Service]
+User=spin
+Group=spin
+Type=forking
+PIDFile=/opt/spin/app/tmp/god.pid
+
+Environment="SPIN_DB_USERNAME={{ db.username }}"
+Environment="SPIN_DB_PASSWORD={{ app_db_password }}"
+Environment="SPIN_DB_NAME={{ db.name }}"
+Environment="RBENV_ROOT=/opt/spin/rbenv"
+Environment="RAILS_ENV=production"
+
+WorkingDirectory=/opt/spin/app
+ExecStartPre=/opt/spin/rbenv/bin/rbenv exec bundle exec rake assets:precompile db:migrate
+ExecStart=/opt/spin/rbenv/bin/rbenv exec bundle exec god -c config/god.rb -P tmp/god.pid
+
+[Install]
+WantedBy=multi-user.target

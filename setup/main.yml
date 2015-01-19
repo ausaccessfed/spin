@@ -15,6 +15,8 @@
     idp:
       version: 2.4.3
       sha256sum: 23cd7b5170c36add811939e225f049f1505b9a02be3a1a5d6937761a0b23868b
+    ruby:
+      version: 2.1.5
   vars_files:
     - spin.config
   tasks:
@@ -77,12 +79,27 @@
         - redis
         - java-1.7.0-openjdk-headless
         - MySQL-python
+        - git
+        - httpd
+        # Ruby dependencies:
+        - gcc
+        - gcc-c++
+        - patch
+        - readline-devel
+        - zlib-devel
+        - openssl-devel
+        - libyaml-devel
+        - libffi-devel
+        - gdbm-devel
+        - ncurses-devel
 
     - name: 'Enable NTP service'
       service: name=ntpd state=started enabled=yes
 
     - include: tasks/db.yml
+    - include: tasks/ruby.yml
     - include: tasks/redis.yml
+    - include: tasks/app.yml
     - include: tasks/tomcat.yml
     - include: tasks/idp.yml
 

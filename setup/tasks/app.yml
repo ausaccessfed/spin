@@ -1,0 +1,87 @@
+---
+- name: 'Create writable directories'
+  file:
+    name: '{{ item }}'
+    state: directory
+    owner: spin
+    group: spin
+    mode: 0700
+  with_items:
+    - /opt/spin/app/public/assets
+    - /opt/spin/app/tmp
+    - /var/log/spin/application
+
+- name: 'Create socket directory'
+  file:
+    name: /opt/spin/sockets
+    state: directory
+    owner: spin
+    group: apache
+    mode: 0750
+
+- name: 'Symlink log directory'
+  file:
+    name: /opt/spin/app/log
+    src: /var/log/spin/application
+    owner: root
+    group: root
+    state: link
+
+- name: 'Install gem dependencies'
+  command: >
+    /opt/spin/rbenv/bin/rbenv exec bundle install --deployment --without development test
+    chdir=/opt/spin/app
+  register: result
+  changed_when: '"Installing" in result.stdout'
+
+- name: 'Rehash rbenv'
+  command: /opt/spin/rbenv/bin/rbenv rehash
+  when: result | changed
+
+- name: 'Install SPIN configuration'
+  template:
+    src: templates/app/{{ item }}.j2
+    dest: /opt/spin/app/config/{{ item }}
+    owner: root
+    group: spin
+    mode: 0640
+  with_items:
+    - spin_service.yml
+    - rapidconnect.yml
+
+- name: 'Install site configuration'
+  copy:
+    src: assets/app/{{ item }}
+    dest: /opt/spin/app/config/{{ item }}
+    owner: root
+    group: spin
+    mode: 0640
+  with_items:
+    - consent.md
+    - support.md
+
+- name: 'Generate database password'
+  set_fact:
+    app_db_password: "{{ lookup('password', '../passwords/app_db_password chars=letters,digits length=64') }}"
+
+- name: 'Create database user'
+  mysql_user:
+    name: '{{ db.username }}'
+    password: '{{ app_db_password }}'
+    priv: '{{ db.name }}.*:ALL'
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    state: present
+
+- name: 'Install SPIN systemd unit'
+  template:
+    src: templates/app/spin.service.j2
+    dest: /lib/systemd/system/spin.service
+    owner: root
+    group: root
+    mode: 0600
+
+- name: 'Enable SPIN service'
+  service:
+    name: spin
+    state: started
+    enabled: yes

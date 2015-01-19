@@ -1,0 +1,49 @@
+---
+- name: 'Set RBENV_ROOT environment variable'
+  lineinfile: >
+    line='RBENV_ROOT=/opt/spin/rbenv' dest=/etc/environment
+    regexp='^RBENV_ROOT=.*' state=present
+
+- name: 'Install rbenv'
+  git:
+    repo: https://github.com/sstephenson/rbenv.git
+    dest: /opt/spin/rbenv
+    depth: 1
+    version: master
+    force: no
+
+- name: 'Install ruby-build plugin'
+  git:
+    repo: https://github.com/sstephenson/ruby-build.git
+    dest: /opt/spin/rbenv/plugins/ruby-build
+    depth: 1
+    version: master
+    force: no
+
+- name: 'Install ruby'
+  command: >
+    /opt/spin/rbenv/bin/rbenv install {{ ruby.version }}
+    creates=/opt/spin/rbenv/versions/{{ ruby.version }}
+
+- name: 'Set default ruby version'
+  copy:
+    content: '{{ ruby.version }}'
+    dest: /opt/spin/rbenv/version
+    owner: root
+    group: spin
+    mode: 0640
+
+- name: 'Install Bundler'
+  shell: /opt/spin/rbenv/bin/rbenv exec gem install --conservative bundler
+  register: result
+  changed_when: '"Installing" in result.stdout'
+
+- name: 'Refresh shims'
+  command: >
+    /opt/spin/rbenv/bin/rbenv rehash
+  changed_when: false
+
+- name: 'Create Ruby symlink'
+  file: >
+    name=/usr/bin/ruby src=/opt/spin/rbenv/shims/ruby
+    owner=root group=root state=link
