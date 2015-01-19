@@ -18,4 +18,12 @@ pm = Permission.create!(role_id:r.id, value:'*')
 sr = SubjectRole.create!(subject_id:Subject.last.id, role_id:r.id)
 ```
 
+## Deployment configuration
 
+The SPIN logo is configured by overwriting the files
+* app/assets/images/logo.png
+* app/assets/images/favicon.png
+
+Configure the user consent and support text
+* config/support.md
+* config/consent.md
