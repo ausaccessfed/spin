@@ -1,0 +1,50 @@
+ServerRoot "/etc/httpd"
+
+Include conf.modules.d/*.conf
+
+User apache
+Group apache
+
+ServerAdmin root@localhost
+ServerName {{ service_hostname }}
+
+ServerTokens ProductOnly
+ServerSignature Off
+HostnameLookups Off
+
+<Directory />
+  AllowOverride none
+  Require all denied
+</Directory>
+
+DocumentRoot "/var/www/html"
+
+DirectoryIndex index.html
+
+<Files ".ht*">
+  Require all denied
+</Files>
+
+ErrorLog "logs/error_log"
+LogLevel warn
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+CustomLog "logs/access_log" combined
+
+TypesConfig /etc/mime.types
+AddType application/x-compress .Z
+AddType application/x-gzip .gz .tgz
+
+AddDefaultCharset UTF-8
+
+<IfModule mime_magic_module>
+    MIMEMagicFile conf/magic
+</IfModule>
+
+EnableSendfile on
+
+SSLStaplingCache shmcb:/var/run/httpd/ocsp(128000)
+SSLSessionCache shmcb:/var/run/httpd/ssl_gcache_data(5120000)
+
+IncludeOptional conf.d/*.conf

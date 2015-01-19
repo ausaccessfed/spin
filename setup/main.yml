@@ -95,6 +95,7 @@
         - MySQL-python
         - git
         - httpd
+        - mod_ssl
         # Ruby dependencies:
         - gcc
         - gcc-c++
@@ -116,6 +117,7 @@
     - include: tasks/app.yml
     - include: tasks/tomcat.yml
     - include: tasks/idp.yml
+    - include: tasks/apache.yml
 
   handlers:
     - name: Restart spin

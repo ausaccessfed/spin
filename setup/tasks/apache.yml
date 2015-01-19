@@ -1,0 +1,82 @@
+---
+- name: 'Install Apache base configuration'
+  template:
+    src: templates/apache/httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: apache
+    mode: 0640
+
+- name: 'Install Apache module configuration'
+  template:
+    src: templates/apache/00-base.conf.j2
+    dest: /etc/httpd/conf.modules.d/00-base.conf
+    owner: root
+    group: apache
+    mode: 0640
+
+- name: 'Remove default Apache configuration'
+  template:
+    src: templates/apache/config-blocker.conf.j2
+    dest: '/etc/httpd/{{ item }}'
+    owner: root
+    group: apache
+    mode: 0640
+  with_items:
+    - conf.d/autoindex.conf
+    - conf.d/ssl.conf
+    - conf.d/userdir.conf
+    - conf.d/welcome.conf
+    - conf.modules.d/00-dav.conf
+    - conf.modules.d/00-lua.conf
+    - conf.modules.d/00-mpm.conf
+    - conf.modules.d/00-proxy.conf
+    - conf.modules.d/00-ssl.conf
+    - conf.modules.d/00-systemd.conf
+    - conf.modules.d/01-cgi.conf
+
+- name: 'Install Apache SPIN configuration'
+  template:
+    src: templates/apache/spin.conf.j2
+    dest: '/etc/httpd/conf.d/spin.conf'
+    owner: root
+    group: apache
+    mode: 0640
+
+- name: 'Create Apache SSL key directory'
+  file:
+    name: /opt/spin/keypairs
+    owner: root
+    group: apache
+    mode: 0750
+    state: directory
+
+- name: 'Install Apache SSL keys'
+  copy:
+    src: 'assets/apache/{{ item }}'
+    dest: '/opt/spin/keypairs/{{ item }}'
+    owner: root
+    group: apache
+    mode: 0640
+  with_items:
+    - server.crt
+    - server.key
+    - intermediate.crt
+
+- name: 'Open Apache firewall ports'
+  firewalld:
+    port: '{{ item }}'
+    state: enabled
+    permanent: yes
+  with_items:
+    - 80/tcp
+    - 443/tcp
+    - 8443/tcp
+  register: firewall
+
+- name: 'Restart firewalld'
+  service: name=firewalld state=restarted enabled=yes
+  when: firewall | changed
+
+- name: 'Enable Apache service'
+  service: name=httpd state=started enabled=yes
