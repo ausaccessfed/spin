@@ -16,10 +16,6 @@ RSpec.feature 'Managing the Subjects', type: :feature do
     expect(current_path).to eq('/admin/subjects')
   end
 
-  scenario 'allows access' do
-    expect(current_path).to eq('/admin/subjects')
-  end
-
   scenario 'shows the subject list' do
     expect(page).to have_css('table tr td', text: user.name)
   end
