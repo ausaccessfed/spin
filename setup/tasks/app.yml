@@ -7,9 +7,16 @@
     group: spin
     mode: 0700
   with_items:
-    - /opt/spin/app/public/assets
     - /opt/spin/app/tmp
     - /var/log/spin/application
+
+- name: 'Create assets directory'
+  file:
+    name: /opt/spin/app/public/assets
+    state: directory
+    owner: spin
+    group: apache
+    mode: 0750
 
 - name: 'Create socket directory'
   file:

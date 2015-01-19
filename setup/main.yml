@@ -41,6 +41,17 @@
         home: /opt/spin
         password: '!!'
 
+    - name: 'Create readable directories'
+      file:
+        name: '{{ item }}'
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      with_items:
+        - /opt/spin
+        - /opt/spin/app
+
     - name: 'Create required directories'
       file:
         name: '{{ item }}'
@@ -49,8 +60,6 @@
         group: spin
         mode: 0750
       with_items:
-        - /opt/spin
-        - /opt/spin/app
         - /opt/spin/app/setup
         - /opt/spin/downloads
         - /opt/spin/tomcat
