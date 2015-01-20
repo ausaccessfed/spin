@@ -8,10 +8,16 @@
     urn:mace:shibboleth:2.0:afp:mf:basic classpath:/schema/shibboleth-2.0-afp-mf-basic.xsd
     urn:mace:shibboleth:2.0:afp:mf:saml classpath:/schema/shibboleth-2.0-afp-mf-saml.xsd">
 
-  <afp:AttributeRule attributeID="awsRoles">
-    <afp:PermitValueRule xsi:type="basic:ANY"/>
-  </afp:AttributeRule>
-  <afp:AttributeRule attributeID="awsRoleSessionName">
-    <afp:PermitValueRule xsi:type="basic:ANY"/>
-  </afp:AttributeRule>
+  <afp:AttributeFilterPolicy id="aws">
+    <afp:PolicyRequirementRule xsi:type="basic:AttributeRequesterString" value="urn:amazon:webservices" />
+    <afp:AttributeRule attributeID="persistentId">
+      <afp:PermitValueRule xsi:type="basic:ANY"/>
+    </afp:AttributeRule>
+    <afp:AttributeRule attributeID="awsRoles">
+      <afp:PermitValueRule xsi:type="basic:ANY"/>
+    </afp:AttributeRule>
+    <afp:AttributeRule attributeID="awsRoleSessionName">
+      <afp:PermitValueRule xsi:type="basic:ANY"/>
+    </afp:AttributeRule>
+  </afp:AttributeFilterPolicy>
 </afp:AttributeFilterPolicyGroup>

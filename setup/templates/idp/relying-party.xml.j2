@@ -17,8 +17,9 @@
 
     <rp:AnonymousRelyingParty provider="https://{{ service_hostname }}/idp/shibboleth" defaultSigningCredentialRef="IdPCredential"/>
 
-    <rp:DefaultRelyingParty provider="https://{{ service_hostname }}/idp/shibboleth" defaultSigningCredentialRef="IdPCredential">
+    <rp:DefaultRelyingParty provider="https://{{ service_hostname }}/idp/shibboleth" defaultSigningCredentialRef="IdPCredential"/>
 
+    <rp:RelyingParty id="urn:amazon:webservices" provider="https://{{ service_hostname }}/idp/shibboleth" defaultSigningCredentialRef="IdPCredential">
       <rp:ProfileConfiguration
           xsi:type="saml:SAML2SSOProfile"
           includeAttributeStatement="true"
@@ -26,15 +27,21 @@
           signResponses="never" signAssertions="always"
           encryptAssertions="never" encryptNameIds="never"
           includeConditionsNotBefore="true"
-          maximumSPSessionLifetime="PT1H" />
-
-    </rp:DefaultRelyingParty>
+          maximumSPSessionLifetime="PT1H">
+        <saml:Audience>https://signin.aws.amazon.com/saml</saml:Audience>
+      </rp:ProfileConfiguration>
+    </rp:RelyingParty>
 
     <metadata:MetadataProvider id="ShibbolethMetadata" xsi:type="metadata:ChainingMetadataProvider">
 
         <metadata:MetadataProvider id="IdPMD" xsi:type="metadata:FilesystemMetadataProvider"
             metadataFile="/opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/metadata/idp-metadata.xml"
-                                   maxRefreshDelay="P1D" />
+            maxRefreshDelay="P1D" />
+
+        <metadata:MetadataProvider
+            id="AWS"
+            xsi:type="metadata:HTTPMetadataProvider"
+            metadataURL="https://signin.aws.amazon.com/static/saml-metadata.xml" />
 
     </metadata:MetadataProvider>
 

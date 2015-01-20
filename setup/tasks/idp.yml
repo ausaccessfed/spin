@@ -15,6 +15,7 @@
   set_fact:
     idp_db_password: "{{ lookup('password', '../passwords/idp_db_password chars=letters,digits length=64') }}"
     idp_keystore_password: "{{ lookup('password', '../passwords/idp_keystore_password chars=letters,digits length=64') }}"
+    computed_id_salt: "{{ lookup('password', '../passwords/computed_id_salt chars=letters,digits length=64') }}"
 
 - name: 'Create IdP install script'
   template:
@@ -75,6 +76,24 @@
     - logging.xml
   notify: 'Restart spin-idp'
 
+- name: 'Read idp certificate'
+  command: grep -v -- ----- /opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/credentials/idp.crt
+  register: certificate
+  changed_when: false
+
+- name: 'Set idp certificate variable'
+  set_fact:
+    idp_certificate: '{{ certificate.stdout }}'
+
+- name: 'Install idp metadata'
+  template:
+    src: templates/idp/idp-metadata.xml.j2
+    dest: /opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/metadata/idp-metadata.xml
+    owner: root
+    group: spin
+    mode: 0640
+  notify: 'Restart spin-idp'
+
 - name: 'Install IdP context configuration'
   template:
     src: templates/idp/tomcat-context.xml.j2
@@ -99,6 +118,8 @@
     owner: root
     group: root
     mode: 0600
+
+- meta: flush_handlers
 
 - name: 'Enable spin-idp service'
   service: name=spin-idp state=started enabled=yes
