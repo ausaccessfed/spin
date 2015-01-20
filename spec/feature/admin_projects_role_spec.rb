@@ -35,10 +35,6 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
     expect(page).to have_css('table tr td', text: project_role.name)
   end
 
-  scenario 'shows the project_role name in the list' do
-    expect(page).to have_css('table tr td', text: project_role.name)
-  end
-
   scenario 'shows actions for the project_role' do
     expect(page).to have_content('Members (0) Edit Delete')
   end
@@ -148,27 +144,27 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
                                  "projects/#{project.id}/roles")
     end
 
-    # context 'saves' do
-    #   given(:more_bs) { Faker::Company.bs }
-    #
-    #   before do
-    #     fill_in 'project_role_name', with: more_bs
-    #     click_button 'Save'
-    #   end
-    #
-    #   scenario 'redirects back to project_roles' do
-    #    expect(current_path).to eq("/admin/organisations/#{organisation.id}/" \
-    #                                "projects/#{project.id}/" \
-    #                                'roles')
-    #   end
-    #
-    #   scenario 'shows flash message' do
-    #     expect(page).to have_content("Updated Project Role #{more_bs}")
-    #   end
-    #
-    #   scenario 'shows the updated project_role' do
-    #     expect(page).to have_css('table tr td', text: more_bs)
-    #   end
-    # end
+    context 'saves' do
+      given(:more_bs) { Faker::Company.bs }
+
+      before do
+        fill_in 'project_role_name', with: more_bs
+        click_button 'Save'
+      end
+
+      scenario 'redirects back to project_roles' do
+        expect(current_path).to eq("/admin/organisations/#{organisation.id}/" \
+                                    "projects/#{project.id}/" \
+                                    'roles')
+      end
+
+      scenario 'shows flash message' do
+        expect(page).to have_content("Updated Project Role #{more_bs}")
+      end
+
+      scenario 'shows the updated project_role' do
+        expect(page).to have_css('table tr td', text: more_bs)
+      end
+    end
   end
 end
