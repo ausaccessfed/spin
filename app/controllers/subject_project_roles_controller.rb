@@ -5,23 +5,24 @@ class SubjectProjectRolesController < ApplicationController
     @project_role = ProjectRole.find(params[:role_id])
   end
 
+  def access_prefix
+    "organisations:#{@organisation.id}:projects:#{@project.id}:roles"
+  end
+
   def new
-    check_access!("organisations:#{@organisation.id}:" \
-                  "projects:#{@project.id}:roles:grant")
+    check_access!("#{access_prefix}:grant")
     @subjects = Subject.all
     @assoc = @project_role.subject_project_roles.new
   end
 
   def create
-    check_access!("organisations:#{@organisation.id}:" \
-                  "projects:#{@project.id}:roles:grant")
-
+    check_access!("#{access_prefix}:grant")
     @assoc = @project_role.subject_project_roles.build(assoc_params)
     unless @assoc.save
       assign_error_flash
-      return redirect_to(new_organisation_project_role_path(@project_role))
+      return redirect_to(organisation_project_role_path(@organisation, @project,
+                                                        @project_role))
     end
-
     assign_creation_message
     redirect_to(organisation_project_role_path(@organisation, @project,
                                                @project_role))
@@ -36,8 +37,7 @@ class SubjectProjectRolesController < ApplicationController
   end
 
   def destroy
-    check_access!("organisations:#{@organisation.id}:" \
-                  "projects:#{@project.id}:roles:revoke")
+    check_access!("#{access_prefix}:revoke")
     @assoc = @project_role.subject_project_roles.find(params[:id])
     @assoc.destroy!
 

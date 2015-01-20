@@ -1,18 +1,22 @@
 class ProjectsAdminController < ApplicationController
   before_action { @organisation = Organisation.find(params[:organisation_id]) }
 
+  def access_prefix
+    "organisations:#{@organisation.id}:projects"
+  end
+
   def index
-    check_access!("organisations:#{@organisation.id}:projects:list")
+    check_access!("#{access_prefix}:list")
     @projects = @organisation.projects.all
   end
 
   def new
-    check_access!("organisations:#{@organisation.id}:projects:create")
+    check_access!("#{access_prefix}:create")
     @project = @organisation.projects.new
   end
 
   def create
-    check_access!("organisations:#{@organisation.id}:projects:create")
+    check_access!("#{access_prefix}:create")
     @project = @organisation.projects.new(project_params)
 
     unless @project.save
@@ -26,12 +30,12 @@ class ProjectsAdminController < ApplicationController
   end
 
   def edit
-    check_access!("organisations:#{@organisation.id}:projects:update")
+    check_access!("#{access_prefix}:update")
     @project = @organisation.projects.find(params[:id])
   end
 
   def update
-    check_access!("organisations:#{@organisation.id}:projects:update")
+    check_access!("#{access_prefix}:update")
     @project = @organisation.projects.find(params[:id])
 
     unless @project.update_attributes(project_params)
@@ -45,7 +49,7 @@ class ProjectsAdminController < ApplicationController
   end
 
   def destroy
-    check_access!("organisations:#{@organisation.id}:projects:delete")
+    check_access!("#{access_prefix}:delete")
     @project = @organisation.projects.find(params[:id])
     @project.destroy!
 
