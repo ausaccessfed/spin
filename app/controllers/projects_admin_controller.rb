@@ -1,10 +1,6 @@
 class ProjectsAdminController < ApplicationController
   before_action { @organisation = Organisation.find(params[:organisation_id]) }
 
-  def access_prefix
-    "organisations:#{@organisation.id}:projects"
-  end
-
   def index
     check_access!("#{access_prefix}:list")
     @projects = @organisation.projects.all
@@ -62,5 +58,9 @@ class ProjectsAdminController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :aws_account, :state)
+  end
+
+  def access_prefix
+    "organisations:#{@organisation.id}:projects"
   end
 end

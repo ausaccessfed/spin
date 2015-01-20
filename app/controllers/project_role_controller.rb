@@ -4,10 +4,6 @@ class ProjectRoleController < ApplicationController
     @project = Project.find(params[:project_id])
   end
 
-  def access_prefix
-    "organisations:#{@organisation.id}:projects:#{@project.id}:roles"
-  end
-
   def index
     check_access!("#{access_prefix}:list")
     @project_roles = @project.project_roles.all
@@ -68,5 +64,9 @@ class ProjectRoleController < ApplicationController
 
   def project_params
     params.require(:project_role).permit(:name, :aws_identifier, :state)
+  end
+
+  def access_prefix
+    "organisations:#{@organisation.id}:projects:#{@project.id}:roles"
   end
 end

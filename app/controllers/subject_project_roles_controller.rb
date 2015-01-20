@@ -5,10 +5,6 @@ class SubjectProjectRolesController < ApplicationController
     @project_role = ProjectRole.find(params[:role_id])
   end
 
-  def access_prefix
-    "organisations:#{@organisation.id}:projects:#{@project.id}:roles"
-  end
-
   def new
     check_access!("#{access_prefix}:grant")
     @subjects = Subject.all
@@ -59,5 +55,9 @@ class SubjectProjectRolesController < ApplicationController
 
   def deletion_message(assoc)
     "Revoked #{@project_role.name} from #{assoc.subject.name}"
+  end
+
+  def access_prefix
+    "organisations:#{@organisation.id}:projects:#{@project.id}:roles"
   end
 end
