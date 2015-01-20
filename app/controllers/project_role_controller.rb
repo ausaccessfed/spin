@@ -63,7 +63,7 @@ class ProjectRoleController < ApplicationController
   private
 
   def project_params
-    params.require(:project_role).permit(:name, :aws_identifier, :state)
+    params.require(:project_role).permit(:name, :role_arn, :state)
   end
 
   def access_prefix

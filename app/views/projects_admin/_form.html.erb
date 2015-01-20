@@ -7,13 +7,13 @@
     <%= f.text_field :name %>
   <%- end -%>
 
-  <%= field_block do -%>
-    <%= f.label :aws_account do -%>
-      AWS Account
-      <%= field_help_text('The unique identifier stored in AWS') %>
+    <%= field_block do -%>
+        <%= f.label :provider_arn do -%>
+            Provider ARN
+            <%= field_help_text('The unique identifier stored in AWS') %>
+        <%- end -%>
+        <%= f.text_field :provider_arn %>
     <%- end -%>
-    <%= f.text_field :aws_account %>
-  <%- end -%>
 
   <%= field_block do -%>
     <%= f.label :state do -%>

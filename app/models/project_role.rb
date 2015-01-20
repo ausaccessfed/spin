@@ -6,5 +6,5 @@ class ProjectRole < ActiveRecord::Base
   has_many :subjects, through: :subject_project_roles
   belongs_to :project
 
-  validates :project, :name, :aws_identifier, presence: true
+  validates :project, :name, :role_arn, presence: true
 end

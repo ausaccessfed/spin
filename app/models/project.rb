@@ -5,5 +5,5 @@ class Project < ActiveRecord::Base
   belongs_to :organisation
   has_many :project_roles, dependent: :destroy
 
-  validates :organisation, :name, :aws_account, :state, presence: true
+  validates :organisation, :name, :provider_arn, :state, presence: true
 end

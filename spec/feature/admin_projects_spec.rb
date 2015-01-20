@@ -32,8 +32,8 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     expect(page).to have_css('table tr td', text: project.name)
   end
 
-  scenario 'shows the project aws_account in the list' do
-    expect(page).to have_css('table tr td', text: project.aws_account)
+  scenario 'shows the project provider_arn in the list' do
+    expect(page).to have_css('table tr td', text: project.provider_arn)
   end
 
   scenario 'shows actions for the project' do
@@ -53,8 +53,8 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
       expect(page).to_not have_css('table tr td', text: project.name)
     end
 
-    scenario 'does not shows the project aws_account in the list' do
-      expect(page).to_not have_css('table tr td', text: project.aws_account)
+    scenario 'does not shows the project provider_arn in the list' do
+      expect(page).to_not have_css('table tr td', text: project.provider_arn)
     end
 
     scenario 'does not shows actions for the project' do
@@ -76,9 +76,9 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
       expect(page).to have_field('project_name', with: project.name)
     end
 
-    scenario 'shows populated aws_account field' do
-      expect(page).to have_field('project_aws_account',
-                                 with: project.aws_account)
+    scenario 'shows populated provider_arn field' do
+      expect(page).to have_field('project_provider_arn',
+                                 with: project.provider_arn)
     end
 
     scenario 'cancels' do
@@ -128,12 +128,12 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
 
     context 'saves' do
       given(:bs) { Faker::Company.bs }
-      given(:aws_account) { Faker::Lorem.characters(10) }
+      given(:provider_arn) { Faker::Lorem.characters(10) }
       given(:state) { Faker::Lorem.characters(6) }
 
       context 'with invalid data' do
         before do
-          fill_in 'project_aws_account', with: aws_account
+          fill_in 'project_provider_arn', with: provider_arn
           click_button 'Create'
         end
 
@@ -147,7 +147,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
       context 'with valid data' do
         before do
           fill_in 'project_name', with: bs
-          fill_in 'project_aws_account', with: aws_account
+          fill_in 'project_provider_arn', with: provider_arn
           fill_in 'project_state', with: state
           click_button 'Create'
         end

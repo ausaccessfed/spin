@@ -9,26 +9,26 @@
 
 <table class="ui basic compact table">
   <thead>
-  <tr>
-    <th>Name</th>
-    <th>AWS Account</th>
-    <th>State</th>
-    <th/>
-  </tr>
+    <tr>
+      <th>Name</th>
+      <th>Provider ARN</th>
+      <th>State</th>
+      <th/>
+    </tr>
   </thead>
   <tbody>
-  <%- @projects.each do |project| -%>
-    <tr>
-      <td><%= project.name %></td>
-      <td><%= project.aws_account %></td>
-      <td><%= project.state %></td>
-      <td>
-        <%- if permitted?("organisations:#{@organisation.id}:projects:#{project.id}:roles:list") -%>
-          <%= button_link_to(organisation_project_roles_path(@organisation, project), class: 'tiny icon') do -%>
-            <%= icon_tag('lock icon') %>
-            Project Roles <em>(<%= project.project_roles.count %>)</em>
+    <%- @projects.each do |project| -%>
+      <tr>
+        <td><%= project.name %></td>
+        <td><%= project.provider_arn %></td>
+        <td><%= project.state %></td>
+        <td>
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{project.id}:roles:list") -%>
+              <%= button_link_to(organisation_project_roles_path(@organisation, project), class: 'tiny icon') do -%>
+                  <%= icon_tag('lock icon') %>
+                  Project Roles <em>(<%= project.project_roles.count %>)</em>
+              <%- end -%>
           <%- end -%>
-        <%- end -%>
 
         <%- if permitted?("organisations:#{@organisation.id}:projects:update") -%>
           <%= button_link_to([:edit, @organisation, project], class: 'tiny icon') do -%>

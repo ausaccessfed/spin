@@ -16,13 +16,13 @@
     <%= f.text_field :name %>
   <%- end -%>
 
-  <%= field_block do -%>
-    <%= f.label :aws_identifier do -%>
-      AWS Identifier
-      <%= field_help_text('The external identifier referenced in the AWS project') %>
+    <%= field_block do -%>
+        <%= f.label :role_arn do -%>
+            Role ARN
+            <%= field_help_text('The external identifier referenced in the AWS project') %>
+        <%- end -%>
+        <%= f.text_field :role_arn %>
     <%- end -%>
-    <%= f.text_field :aws_identifier %>
-  <%- end -%>
 
   <div class="line-of-buttons">
     <%= f.button(class: 'large green icon') do -%>

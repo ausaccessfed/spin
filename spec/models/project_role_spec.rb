@@ -5,7 +5,7 @@ RSpec.describe ProjectRole, type: :model do
 
   it { is_expected.to validate_presence_of(:project) }
   it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_presence_of(:aws_identifier) }
+  it { is_expected.to validate_presence_of(:role_arn) }
 
   context 'associated objects' do
     context 'subject_project_roles' do

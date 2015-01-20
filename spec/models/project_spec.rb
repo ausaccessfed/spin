@@ -5,7 +5,7 @@ RSpec.describe Project, type: :model do
 
   it { is_expected.to validate_presence_of(:organisation) }
   it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_presence_of(:aws_account) }
+  it { is_expected.to validate_presence_of(:provider_arn) }
   it { is_expected.to validate_presence_of(:state) }
 
   context 'associated objects' do

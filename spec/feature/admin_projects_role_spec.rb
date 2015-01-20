@@ -63,7 +63,7 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
 
     context 'saves' do
       given(:bs) { Faker::Company.bs }
-      given(:aws_identifier) { Faker::Lorem.characters(10) }
+      given(:role_arn) { Faker::Lorem.characters(10) }
 
       context 'with invalid data' do
         before do
@@ -79,7 +79,7 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
       context 'with valid data' do
         before do
           fill_in 'project_role_name', with: bs
-          fill_in 'project_role_aws_identifier', with: aws_identifier
+          fill_in 'project_role_role_arn', with: role_arn
           click_button 'Create'
         end
 
