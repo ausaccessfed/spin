@@ -1,12 +1,12 @@
 <%=
-  breadcrumbs(
-          { 'Organisations' => organisations_path },
-          { 'Projects' => organisation_projects_path(@organisation) },
-          {'Project Roles' => organisation_project_roles_path(@organisation, @project) },
-          'New Project Role'
-  )
+    breadcrumbs(
+        {'Organisations' => organisations_path},
+        {'Projects' => organisation_projects_path(@organisation)},
+        {'Project Roles' => organisation_project_roles_path(@organisation, @project)},
+        'New Project Role'
+    )
 %>
 
 <%= page_header("New Project Role for '#{@project.name}'") %>
 
-<%= render(partial: 'form', locals: { submit_label: 'Create' }) %>
+<%= render(partial: 'form', locals: {submit_label: 'Create'}) %>

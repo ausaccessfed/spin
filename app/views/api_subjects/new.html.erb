@@ -1,11 +1,11 @@
 <%=
-  breadcrumbs(
-          { 'Administration' => dashboard_path },
-          { 'API Accounts' => api_subjects_path },
-    'New API Account'
-  )
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        {'API Accounts' => api_subjects_path},
+        'New API Account'
+    )
 %>
 
 <%= page_header('New API Account') %>
 
-<%= render(partial: 'form', locals: { submit_label: 'Create' }) %>
+<%= render(partial: 'form', locals: {submit_label: 'Create'}) %>

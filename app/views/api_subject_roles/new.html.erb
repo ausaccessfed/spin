@@ -1,9 +1,9 @@
 <%=
     breadcrumbs(
-            {'Administration' => dashboard_path},
-            {'Roles' => roles_path},
-            {@role.name => role_path(@role)},
-            'Add API Account'
+        {'Administration' => dashboard_path},
+        {'Roles' => roles_path},
+        {@role.name => role_path(@role)},
+        'Add API Account'
     )
 %>
 
@@ -21,34 +21,34 @@
   </thead>
   <tbody>
   <%- @api_subjects.each do |api_subject| -%>
-      <tr>
-        <td><%= api_subject.x509_cn %></td>
-        <td><%= api_subject.description %></td>
-        <td>
+    <tr>
+      <td><%= api_subject.x509_cn %></td>
+      <td><%= api_subject.description %></td>
+      <td>
 
-          <%- if permitted?('admin:roles:grant') -%>
-              <%- if APISubjectRole.exists?(role_id: @role.id,
-                                            api_subject_id: api_subject.id) -%>
+        <%- if permitted?('admin:roles:grant') -%>
+          <%- if APISubjectRole.exists?(role_id: @role.id,
+                                        api_subject_id: api_subject.id) -%>
 
-                  <%= button_tag(name: 'api_subject_roles[subject_id]',
-                                 value: api_subject.id, class: 'tiny grey icon disabled') do -%>
-                      <%= icon_tag('checkmark') %>
-                      Granted
-                  <%- end -%>
-              <%- else -%>
-                  <%= form_for([@role, @assoc], url: role_api_members_path(@role),
-                               html: {class: 'inline'}) do |f| -%>
+            <%= button_tag(name: 'api_subject_roles[subject_id]',
+                           value: api_subject.id, class: 'tiny grey icon disabled') do -%>
+              <%= icon_tag('checkmark') %>
+              Granted
+            <%- end -%>
+          <%- else -%>
+            <%= form_for([@role, @assoc], url: role_api_members_path(@role),
+                         html: {class: 'inline'}) do |f| -%>
 
-                      <%= button_tag(name: 'api_subject_roles[api_subject_id]',
-                                     value: api_subject.id, class: 'tiny green icon') do -%>
-                          <%= icon_tag('checkmark') %>
-                          Grant
-                      <%- end -%>
-                  <%- end -%>
+              <%= button_tag(name: 'api_subject_roles[api_subject_id]',
+                             value: api_subject.id, class: 'tiny green icon') do -%>
+                <%= icon_tag('checkmark') %>
+                Grant
               <%- end -%>
+            <%- end -%>
           <%- end -%>
-        </td>
-      </tr>
+        <%- end -%>
+      </td>
+    </tr>
   <%- end -%>
   </tbody>
 </table>

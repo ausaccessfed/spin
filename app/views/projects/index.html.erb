@@ -9,12 +9,14 @@
 
     <div class="ui selection dropdown">
       <input type="hidden" name="gender">
+
       <div class="default text">Project</div>
       <i class="dropdown icon"></i>
+
       <div class="menu">
         <% @projects.each do |project| %>
-            <div class="item" data-value="<%= project.id %>"><%= project.name %>
-            </div>
+          <div class="item" data-value="<%= project.id %>"><%= project.name %>
+          </div>
         <% end %>
       </div>
     </div>

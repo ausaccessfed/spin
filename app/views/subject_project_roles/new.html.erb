@@ -1,10 +1,10 @@
 <%=
     breadcrumbs(
-            { 'Organisations' => organisations_path },
-            { 'Projects' => organisation_projects_path(@organisation) },
-            { 'Project Roles' => organisation_project_roles_path(@organisation, @project) },
-            { @project_role.name => organisation_project_role_path(@organisation, @project, @project_role) },
-            'Add Subject'
+        {'Organisations' => organisations_path},
+        {'Projects' => organisation_projects_path(@organisation)},
+        {'Project Roles' => organisation_project_roles_path(@organisation, @project)},
+        {@project_role.name => organisation_project_role_path(@organisation, @project, @project_role)},
+        'Add Subject'
     )
 %>
 
@@ -20,33 +20,33 @@
   </thead>
   <tbody>
   <%- @subjects.each do |subject| -%>
-      <tr>
-        <td><%= subject.name %></td>
-        <td><%= subject.mail %></td>
-        <td>
-          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
-              <%- if SubjectProjectRole.exists?(project_role_id: @project_role.id,
-                                          subject_id: subject.id) -%>
+    <tr>
+      <td><%= subject.name %></td>
+      <td><%= subject.mail %></td>
+      <td>
+        <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
+          <%- if SubjectProjectRole.exists?(project_role_id: @project_role.id,
+                                            subject_id: subject.id) -%>
 
-                  <%= button_tag(name: 'subject_project_roles[subject_id]',
-                                 value: subject.id, class: 'tiny grey icon disabled') do -%>
-                      <%= icon_tag('checkmark') %>
-                      Granted
-                  <%- end -%>
-              <%- else -%>
-                  <%= form_for(@assoc, url: organisation_project_role_members_path(@organisation, @project, @project_role),
-                               html: {class: 'inline'}) do |f| -%>
+            <%= button_tag(name: 'subject_project_roles[subject_id]',
+                           value: subject.id, class: 'tiny grey icon disabled') do -%>
+              <%= icon_tag('checkmark') %>
+              Granted
+            <%- end -%>
+          <%- else -%>
+            <%= form_for(@assoc, url: organisation_project_role_members_path(@organisation, @project, @project_role),
+                         html: {class: 'inline'}) do |f| -%>
 
-                      <%= button_tag(name: 'subject_project_roles[subject_id]',
-                                     value: subject.id, class: 'tiny green icon') do -%>
-                          <%= icon_tag('checkmark') %>
-                          Grant
-                      <%- end -%>
-                  <%- end -%>
+              <%= button_tag(name: 'subject_project_roles[subject_id]',
+                             value: subject.id, class: 'tiny green icon') do -%>
+                <%= icon_tag('checkmark') %>
+                Grant
               <%- end -%>
+            <%- end -%>
           <%- end -%>
-        </td>
-      </tr>
+        <%- end -%>
+      </td>
+    </tr>
   <%- end -%>
   </tbody>
 </table>

@@ -1,13 +1,13 @@
 <%=
-  breadcrumbs(
-          { 'Organisations' => organisations_path },
-          { 'Projects' => organisation_projects_path(@organisation) },
-          { 'Project Roles' => organisation_project_roles_path(@organisation, @project) },
-          @project_role.name
+    breadcrumbs(
+        {'Organisations' => organisations_path},
+        {'Projects' => organisation_projects_path(@organisation)},
+        {'Project Roles' => organisation_project_roles_path(@organisation, @project)},
+        @project_role.name
 
-  )
+    )
 %>
-<%= page_header("Members for '#{@project_role.name}'" ) %>
+<%= page_header("Members for '#{@project_role.name}'") %>
 
 <table class="ui basic compact table">
   <thead>
@@ -18,15 +18,15 @@
   </thead>
   <tbody>
   <%- @project_role.subject_project_roles.each do |assoc| -%>
-      <tr>
-        <td><%= assoc.subject.name %></td>
-        <td>
-          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:revoke") -%>
-              <%= delete_button_tag(organisation_project_role_member_path(@organisation, @project, @project_role, assoc),
-                                    text: 'Revoke') %>
-          <%- end -%>
-        </td>
-      </tr>
+    <tr>
+      <td><%= assoc.subject.name %></td>
+      <td>
+        <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:revoke") -%>
+          <%= delete_button_tag(organisation_project_role_member_path(@organisation, @project, @project_role, assoc),
+                                text: 'Revoke') %>
+        <%- end -%>
+      </td>
+    </tr>
   <%- end -%>
   </tbody>
 </table>
@@ -34,10 +34,10 @@
 <div class="line-of-buttons">
 
   <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
-      <%= button_link_to(new_organisation_project_role_member_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
-          <%= icon_tag('add') %>
-          Add Subject
-      <%- end -%>
+    <%= button_link_to(new_organisation_project_role_member_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      Add Subject
+    <%- end -%>
   <%- end -%>
 
 </div>

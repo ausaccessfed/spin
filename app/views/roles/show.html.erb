@@ -1,58 +1,59 @@
 <%=
-  breadcrumbs(
-    { 'Administration' => dashboard_path},
-    { 'Roles' => roles_path },
-    @role.name
-  )
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        {'Roles' => roles_path},
+        @role.name
+    )
 %>
 
-<%= page_header("Members for #{@role.name}" ) %>
+<%= page_header("Members for #{@role.name}") %>
 
 <table class="ui basic compact table">
   <thead>
-    <tr>
-      <th>Member</th>
-      <th/>
-    </tr>
+  <tr>
+    <th>Member</th>
+    <th/>
+  </tr>
   </thead>
   <tbody>
-    <%- @role.subject_roles.each do |assoc| -%>
-      <tr>
-        <td><%= assoc.subject.name %> <em>(<%= assoc.subject.mail %>)</em></td>
-        <td>
-          <%- if permitted?("admin:roles:revoke") -%>
-              <%= delete_button_tag(role_member_path(@role, assoc),
-                                    text: 'Revoke') %>
-          <%- end -%>
-        </td>
-      </tr>
-    <%- end -%>
-    <%- @role.api_subject_roles.each do |assoc| -%>
-      <tr>
-        <td><%= assoc.api_subject.x509_cn %> <em>(<%= assoc.api_subject.contact_mail %>)</em></td>
-        <td>
-          <%- if permitted?("admin:roles:revoke") -%>
-              <%= delete_button_tag(role_api_member_path(@role, assoc),
-                                    text: 'Revoke') %>
-          <%- end -%>
-        </td>
-      </tr>
-    <%- end -%>
+  <%- @role.subject_roles.each do |assoc| -%>
+    <tr>
+      <td><%= assoc.subject.name %> <em>(<%= assoc.subject.mail %>)</em></td>
+      <td>
+        <%- if permitted?("admin:roles:revoke") -%>
+          <%= delete_button_tag(role_member_path(@role, assoc),
+                                text: 'Revoke') %>
+        <%- end -%>
+      </td>
+    </tr>
+  <%- end -%>
+  <%- @role.api_subject_roles.each do |assoc| -%>
+    <tr>
+      <td><%= assoc.api_subject.x509_cn %>
+        <em>(<%= assoc.api_subject.contact_mail %>)</em></td>
+      <td>
+        <%- if permitted?("admin:roles:revoke") -%>
+          <%= delete_button_tag(role_api_member_path(@role, assoc),
+                                text: 'Revoke') %>
+        <%- end -%>
+      </td>
+    </tr>
+  <%- end -%>
   </tbody>
 </table>
 
 <div class="line-of-buttons">
   <%- if permitted?("admin:roles:grant") -%>
-      <%= button_link_to(new_role_member_path(@role), class: 'large green icon') do -%>
-          <%= icon_tag('add') %>
-          Add Subject
-      <%- end -%>
+    <%= button_link_to(new_role_member_path(@role), class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      Add Subject
+    <%- end -%>
   <%- end -%>
 
   <%- if permitted?("admin:roles:grant") -%>
-      <%= button_link_to(new_role_api_member_path(@role), class: 'large green icon') do -%>
-          <%= icon_tag('add') %>
-          Add API Account
-      <%- end -%>
+    <%= button_link_to(new_role_api_member_path(@role), class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      Add API Account
+    <%- end -%>
   <%- end -%>
 </div>

@@ -1,4 +1,4 @@
-<%= form_for(@api_subject, html: { id: 'api-subject' }) do |f| -%>
+<%= form_for(@api_subject, html: {id: 'api-subject'}) do |f| -%>
   <%= field_block do %>
     <%= f.label(:description) do -%>
       Description
@@ -49,7 +49,7 @@
 <%= validate_form('#api-subject', :api_subject) do -%>
   <%= validate_field(:description, empty: 'Please enter a description') %>
   <%= validate_field(:x509_cn, empty: 'Please enter an X.509 CN',
-                               urlsafe_base64: 'Please enter a valid X.509 CN') %>
+                     urlsafe_base64: 'Please enter a valid X.509 CN') %>
   <%= validate_field(:contact_name, empty: 'Please enter a contact name') %>
   <%= validate_field(:contact_mail, empty: 'Please enter a contact email address') %>
 <%- end -%>

@@ -1,29 +1,29 @@
-<%= form_for([@organisation, @project], html: { id: 'project-form' }) do |f| -%>
-    <%= field_block do -%>
-        <%= f.label :name do -%>
-            Name
-            <%= field_help_text('The project name') %>
-        <%- end -%>
-        <%= f.text_field :name %>
+<%= form_for([@organisation, @project], html: {id: 'project-form'}) do |f| -%>
+  <%= field_block do -%>
+    <%= f.label :name do -%>
+      Name
+      <%= field_help_text('The project name') %>
     <%- end -%>
+    <%= f.text_field :name %>
+  <%- end -%>
 
-    <%= field_block do -%>
-        <%= f.label :aws_account do -%>
-            AWS Account
-            <%= field_help_text('The unique identifier stored in AWS') %>
-        <%- end -%>
-        <%= f.text_field :aws_account %>
+  <%= field_block do -%>
+    <%= f.label :aws_account do -%>
+      AWS Account
+      <%= field_help_text('The unique identifier stored in AWS') %>
     <%- end -%>
+    <%= f.text_field :aws_account %>
+  <%- end -%>
 
-    <%= field_block do -%>
-        <%= f.label :state do -%>
-            State
-            <%= field_help_text('The project state') %>
-        <%- end -%>
-        <%= f.text_field :state %>
+  <%= field_block do -%>
+    <%= f.label :state do -%>
+      State
+      <%= field_help_text('The project state') %>
     <%- end -%>
+    <%= f.text_field :state %>
+  <%- end -%>
 
-    <div class="line-of-buttons">
+  <div class="line-of-buttons">
     <%= f.button(class: 'large green icon') do -%>
       <%= icon_tag('checkmark') %>
       <%= submit_label %>

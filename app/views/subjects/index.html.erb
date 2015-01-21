@@ -1,7 +1,7 @@
 <%=
     breadcrumbs(
-            {'Administration' => dashboard_path},
-            'Subjects'
+        {'Administration' => dashboard_path},
+        'Subjects'
     )
 %>
 
@@ -19,29 +19,29 @@
 
   <tbody>
   <%- @objects.each do |object| -%>
-      <tr>
-        <td><%= object.name %></td>
-        <td><%= link_to(object.mail, "mailto:#{object.mail}") %></td>
-        <td>
-          <%- if object.functioning? -%>
-              <%= icon_tag('green checkmark') %> Yes
-          <%- else -%>
-              <%= icon_tag('yellow warning sign') %> No
+    <tr>
+      <td><%= object.name %></td>
+      <td><%= link_to(object.mail, "mailto:#{object.mail}") %></td>
+      <td>
+        <%- if object.functioning? -%>
+          <%= icon_tag('green checkmark') %> Yes
+        <%- else -%>
+          <%= icon_tag('yellow warning sign') %> No
+        <%- end -%>
+      </td>
+      <td class="action-buttons">
+        <%- if permitted?('admin:subjects:read') -%>
+          <%= button_link_to(object, class: 'tiny icon') do -%>
+            <%= icon_tag('content') %>
+            View
           <%- end -%>
-        </td>
-        <td class="action-buttons">
-          <%- if permitted?('admin:subjects:read') -%>
-              <%= button_link_to(object, class: 'tiny icon') do -%>
-                  <%= icon_tag('content') %>
-                  View
-              <%- end -%>
-          <%- end -%>
+        <%- end -%>
 
-          <%- if permitted?('admin:subjects:delete') -%>
-              <%= delete_button_tag(object) %>
-          <%- end -%>
-        </td>
-      </tr>
+        <%- if permitted?('admin:subjects:delete') -%>
+          <%= delete_button_tag(object) %>
+        <%- end -%>
+      </td>
+    </tr>
   <%- end -%>
   </tbody>
 </table>

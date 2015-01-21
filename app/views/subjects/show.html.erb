@@ -1,8 +1,8 @@
 <%=
     breadcrumbs(
-            { 'Administration' => dashboard_path },
-            { 'Subjects' => subjects_path },
-            @object.name
+        {'Administration' => dashboard_path},
+        {'Subjects' => subjects_path},
+        @object.name
     )
 %>
 
@@ -31,6 +31,6 @@
 
 <div class="line-of-buttons">
   <%- if permitted?('admin:subjects:delete') -%>
-      <%= delete_button_tag(@object, class: 'large') %>
+    <%= delete_button_tag(@object, class: 'large') %>
   <%- end -%>
 </div>

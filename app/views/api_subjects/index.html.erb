@@ -1,22 +1,22 @@
 <%=
-  breadcrumbs(
-          {'Administration' => dashboard_path},
-          'API Accounts'
-  )
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        'API Accounts'
+    )
 %>
 
 <%= page_header('API Accounts') %>
 
 <table class="ui basic compact table">
-<thead>
+  <thead>
   <tr>
     <th>X.509 CN</th>
     <th>Description</th>
     <th>Functioning</th>
     <th/>
   </tr>
-</thead>
-<tbody>
+  </thead>
+  <tbody>
   <%- @api_subjects.each do |api_subject| -%>
     <tr>
       <td><%= api_subject.x509_cn %></td>
@@ -30,26 +30,26 @@
       </td>
       <td>
         <%- if permitted?('admin:api_subjects:read') -%>
-            <%= button_link_to(api_subject, class: 'tiny icon') do -%>
-                <%= icon_tag('content') %>
-                View
-            <%- end -%>
+          <%= button_link_to(api_subject, class: 'tiny icon') do -%>
+            <%= icon_tag('content') %>
+            View
+          <%- end -%>
         <%- end -%>
 
         <%- if permitted?('admin:api_subjects:update') -%>
-            <%= button_link_to([:edit, api_subject], class: 'tiny icon') do -%>
-                <%= icon_tag('edit') %>
-                Edit
-            <%- end -%>
+          <%= button_link_to([:edit, api_subject], class: 'tiny icon') do -%>
+            <%= icon_tag('edit') %>
+            Edit
+          <%- end -%>
         <%- end -%>
 
         <%- if permitted?('admin:api_subjects:delete') -%>
-            <%= delete_button_tag(api_subject) %>
+          <%= delete_button_tag(api_subject) %>
         <%- end -%>
       </td>
     </tr>
   <%- end -%>
-</tbody>
+  </tbody>
 </table>
 
 

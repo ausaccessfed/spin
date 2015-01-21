@@ -1,11 +1,11 @@
 <%=
-  breadcrumbs(
-    { 'Administration' => dashboard_path},
-    { 'Roles' => roles_path },
-    'New Role'
-  )
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        {'Roles' => roles_path},
+        'New Role'
+    )
 %>
 
 <%= page_header('New Role') %>
 
-<%= render(partial: 'form', locals: { submit_label: 'Create' }) %>
+<%= render(partial: 'form', locals: {submit_label: 'Create'}) %>
