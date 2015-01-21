@@ -48,7 +48,7 @@ module Authentication
     def finish(env)
       return unless env['rack.session']
       subject = Subject.find(env['rack.session']['subject_id'])
-      return redirect_to('/dashboard') if subject.permits?('admin')
+      return redirect_to('/dashboard') if subject.roles.any?
       redirect_subject(subject)
     end
 
