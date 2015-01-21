@@ -34,4 +34,28 @@ Rails.application.routes.draw do
   end
 
   root to: 'welcome#index'
+
+  if Rails.env.development? || Rails.env.test?
+    idp = lambda do |env|
+      req = Rack::Request.new(env)
+      instance = AWSSessionInstance
+                 .find_by_identifier(req.params['spin_session_instance'])
+
+      if instance
+        content = <<-EOF.gsub(/^ +/, '')
+          A real deployment would sign in to AWS now.
+
+          Subject: #{instance.subject.name}
+          Project: #{instance.project_role.project.name}
+          Role:    #{instance.project_role.name}
+        EOF
+      else
+        content = 'No session instance found'
+      end
+
+      [200, { 'Content-Type' => 'text/plain' }, [content]]
+    end
+
+    mount idp => '/idp'
+  end
 end
