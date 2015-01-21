@@ -33,7 +33,7 @@ RSpec.feature 'After the user has authenticated with idP', type: :feature do
 
     scenario 'redirects to aws auth' do
       click_button 'Login'
-      expect(current_path).to eq('/aws_idp')
+      expect(current_path).to eq('/aws_login')
     end
   end
 

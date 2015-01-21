@@ -53,11 +53,11 @@ module Authentication
     end
 
     def redirect_subject(subject)
-      case subject.projects.count
+      case subject.project_roles.count
       when 0
         redirect_to('/dashboard')
       when 1
-        redirect_to('/aws_idp')
+        redirect_to('/aws_login')
       else
         redirect_to('/projects')
       end
