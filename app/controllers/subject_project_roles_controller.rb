@@ -24,14 +24,6 @@ class SubjectProjectRolesController < ApplicationController
                                                @project_role))
   end
 
-  def assign_creation_message
-    flash[:success] = creation_message(@assoc)
-  end
-
-  def assign_error_flash
-    flash[:error] = "#{error_from_validations(@assoc)}"
-  end
-
   def destroy
     check_access!("#{access_prefix}:revoke")
     @assoc = @project_role.subject_project_roles.find(params[:id])
@@ -47,6 +39,14 @@ class SubjectProjectRolesController < ApplicationController
 
   def assoc_params
     params.require(:subject_project_roles).permit(:subject_id)
+  end
+
+  def assign_creation_message
+    flash[:success] = creation_message(@assoc)
+  end
+
+  def assign_error_flash
+    flash[:error] = "#{error_from_validations(@assoc)}"
   end
 
   def creation_message(assoc)

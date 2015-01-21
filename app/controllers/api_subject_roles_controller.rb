@@ -22,9 +22,6 @@ class APISubjectRolesController < ApplicationController
     redirect_to(role_path(@role))
   end
 
-  def assign_error_flash
-    flash[:error] = "#{error_from_validations(@assoc)}"
-  end
 
   def destroy
     check_access!('admin:roles:revoke')
@@ -50,5 +47,9 @@ class APISubjectRolesController < ApplicationController
   def deletion_message(assoc)
     "Revoked #{@role.name} from API Account: " \
       "#{assoc.api_subject.x509_cn}"
+  end
+
+  def assign_error_flash
+    flash[:error] = "#{error_from_validations(@assoc)}"
   end
 end

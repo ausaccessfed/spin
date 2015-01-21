@@ -23,9 +23,6 @@ class SubjectRolesController < ApplicationController
     redirect_to(role_path(@role))
   end
 
-  def assign_error_flash
-    flash[:error] = "#{error_from_validations(@assoc)}"
-  end
 
   def destroy
     check_access!('admin:roles:revoke')
@@ -49,5 +46,9 @@ class SubjectRolesController < ApplicationController
 
   def deletion_message(assoc)
     "Revoked #{@role.name} from #{assoc.subject.name}"
+  end
+
+  def assign_error_flash
+    flash[:error] = "#{error_from_validations(@assoc)}"
   end
 end

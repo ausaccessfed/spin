@@ -22,9 +22,6 @@ class PermissionsController < ApplicationController
     redirect_to(role_permissions_path(@role))
   end
 
-  def assign_error_flash(permission)
-    flash[:error] = "#{error_from_validations(permission)}"
-  end
 
   def destroy
     check_access!('admin:roles:update')
@@ -40,5 +37,9 @@ class PermissionsController < ApplicationController
 
   def permission_params
     params.require(:permission).permit(:value)
+  end
+
+  def assign_error_flash(permission)
+    flash[:error] = "#{error_from_validations(permission)}"
   end
 end
