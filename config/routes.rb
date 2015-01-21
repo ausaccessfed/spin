@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'aws_idp', to: 'aws_idp#index' # Placeholder for now ...
   get 'dashboard', to: 'dashboard#index'
   post 'login', to: 'sessions#create'
+  post 'aws_login', to: 'aws_session_instances#create'
 
   scope '/admin' do
     resources :subjects, only: %i(index show destroy)
