@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150120225936) do
+ActiveRecord::Schema.define(version: 20150121002347) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -58,6 +58,14 @@ ActiveRecord::Schema.define(version: 20150120225936) do
   add_index "audits", ["created_at"], name: "index_audits_on_created_at", using: :btree
   add_index "audits", ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
   add_index "audits", ["user_id", "user_type"], name: "user_index", using: :btree
+
+  create_table "aws_session_instances", force: true do |t|
+    t.integer  "subject_id",      null: false
+    t.integer  "project_role_id", null: false
+    t.string   "identifier",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "organisations", force: true do |t|
     t.string   "name",        null: false
