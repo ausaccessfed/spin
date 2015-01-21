@@ -57,13 +57,20 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
     it { is_expected.to change(model_class, :count).by(1) }
 
     context 'when association has already been created' do
-      before { 2.times { run } }
+      before do
+        create(:subject_project_role, project_role: project_role,
+                                      subject: object)
+      end
 
       it { is_expected.to change(model_class, :count).by(0) }
 
-      it 'sets the flash message' do
-        expect(flash[:error])
-          .to eq('Subject already has this role granted')
+      context 'the response' do
+        before { run }
+        subject { response }
+        it 'sets the flash message' do
+          expect(flash[:error])
+            .to eq('Subject already has this role granted')
+        end
       end
     end
 

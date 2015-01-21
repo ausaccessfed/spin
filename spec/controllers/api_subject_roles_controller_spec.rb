@@ -64,13 +64,21 @@ RSpec.describe APISubjectRolesController, type: :controller do
     end
 
     context 'when association has already been created' do
-      before { 2.times { run } }
+      before do
+        create(:api_subject_role, role: role,
+                                  api_subject: api_subject)
+      end
 
       it { is_expected.to change(model_class, :count).by(0) }
 
-      it 'sets the flash message' do
-        expect(flash[:error])
-          .to eq('API subject already has this role granted')
+      context 'the response' do
+        before { run }
+        subject { response }
+
+        it 'sets the flash message' do
+          expect(flash[:error])
+            .to eq('API subject already has this role granted')
+        end
       end
     end
   end
