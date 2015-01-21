@@ -22,7 +22,6 @@ class PermissionsController < ApplicationController
     redirect_to(role_permissions_path(@role))
   end
 
-
   def destroy
     check_access!('admin:roles:update')
 

@@ -23,7 +23,6 @@ class SubjectRolesController < ApplicationController
     redirect_to(role_path(@role))
   end
 
-
   def destroy
     check_access!('admin:roles:revoke')
     @assoc = @role.subject_roles.find(params[:id])
