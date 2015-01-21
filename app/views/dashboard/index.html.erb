@@ -23,7 +23,8 @@
   </ul>
 <%- end -%>
 <br/>
-<%- case @subject.active_project_count -%>
+
+<%- case @subject.projects.count -%>
 <%- when 0 -%>
   <%- if !permitted?('admin') -%>
     <%= error_message('You must have a project assigned to continue') do -%>
