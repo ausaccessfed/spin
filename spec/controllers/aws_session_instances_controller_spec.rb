@@ -1,13 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AWSSessionInstancesController, type: :controller do
-  context '#create' do
+  shared_examples 'an aws login action' do
     let(:project_role) { create(:project_role) }
     let(:user) { create(:subject) }
-
-    def run
-      post :create, project_role_id: project_role.id.to_s
-    end
 
     before { session[:subject_id] = user.try(:id) }
     subject { -> { run } }
@@ -45,5 +41,21 @@ RSpec.describe AWSSessionInstancesController, type: :controller do
         it { is_expected.to render_template('errors/forbidden') }
       end
     end
+  end
+
+  context '#auto' do
+    def run
+      get :auto
+    end
+
+    it_behaves_like 'an aws login action'
+  end
+
+  context '#login' do
+    def run
+      post :login, project_role_id: project_role.id.to_s
+    end
+
+    it_behaves_like 'an aws login action'
   end
 end

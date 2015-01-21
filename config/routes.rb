@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'projects', to: 'projects#index'
   get 'dashboard', to: 'dashboard#index'
   post 'login', to: 'sessions#create'
-  post 'aws_login', to: 'aws_session_instances#create'
+  get 'aws_login', to: 'aws_session_instances#auto', as: :aws_login
+  post 'aws_login', to: 'aws_session_instances#login'
 
   scope '/admin' do
     resources :subjects, only: %i(index show destroy)
