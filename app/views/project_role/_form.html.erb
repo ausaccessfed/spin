@@ -1,35 +1,38 @@
-<%= form_for([@organisation, @project, @project_role],
-             url: @project_role.new_record? ?
-                     organisation_project_roles_path(
-                             @organisation, @project, @project_role) :
-                     organisation_project_role_path(
-                             @organisation, @project, @project_role),
+<%-
+    url = if @project_role.new_record?
+            organisation_project_roles_path(@organisation, @project)
+          else
+            organisation_project_role_path(@organisation, @project, @project_role)
+          end
+-%>
+
+<%= form_for([@organisation, @project, @project_role], url: url,
              html: {id: 'project_role-form'}) do |f| -%>
-    <%= field_block do -%>
-        <%= f.label :name do -%>
-            Name
-            <%= field_help_text('The project name') %>
-        <%- end -%>
-        <%= f.text_field :name %>
+  <%= field_block do -%>
+    <%= f.label :name do -%>
+      Name
+      <%= field_help_text('The project name') %>
+    <%- end -%>
+    <%= f.text_field :name %>
+  <%- end -%>
+
+  <%= field_block do -%>
+    <%= f.label :aws_identifier do -%>
+      AWS Identifier
+      <%= field_help_text('The external identifier referenced in the AWS project') %>
+    <%- end -%>
+    <%= f.text_field :aws_identifier %>
+  <%- end -%>
+
+  <div class="line-of-buttons">
+    <%= f.button(class: 'large green icon') do -%>
+      <%= icon_tag('checkmark') %>
+      <%= submit_label %>
     <%- end -%>
 
-    <%= field_block do -%>
-        <%= f.label :aws_identifier do -%>
-            AWS Identifier
-            <%= field_help_text('The external identifier referenced in the AWS project') %>
-        <%- end -%>
-        <%= f.text_field :aws_identifier %>
+    <%= button_link_to(organisation_project_roles_path(@organisation, @project), class: 'large icon') do -%>
+      <%= icon_tag('cancel') %>
+      Cancel
     <%- end -%>
-
-    <div class="line-of-buttons">
-      <%= f.button(class: 'large green icon') do -%>
-          <%= icon_tag('checkmark') %>
-          <%= submit_label %>
-      <%- end -%>
-
-      <%= button_link_to(organisation_project_roles_path(@organisation, @project), class: 'large icon') do -%>
-          <%= icon_tag('cancel') %>
-          Cancel
-      <%- end -%>
-    </div>
+  </div>
 <%- end -%>
