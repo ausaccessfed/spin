@@ -1,4 +1,4 @@
-class AwsIdpController < ApplicationController
+class AWSIdpController < ApplicationController
   def index
     public_action
   end
