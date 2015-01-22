@@ -74,6 +74,7 @@
     - attribute-filter.xml
     - service.xml
     - logging.xml
+    - handler.xml
   notify: 'Restart spin-idp'
 
 - name: 'Read idp certificate'
