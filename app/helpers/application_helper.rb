@@ -13,4 +13,8 @@ module ApplicationHelper
   def support_html
     SUPPORT_HTML
   end
+
+  def markdown_to_html(input)
+    Kramdown::Document.new(input).to_html.html_safe
+  end
 end
