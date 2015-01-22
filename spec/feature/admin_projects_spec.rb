@@ -128,7 +128,10 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
 
     context 'saves' do
       given(:bs) { Faker::Company.bs }
-      given(:provider_arn) { Faker::Lorem.characters(10) }
+      given(:provider_arn) do
+        "arn:aws:iam::#{Faker::Number.number(3)}:" \
+                             "saml-provider/#{Faker::Lorem.characters(10)}"
+      end
       given(:state) { Faker::Lorem.characters(6) }
 
       context 'with invalid data' do
@@ -139,8 +142,24 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
 
         scenario 'shows flash message' do
           expect(page).to have_content('Unable to save Project' \
-                                       " Name can't be blank" \
-                                       " State can't be blank")
+                                       ' Name can’t be blank' \
+                                       ' State can’t be blank')
+        end
+      end
+
+      context 'with invalid provider_arn' do
+        before do
+          fill_in 'project_provider_arn', with: 'x'
+          fill_in 'project_name', with: Faker::Lorem.word
+          fill_in 'project_state', with: Faker::Lorem.characters(10)
+          click_button 'Create'
+        end
+
+        scenario 'shows flash message' do
+          expect(page).to have_content('Unable to save Project' \
+                                       ' Provider arn format must be ' \
+                                       '‘arn:aws:iam:' \
+                                       ':(number):saml-provider/(string)’')
         end
       end
 
