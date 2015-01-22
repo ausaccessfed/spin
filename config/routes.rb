@@ -39,7 +39,7 @@ Rails.application.routes.draw do
     idp = lambda do |env|
       req = Rack::Request.new(env)
       instance = AWSSessionInstance
-                 .find_by_identifier(req.params['spin_session_instance'])
+                 .find_by_identifier(req.cookies['spin_session_identifier'])
 
       if instance
         content = <<-EOF.gsub(/^ +/, '')

@@ -23,14 +23,19 @@ class AWSSessionInstancesController < ApplicationController
 
   private
 
-  def sso_url(instance)
-    '/idp/profile/SAML2/Unsolicited/SSO?providerId=urn:amazon:webservices&' \
-      "spin_session_instance=#{instance.identifier}"
+  def sso_url
+    '/idp/profile/SAML2/Unsolicited/SSO?providerId=urn:amazon:webservices'
   end
 
   def perform_login(subject, project_role)
     instance = AWSSessionInstance.create!(subject: subject,
                                           project_role: project_role)
-    redirect_to sso_url(instance)
+
+    cookies['spin_session_identifier'] = {
+      value: instance.identifier,
+      expires: 2.minutes.from_now
+    }
+
+    redirect_to sso_url
   end
 end

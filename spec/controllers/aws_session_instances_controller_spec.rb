@@ -24,8 +24,7 @@ RSpec.describe AWSSessionInstancesController, type: :controller do
 
         it 'includes the session instance in the url' do
           identifier = AWSSessionInstance.last.identifier
-          expect(subject)
-            .to redirect_to(/.*&spin_session_instance=#{identifier}/)
+          expect(response.cookies['spin_session_identifier']).to eq(identifier)
         end
       end
     end
