@@ -15,7 +15,7 @@ RSpec.describe ProjectsController, type: :controller do
           get :index
         end
         it 'has no projects' do
-          expect(assigns(:projects)).to eq([])
+          expect(assigns(:projects)).to be_empty
         end
         it 'has 200 response' do
           expect(response).to have_http_status(:success)
@@ -38,8 +38,9 @@ RSpec.describe ProjectsController, type: :controller do
         end
 
         it 'has a unique set of projects' do
-          expect(assigns(:projects)).to contain_exactly(an_instance_of(Project),
-                                                        an_instance_of(Project))
+          expect(assigns(:projects).keys)
+            .to contain_exactly(an_instance_of(Project),
+                                an_instance_of(Project))
         end
       end
     end

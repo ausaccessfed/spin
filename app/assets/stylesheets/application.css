@@ -13,4 +13,5 @@
  *= require_self
  *= require semantic-ui
  *= require aaf-layout
+ *= require_tree .
  */
