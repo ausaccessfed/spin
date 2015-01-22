@@ -5,5 +5,7 @@ class SubjectRole < ActiveRecord::Base
   belongs_to :role
 
   validates :subject, :role, presence: true
-  validates :role, uniqueness: { scope: :subject }
+  validates :subject, uniqueness:
+                        { scope: :role,
+                          message: 'already has this role granted' }
 end

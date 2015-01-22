@@ -75,4 +75,18 @@ RSpec.describe Subject, type: :model do
       expect(subject.permits?('a:b:c')).to be_falsey
     end
   end
+
+  context 'associated objects' do
+    context 'subject_roles' do
+      let(:child) { create(:subject_role) }
+      subject { child.subject }
+      it_behaves_like 'an association which cascades delete'
+    end
+
+    context 'subject_project_roles' do
+      let(:child) { create(:subject_project_role) }
+      subject { child.subject }
+      it_behaves_like 'an association which cascades delete'
+    end
+  end
 end

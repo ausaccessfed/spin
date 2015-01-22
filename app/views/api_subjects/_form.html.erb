@@ -1,0 +1,55 @@
+<%= form_for(@api_subject, html: {id: 'api-subject'}) do |f| -%>
+  <%= field_block do %>
+    <%= f.label(:description) do -%>
+      Description
+      <%= field_help_text('A description of the API account and how it will be used') %>
+    <%- end -%>
+    <%= f.text_field :description %>
+  <%- end -%>
+
+  <%= field_block do %>
+    <%= f.label(:x509_cn) do -%>
+      X.509 CN
+      <%= field_help_text('The CN field from the AAF-supplied certificate for this account') %>
+    <%- end -%>
+    <%= f.text_field :x509_cn %>
+  <%- end -%>
+
+  <%= field_block do %>
+    <%= f.label :contact_name do -%>
+      Contact Name
+      <%= field_help_text('The name of a person or team responsible for this API account') %>
+    <%- end -%>
+    <%= f.text_field :contact_name %>
+  <%- end -%>
+
+  <%= field_block do %>
+    <%= f.label(:contact_mail) do -%>
+      Contact Email Address
+      <%= field_help_text('The email address of a person or team responsible for this API account') %>
+    <%- end -%>
+    <%= f.text_field :contact_mail %>
+  <%- end -%>
+
+  <div class="line-of-buttons">
+    <%= button_tag(type: 'submit', class: 'large green icon') do -%>
+      <%= icon_tag('checkmark') %>
+      <%= submit_label %>
+    <%- end -%>
+
+    <%= button_link_to(api_subjects_path, class: 'large icon') do -%>
+      <%= icon_tag('cancel') %>
+      Cancel
+    <%- end -%>
+  </div>
+
+  <%= error_messages_tag %>
+<%- end -%>
+
+<%= validate_form('#api-subject', :api_subject) do -%>
+  <%= validate_field(:description, empty: 'Please enter a description') %>
+  <%= validate_field(:x509_cn, empty: 'Please enter an X.509 CN',
+                     urlsafe_base64: 'Please enter a valid X.509 CN') %>
+  <%= validate_field(:contact_name, empty: 'Please enter a contact name') %>
+  <%= validate_field(:contact_mail, empty: 'Please enter a contact email address') %>
+<%- end -%>

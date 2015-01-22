@@ -51,4 +51,14 @@ class ApplicationController < ActionController::Base
   def forbidden
     render 'errors/forbidden', status: :forbidden
   end
+
+  def form_error(view, message, object)
+    flash.now[:error] =
+        [message, error_from_validations(object)].join("\n\n")
+    render(view)
+  end
+
+  def error_from_validations(object)
+    object.errors.full_messages.join("\n")
+  end
 end

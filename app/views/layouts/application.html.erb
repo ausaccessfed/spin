@@ -9,32 +9,61 @@
 
   <%= javascript_include_tag 'application' %>
   <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= csrf_meta_tags %>
 </head>
 <body>
 <%= aaf_header(title: 'SPIN', environment: environment_string) do -%>
-    <%= nav_bar do -%>
-        <%= nav_item('Welcome', '/') %>
-
-        <%= nav_items_right do -%>
-            <%- if @subject -%>
-                <%= nav_item('Log out', '/auth/logout') %>
-            <%- end -%>
-        <%- end -%>
-
+  <%= nav_bar do -%>
+    <%- if @subject -%>
+      <%= nav_item('Dashboard', dashboard_path) %>
+    <%- else -%>
+      <%= nav_item('Welcome', root_path) %>
     <%- end -%>
+
+    <%- if permitted?('organisations:list') -%>
+      <%= nav_item('Organisations', organisations_path) %>
+    <%- end -%>
+
+    <%- if permitted?('admin') -%>
+      <%= nav_dropdown('Administration') do -%>
+        <%- if permitted?('admin:subjects:list') -%>
+          <%= nav_item('Subjects', subjects_path) %>
+        <%- end -%>
+        <%- if permitted?('admin:api_subjects:list') -%>
+          <%= nav_item('API Accounts', api_subjects_path) %>
+        <%- end -%>
+        <%- if permitted?('admin:roles:list') -%>
+          <%= nav_item('Roles', roles_path) %>
+        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+
+    <%= nav_items_right do -%>
+      <%- if @subject -%>
+        <%= nav_item('Log out', '/auth/logout') %>
+      <%- end -%>
+    <%- end -%>
+
+  <%- end -%>
 <%- end -%>
 
 <section class="content">
+
+  <section class="flash">
+    <%= render(partial: 'layouts/flashes') %>
+  </section>
+
   <main><%= yield %></main>
 </section>
 
 <%= aaf_footer do -%>
-    <p>
-      SPIN
-      <br/>
-      Developed for the <a href="http://www.aaf.edu.au">Australian Access Federation</a>
-      by Russell Ianniello
-    </p>
+  <p>
+    SPIN
+    <br/>
+    Developed for the
+    <a href="http://www.aaf.edu.au">Australian Access Federation</a>
+    by Russell Ianniello
+  </p>
 <%- end -%>
 </body>
 </html>

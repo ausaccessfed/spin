@@ -1,0 +1,11 @@
+<%=
+    breadcrumbs(
+        {'Organisations' => organisations_path},
+        {'Projects' => organisation_projects_path(@organisation)},
+        'Edit'
+    )
+%>
+
+<%= page_header('Edit Project') %>
+
+<%= render(partial: 'form', locals: {submit_label: 'Save'}) %>

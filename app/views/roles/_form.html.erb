@@ -1,0 +1,18 @@
+<%= form_for(@role, html: {id: 'role-form'}) do |f| -%>
+  <%= field_block do -%>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  <%- end -%>
+
+  <div class="line-of-buttons">
+    <%= f.button(class: 'large green icon') do -%>
+      <%= icon_tag('checkmark') %>
+      <%= submit_label %>
+    <%- end -%>
+
+    <%= button_link_to(roles_path, class: 'large icon') do -%>
+      <%= icon_tag('cancel') %>
+      Cancel
+    <%- end -%>
+  </div>
+<%- end -%>

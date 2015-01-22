@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ausaccessfed/aaf-lipstick
-  revision: 2608c7cfe7e12710394a9de332c2d409b854cd9c
+  revision: ab7525ae57b3ff2fd4054d269a92c12f10a61722
   branch: develop
   specs:
     aaf-lipstick (0.0.1)
@@ -130,6 +130,9 @@ GEM
     hike (1.2.3)
     hitimes (1.2.2)
     i18n (0.6.11)
+    jquery-rails (3.1.2)
+      railties (>= 3.0, < 5.0)
+      thor (>= 0.14, < 2.0)
     json (1.8.1)
     json-jwt (0.7.0)
       activesupport
@@ -299,6 +302,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   guard-unicorn!
+  jquery-rails
   kramdown
   mysql2
   pry

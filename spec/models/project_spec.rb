@@ -7,4 +7,12 @@ RSpec.describe Project, type: :model do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:aws_account) }
   it { is_expected.to validate_presence_of(:state) }
+
+  context 'associated objects' do
+    context 'project_roles' do
+      let(:child) { create(:project_role) }
+      subject { child.project }
+      it_behaves_like 'an association which cascades delete'
+    end
+  end
 end

@@ -130,7 +130,7 @@ module Authentication
 
         it 'redirects to no projects assigned page' do
           expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/no_projects_assigned' }, []])
+            .to eq([302, { 'Location' => '/dashboard' }, []])
         end
       end
 
@@ -149,6 +149,15 @@ module Authentication
         it 'redirects to projects page' do
           expect(receiver.finish(env))
             .to eq([302, { 'Location' => '/projects' }, []])
+        end
+      end
+
+      context 'with admin permissions' do
+        include_context 'with admin permissions'
+
+        it 'redirects to dashboard page' do
+          expect(receiver.finish(env))
+            .to eq([302, { 'Location' => '/dashboard' }, []])
         end
       end
     end

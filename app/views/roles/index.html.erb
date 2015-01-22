@@ -1,0 +1,57 @@
+<%=
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        'Roles'
+    )
+%>
+
+<%= page_header('Roles') %>
+
+<table class="ui basic compact table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th/>
+  </tr>
+  </thead>
+  <tbody>
+  <%- @roles.each do |role| -%>
+    <tr>
+      <td><%= role.name %></td>
+      <td>
+        <%- if permitted?('admin:roles:read') -%>
+          <%= button_link_to(role, class: 'tiny icon') do -%>
+            <%= icon_tag('users') %>
+            Members <em>(<%= member_count(role) %>)</em>
+          <%- end -%>
+        <%- end -%>
+
+        <%- if permitted?('admin:roles:update') -%>
+          <%= button_link_to([role, :permissions], class: 'tiny icon') do -%>
+            <%= icon_tag('asterisk') %>
+            Permissions
+          <%- end -%>
+
+          <%= button_link_to([:edit, role], class: 'tiny icon') do -%>
+            <%= icon_tag('edit') %>
+            Edit
+          <%- end -%>
+        <%- end -%>
+
+        <%- if permitted?('admin:roles:delete') -%>
+          <%= delete_button_tag(role) %>
+        <%- end -%>
+      </td>
+    </tr>
+  <%- end -%>
+  </tbody>
+</table>
+
+<%- if permitted?('admin:roles:create') -%>
+  <div class="line-of-buttons">
+    <%= button_link_to(new_role_path, class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      New Role
+    <%- end -%>
+  </div>
+<%- end -%>

@@ -4,7 +4,7 @@ class Permission < ActiveRecord::Base
   belongs_to :role
 
   validates :role, :value, presence: true
-  validates :role, uniqueness: { scope: :value }
+  validates :value, uniqueness: { scope: :role }
 
   # "word" in the url-safe base64 alphabet, or single '*'
   SEGMENT = /([\w-]+|\*)/
