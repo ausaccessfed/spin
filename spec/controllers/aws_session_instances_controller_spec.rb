@@ -7,6 +7,7 @@ RSpec.describe AWSSessionInstancesController, type: :controller do
 
     before { session[:subject_id] = user.try(:id) }
     subject { -> { run } }
+    around { |e| Timecop.freeze { e.run } }
 
     context 'when the user is permitted' do
       before { user.project_roles << project_role }
@@ -14,8 +15,18 @@ RSpec.describe AWSSessionInstancesController, type: :controller do
       it { is_expected.to change(AWSSessionInstance, :count).by(1) }
 
       context 'the response' do
-        before { run }
+        before do
+          allow(Rails.application.config.spin_service)
+            .to receive(:login_jwt_secret).and_return(secret)
+
+          run
+        end
+
         subject { response }
+        let(:secret) { SecureRandom.hex }
+        let(:claims) do
+          JSON::JWT.decode(response.cookies['spin_login'], secret)
+        end
 
         it 'redirects to the IdP' do
           url = %r{/idp/profile/SAML2/Unsolicited/SSO.*}
@@ -24,7 +35,11 @@ RSpec.describe AWSSessionInstancesController, type: :controller do
 
         it 'includes the session instance in the url' do
           identifier = AWSSessionInstance.last.identifier
-          expect(response.cookies['spin_session_identifier']).to eq(identifier)
+          expect(claims['sub']).to eq(identifier)
+        end
+
+        it 'expires the session in two minutes' do
+          expect(claims['exp']).to eq(2.minutes.from_now.utc.to_i)
         end
       end
     end

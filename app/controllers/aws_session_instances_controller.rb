@@ -31,11 +31,14 @@ class AWSSessionInstancesController < ApplicationController
     instance = AWSSessionInstance.create!(subject: subject,
                                           project_role: project_role)
 
-    cookies['spin_session_identifier'] = {
-      value: instance.identifier,
-      expires: 2.minutes.from_now
-    }
-
+    cookies['spin_login'] = login_jwt(instance)
     redirect_to sso_url
+  end
+
+  def login_jwt(instance)
+    jwt = JSON::JWT.new(sub: instance.identifier, exp: 2.minutes.from_now)
+    secret = Rails.application.config.spin_service.login_jwt_secret
+
+    jwt.sign(secret).to_s
   end
 end
