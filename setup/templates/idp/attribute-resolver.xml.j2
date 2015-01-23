@@ -58,14 +58,19 @@
     <QueryTemplate>
       <![CDATA[
         select
-          'arn:aws:iam::123456789012:saml-provider/SPIN,arn:aws:iam::123456789012:role/SPIN' as aws_role,
-          'test-user@example.com' as mail,
-          'eShdcyiUmq37r7ovpaqhL_d1Kg' as shared_token
-        from dual
+          concat(projects.provider_arn, ',', project_roles.role_arn) as aws_role,
+          subjects.mail,
+          subjects.shared_token
+        from aws_session_instances
+        join project_roles
+          on aws_session_instances.project_role_id = project_roles.id
+        join projects
+          on project_roles.project_id = projects.id
+        join subjects
+          on aws_session_instances.subject_id = subjects.id
+        where aws_session_instances.identifier = '$requestContext.principalName'
       ]]>
     </QueryTemplate>
-
-    <ResultCache elementTimeToLive="PT30M" />
   </resolver:DataConnector>
 
   <resolver:PrincipalConnector xsi:type="pc:Transient" id="shibTransient" nameIDFormat="urn:mace:shibboleth:1.0:nameIdentifier"/>

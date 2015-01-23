@@ -40,10 +40,23 @@
     - conf.modules.d/02-perl.conf
   notify: 'Restart Apache'
 
+- name: 'Generate passwords'
+  set_fact:
+    login_jwt_secret: "{{ lookup('password', '../passwords/login_jwt_secret chars=letters,digits length=128') }}"
+
 - name: 'Install Apache SPIN configuration'
   template:
     src: templates/apache/spin.conf.j2
     dest: '/etc/httpd/conf.d/spin.conf'
+    owner: root
+    group: apache
+    mode: 0640
+  notify: 'Restart Apache'
+
+- name: 'Install Apache SPIN auth script'
+  template:
+    src: templates/apache/SPINAuthenticator.pm
+    dest: '/etc/httpd/SPINAuthenticator.pm'
     owner: root
     group: apache
     mode: 0640

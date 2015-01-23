@@ -44,6 +44,13 @@ Listen {{ service_ip }}:8443
   SSLHonorCipherOrder     on
   SSLCompression          off
 
+  PerlModule SPINAuthenticator
+
+  <Location /idp/Authn/RemoteUser>
+    PerlSetVar auth_secret {{ login_jwt_secret }}
+    PerlFixupHandler SPINAuthenticator
+  </Location>
+
   Header add Strict-Transport-Security "max-age=15768000"
 </VirtualHost>
 

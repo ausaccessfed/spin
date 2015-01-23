@@ -46,6 +46,12 @@
   command: /opt/spin/rbenv/bin/rbenv rehash
   when: result | changed
 
+- name: 'Generate passwords'
+  set_fact:
+    app_db_password: "{{ lookup('password', '../passwords/app_db_password chars=letters,digits length=64') }}"
+    secret_key_base: "{{ lookup('password', '../passwords/secret_key_base chars=letters,digits length=128') }}"
+    login_jwt_secret: "{{ lookup('password', '../passwords/login_jwt_secret chars=letters,digits length=128') }}"
+
 - name: 'Install SPIN configuration'
   template:
     src: templates/app/{{ item }}.j2
@@ -69,11 +75,6 @@
     - consent.md
     - support.md
   notify: Restart spin
-
-- name: 'Generate passwords'
-  set_fact:
-    app_db_password: "{{ lookup('password', '../passwords/app_db_password chars=letters,digits length=64') }}"
-    secret_key_base: "{{ lookup('password', '../passwords/secret_key_base chars=letters,digits length=128') }}"
 
 - name: 'Create database user'
   mysql_user:
