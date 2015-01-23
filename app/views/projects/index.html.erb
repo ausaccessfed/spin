@@ -2,6 +2,12 @@
 
 <%= divider_tag %>
 
+<script type="text/javascript">
+// Without this, the IdP will cache multiple principal names which can break the
+// second authentication attempt. Terminate the IdP session at this point.
+jQuery(function($) { $.get('/idp/profile/Logout'); });
+</script>
+
 <p>
   You have access to multiple projects. To continue to AWS, please choose the
   project you wish to access.
