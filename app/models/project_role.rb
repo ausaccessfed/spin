@@ -14,5 +14,6 @@ class ProjectRole < ActiveRecord::Base
                        format: {
                          with: ROLE_ARN_REGEX,
                          message: 'format must be \'arn:aws:iam::' \
-                                   '(number):role/(string)\'' }
+                                   '(number):role/(string)\'' },
+                       role_arn_belongs_to_project: true
 end

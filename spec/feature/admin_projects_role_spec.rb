@@ -64,7 +64,7 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
     context 'saves' do
       given(:bs) { Faker::Company.bs }
       given(:role_arn) do
-        "arn:aws:iam::#{Faker::Number.number(3)}:" \
+        "arn:aws:iam::#{project.provider_arn[/\d+/, 0]}:" \
                          "role/#{Faker::Lorem.characters(10)}"
       end
 

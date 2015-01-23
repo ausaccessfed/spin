@@ -16,6 +16,30 @@ RSpec.describe ProjectRole, type: :model do
   end
 
   context '#role_arn' do
+    context 'with project.provider_arn the same iam' do
+      let(:project) { create(:project) }
+      subject do
+        create(:project_role, name: 'blah',
+                              role_arn: 'arn:aws:iam::' \
+                               "#{project.provider_arn[/\d+/, 0]}:" \
+                               "role/#{Faker::Lorem.characters(10)}")
+      end
+
+      it { is_expected.to be_valid }
+    end
+
+    context 'with project.provider_arn not same iam' do
+      let(:project) { create(:project) }
+      subject do
+        build(:project_role, name: 'blah',
+                             role_arn: 'arn:aws:iam::' \
+                               "#{Faker::Number.number(10)}:" \
+                               "role/#{Faker::Lorem.characters(10)}")
+      end
+
+      it { is_expected.to_not be_valid }
+    end
+
     context 'saml-provider section' do
       let(:iam) { Faker::Number.number(10) }
 
