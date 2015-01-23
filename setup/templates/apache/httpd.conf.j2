@@ -30,6 +30,8 @@ LogLevel warn
 
 LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
 LogFormat "%h %l %u %t \"%r\" %>s %b" common
+LogFormat "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b" ssl
+
 CustomLog "logs/access_log" combined
 
 TypesConfig /etc/mime.types
