@@ -47,4 +47,6 @@ EnableSendfile on
 SSLStaplingCache shmcb:/var/run/httpd/ocsp(128000)
 SSLSessionCache shmcb:/var/run/httpd/ssl_gcache_data(5120000)
 
+PerlSwitches -wT
+
 IncludeOptional conf.d/*.conf

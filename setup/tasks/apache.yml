@@ -24,6 +24,7 @@
     mode: 0640
   with_items:
     - conf.d/autoindex.conf
+    - conf.d/perl.conf
     - conf.d/ssl.conf
     - conf.d/userdir.conf
     - conf.d/welcome.conf
@@ -34,6 +35,7 @@
     - conf.modules.d/00-ssl.conf
     - conf.modules.d/00-systemd.conf
     - conf.modules.d/01-cgi.conf
+    - conf.modules.d/02-perl.conf
 
 - name: 'Install Apache SPIN configuration'
   template:
