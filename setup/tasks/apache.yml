@@ -6,6 +6,7 @@
     owner: root
     group: apache
     mode: 0640
+  notify: 'Restart Apache'
 
 - name: 'Install Apache module configuration'
   template:
@@ -14,6 +15,7 @@
     owner: root
     group: apache
     mode: 0640
+  notify: 'Restart Apache'
 
 - name: 'Remove default Apache configuration'
   template:
@@ -36,6 +38,7 @@
     - conf.modules.d/00-systemd.conf
     - conf.modules.d/01-cgi.conf
     - conf.modules.d/02-perl.conf
+  notify: 'Restart Apache'
 
 - name: 'Install Apache SPIN configuration'
   template:
@@ -44,6 +47,7 @@
     owner: root
     group: apache
     mode: 0640
+  notify: 'Restart Apache'
 
 - name: 'Create Apache SSL key directory'
   file:
@@ -64,6 +68,7 @@
     - server.crt
     - server.key
     - intermediate.crt
+  notify: 'Restart Apache'
 
 - name: 'Open Apache firewall ports'
   firewalld:
@@ -79,6 +84,8 @@
 - name: 'Restart firewalld'
   service: name=firewalld state=restarted enabled=yes
   when: firewall | changed
+
+- meta: flush_handlers
 
 - name: 'Enable Apache service'
   service: name=httpd state=started enabled=yes

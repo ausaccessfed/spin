@@ -125,4 +125,11 @@
       debug: "msg=TODO: service: name=spin state=restarted"
 
     - name: Restart spin-idp
-      service: name=spin-idp state=restarted
+      service:
+        name: spin-idp
+        state: restarted
+
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted

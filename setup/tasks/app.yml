@@ -40,6 +40,7 @@
     chdir=/opt/spin/app
   register: result
   changed_when: '"Installing" in result.stdout'
+  notify: Restart spin
 
 - name: 'Rehash rbenv'
   command: /opt/spin/rbenv/bin/rbenv rehash
@@ -55,6 +56,7 @@
   with_items:
     - spin_service.yml
     - rapidconnect.yml
+  notify: Restart spin
 
 - name: 'Install site configuration'
   copy:
@@ -66,6 +68,7 @@
   with_items:
     - consent.md
     - support.md
+  notify: Restart spin
 
 - name: 'Generate passwords'
   set_fact:
@@ -87,6 +90,8 @@
     owner: root
     group: root
     mode: 0600
+
+- meta: flush_handers
 
 - name: 'Enable SPIN service'
   service:
