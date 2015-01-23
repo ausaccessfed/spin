@@ -27,6 +27,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.1' # Testing framework
   gem 'factory_girl_rails' # Fixtures replacement
   gem 'faker' # Library for generating fake data
+  gem 'timecop'
 
   gem 'pry', require: false # IRB alternative
   gem 'brakeman', '~> 2.6', require: false # Security scanner
