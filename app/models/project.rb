@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
-  PVD_ARN_REGEX = /\Aarn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}\z/
+  PROVIDER_ARN_REGEX =
+      /\Aarn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}\z/
 
   audited associated_with: :organisation
   has_associated_audits
@@ -11,7 +12,7 @@ class Project < ActiveRecord::Base
 
   validates :provider_arn, presence: true,
                            format: {
-                             with: PVD_ARN_REGEX,
+                             with: PROVIDER_ARN_REGEX,
                              message: 'format must be \'arn:aws:iam:' \
                                       ':(number):saml-provider/(string)\'' }
 end
