@@ -1,6 +1,6 @@
 [Unit]
 Description=SPIN Identity Provider
-After=syslog.target network.target
+After=syslog.target network.target mariadb.target
 
 [Service]
 EnvironmentFile=/opt/spin/tomcat/current/conf/env.conf

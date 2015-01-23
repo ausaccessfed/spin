@@ -1,5 +1,6 @@
 [Unit]
 Description=SPIN
+After=syslog.target network.target mariadb.target
 
 [Service]
 User=spin
