@@ -1,11 +1,11 @@
 class RoleArnBelongsToProjectValidator < ActiveModel::EachValidator
   def validate_each(obj, attribute, value)
     return if obj.project.nil?
-    first_digit_regex = /\d+/
-    project_provider_arn_iam = project_provider_arn_iam(first_digit_regex, obj)
-    role_arn_iam = value[first_digit_regex, 0]
-    obj.errors[attribute] << validation_message(project_provider_arn_iam) unless
-        project_provider_arn_iam == role_arn_iam
+    project_prefix = prefix(obj.project.provider_arn)
+    role_prefix = prefix(value)
+
+    return if project_prefix == role_prefix
+    obj.errors[attribute] << validation_message(project_prefix)
   end
 
   def validation_message(project_provider_arn_iam)
@@ -13,7 +13,8 @@ class RoleArnBelongsToProjectValidator < ActiveModel::EachValidator
     " (#{project_provider_arn_iam})"
   end
 
-  def project_provider_arn_iam(first_digit_regex, object)
-    object.project.provider_arn[first_digit_regex, 0]
+  def prefix(arn)
+    match_data = /^(arn:aws:iam::\d+)/.match(arn)
+    match_data[0] unless match_data.nil?
   end
 end
