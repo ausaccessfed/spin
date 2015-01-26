@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121002347) do
+ActiveRecord::Schema.define(version: 20150126213555) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
