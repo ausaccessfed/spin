@@ -1,10 +1,19 @@
 class RoleArnBelongsToProjectValidator < ActiveModel::EachValidator
-  VALIDATION_ERROR = 'role_arn must have the same iam as project.provider_arn'
-  def validate_each(object, attribute, value)
-    return if object.project.nil?
+  def validate_each(obj, attribute, value)
+    return if obj.project.nil?
     first_digit_regex = /\d+/
-    object.errors[attribute] << VALIDATION_ERROR unless
-        object.project.provider_arn[first_digit_regex, 0] ==
-        value[first_digit_regex, 0]
+    project_provider_arn_iam = project_provider_arn_iam(first_digit_regex, obj)
+    role_arn_iam = value[first_digit_regex, 0]
+    obj.errors[attribute] << validation_message(project_provider_arn_iam) unless
+        project_provider_arn_iam == role_arn_iam
+  end
+
+  def validation_message(project_provider_arn_iam)
+    "must have the same IAM as the Project's Provider ARN" \
+    " (#{project_provider_arn_iam})"
+  end
+
+  def project_provider_arn_iam(first_digit_regex, object)
+    object.project.provider_arn[first_digit_regex, 0]
   end
 end

@@ -30,14 +30,31 @@ RSpec.describe ProjectRole, type: :model do
 
     context 'with project.provider_arn not same iam' do
       let(:project) { create(:project) }
-      subject do
+      let(:project_role) do
         build(:project_role, name: 'blah',
                              role_arn: 'arn:aws:iam::' \
                                "#{Faker::Number.number(10)}:" \
                                "role/#{Faker::Lorem.characters(10)}")
       end
 
-      it { is_expected.to_not be_valid }
+      subject { project_role }
+
+      it 'is not valid' do
+        is_expected.to_not be_valid
+      end
+
+      context 'saving' do
+        before do
+          project_role.save
+        end
+
+        subject { project_role.errors.full_messages.first }
+
+        it 'has the expected validation message' do
+          expect(subject).to eq('Role arn must have' \
+                             ' the same IAM as the Project\'s Provider ARN (1)')
+        end
+      end
     end
 
     context 'saml-provider section' do
