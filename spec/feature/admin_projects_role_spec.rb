@@ -63,7 +63,10 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
 
     context 'saves' do
       given(:bs) { Faker::Company.bs }
-      given(:aws_identifier) { Faker::Lorem.characters(10) }
+      given(:role_arn) do
+        "arn:aws:iam::#{project.provider_arn[/\d+/, 0]}:" \
+                         "role/#{Faker::Lorem.characters(10)}"
+      end
 
       context 'with invalid data' do
         before do
@@ -72,14 +75,29 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
 
         scenario 'shows flash message' do
           expect(page).to have_content('Unable to create Project Role' \
-                                       " Name can't be blank")
+                                       ' Name can’t be blank')
+        end
+      end
+
+      context 'with invalid role_arn' do
+        before do
+          fill_in 'project_role_name', with: bs
+          fill_in 'project_role_role_arn', with: 'x'
+          click_button 'Create'
+        end
+
+        scenario 'shows flash message' do
+          expect(page).to have_content('Unable to create Project Role' \
+                                       ' Role arn format must be ' \
+                                       '‘arn:aws:iam:' \
+                                       ':(number):role/(string)’')
         end
       end
 
       context 'with valid data' do
         before do
           fill_in 'project_role_name', with: bs
-          fill_in 'project_role_aws_identifier', with: aws_identifier
+          fill_in 'project_role_role_arn', with: role_arn
           click_button 'Create'
         end
 

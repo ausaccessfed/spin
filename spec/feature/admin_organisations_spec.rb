@@ -127,7 +127,7 @@ RSpec.feature 'Managing the Organisation', type: :feature do
 
         scenario 'shows flash message' do
           expect(page).to have_content('Unable to create Organisation' \
-                                       " Name can't be blank")
+                                       ' Name can’t be blank')
         end
       end
 

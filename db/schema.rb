@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108223246) do
+ActiveRecord::Schema.define(version: 20150120225936) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -79,9 +79,9 @@ ActiveRecord::Schema.define(version: 20150108223246) do
   add_index "permissions", ["role_id"], name: "index_permissions_on_role_id", using: :btree
 
   create_table "project_roles", force: true do |t|
-    t.string   "name",           null: false
-    t.string   "aws_identifier", null: false
-    t.integer  "project_id",     null: false
+    t.string   "name",       null: false
+    t.string   "role_arn",   null: false
+    t.integer  "project_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20150108223246) do
 
   create_table "projects", force: true do |t|
     t.string   "name",            null: false
-    t.string   "aws_account",     null: false
+    t.string   "provider_arn",    null: false
     t.string   "state",           null: false
     t.integer  "organisation_id", null: false
     t.datetime "created_at"

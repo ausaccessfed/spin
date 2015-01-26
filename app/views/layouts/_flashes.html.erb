@@ -1,13 +1,13 @@
 <%- if flash[:success] -%>
   <div class="ui hidden divider"></div>
   <%= success_message('Success') do -%>
-    <%= flash[:success] %>
+    <%= markdown_to_html flash[:success] %>
   <%- end -%>
 <%- end -%>
 
 <%- if flash[:error] -%>
   <div class="ui hidden divider"></div>
   <%= error_message('Error') do -%>
-    <%= flash[:error] %>
+    <%= markdown_to_html flash[:error] %>
   <%- end -%>
 <%- end -%>

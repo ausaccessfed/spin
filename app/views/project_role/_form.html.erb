@@ -17,12 +17,14 @@
   <%- end -%>
 
   <%= field_block do -%>
-    <%= f.label :aws_identifier do -%>
-      AWS Identifier
-      <%= field_help_text('The external identifier referenced in the AWS project') %>
+    <%= f.label :role_arn do -%>
+      Role ARN
+      <%= field_help_text('The ARN referenced in the AWS project role') %>
     <%- end -%>
-    <%= f.text_field :aws_identifier %>
+    <%= f.text_field :role_arn %>
   <%- end -%>
+
+  <%= error_messages_tag %>
 
   <div class="line-of-buttons">
     <%= f.button(class: 'large green icon') do -%>
@@ -35,4 +37,11 @@
       Cancel
     <%- end -%>
   </div>
+<%- end -%>
+
+<%= validate_form('#project_role-form', :project_role) do -%>
+  <%= validate_field(:role_arn, empty: 'Please enter a Role ARN',
+                     role_arn: 'Role ARN format must be' \
+                     ' <pre>arn:aws:iam::<strong>&ltnumber&gt</strong>' \
+                     ':role/<strong>&ltstring&gt</strong></pre>') %>
 <%- end -%>

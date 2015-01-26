@@ -23,4 +23,12 @@ jQuery(function($) {
     $.fn.form.settings.rules['urlsafe_base64'] = function(value) {
         return value.match(/^[\w-]*$/);
     };
+
+    $.fn.form.settings.rules['provider_arn'] = function(value) {
+        return value.match(/^arn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}$/);
+    };
+
+    $.fn.form.settings.rules['role_arn'] = function(value) {
+        return value.match(/^arn:aws:iam::\d+:role\/[A-Za-z0-9\+\=\,\.\@\-\_]{1,64}$/);
+    };
 });

@@ -8,11 +8,11 @@
   <%- end -%>
 
   <%= field_block do -%>
-    <%= f.label :aws_account do -%>
-      AWS Account
-      <%= field_help_text('The unique identifier stored in AWS') %>
+    <%= f.label :provider_arn do -%>
+      Provider ARN
+      <%= field_help_text('The Provider ARN referenced on the AWS project') %>
     <%- end -%>
-    <%= f.text_field :aws_account %>
+    <%= f.text_field :provider_arn %>
   <%- end -%>
 
   <%= field_block do -%>
@@ -22,6 +22,8 @@
     <%- end -%>
     <%= f.text_field :state %>
   <%- end -%>
+
+  <%= error_messages_tag %>
 
   <div class="line-of-buttons">
     <%= f.button(class: 'large green icon') do -%>
@@ -34,4 +36,13 @@
       Cancel
     <%- end -%>
   </div>
+
 <%- end -%>
+
+<%= validate_form('#project-form', :project) do -%>
+  <%= validate_field(:provider_arn, empty: 'Please enter a Provider ARN',
+                     provider_arn: 'Provider ARN format must be' \
+                     ' <pre>arn:aws:iam::<strong>&ltnumber&gt</strong>' \
+                     ':saml-provider/<strong>&ltstring&gt</strong></pre>') %>
+<%- end -%>
+
