@@ -124,7 +124,9 @@
 
   handlers:
     - name: Restart spin
-      debug: "msg=TODO: service: name=spin state=restarted"
+      service:
+        name: spin
+        state: restarted
 
     - name: Restart spin-idp
       service:
