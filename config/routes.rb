@@ -25,5 +25,12 @@ Rails.application.routes.draw do
     end
   end
 
+  v1 = APIConstraints.new(version: 1, default: true)
+  namespace :api, defaults: { format: 'json' } do
+    scope 'subjects', constraints: v1 do
+      get '/' => 'subjects#show'
+    end
+  end
+
   root to: 'welcome#index'
 end

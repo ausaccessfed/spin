@@ -15,6 +15,7 @@ gem 'unicorn', require: false # Web container
 gem 'redis'
 gem 'kramdown'
 gem 'audited-activerecord'
+gem 'jbuilder'
 
 group :development, :test do
   gem 'spring',      '1.1.3'
