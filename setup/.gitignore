@@ -2,3 +2,5 @@ development
 spin.config
 passwords/
 assets/app/*.md
+assets/apache/*.crt
+assets/apache/*.key
