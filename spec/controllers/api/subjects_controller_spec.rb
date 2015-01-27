@@ -4,7 +4,6 @@ module API
   RSpec.describe SubjectsController, type: :controller do
     let(:api_subject) do
       role = create(:role)
-      create(:permission, role: role, value: 'api')
       user = create(:api_subject, :authorized, permission: 'api:subjects:*')
       create(:api_subject_role, role: role, api_subject: user)
       user
