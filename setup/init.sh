@@ -33,4 +33,8 @@ fi
 yum -y install epel-release
 yum -y install ansible
 
-ansible-playbook main.yml
+# This is written to /etc/environment, but not available in the current session
+# which was logged in before the file was written.
+export RBENV_ROOT=/opt/spin/rbenv
+
+ansible-playbook main.yml -i inventory
