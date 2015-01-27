@@ -15,8 +15,8 @@ module API
       end
 
       def to_map(subject)
-        subject.attributes.symbolize_keys
-          .except(:created_at, :updated_at, :targeted_id, :complete, :enabled)
+        subject.attributes.symbolize_keys.slice(:name, :mail, :shared_token,
+                                                :id)
       end
 
       let(:json) { JSON.parse(response.body, symbolize_names: true) }
@@ -27,7 +27,8 @@ module API
 
       context 'the response' do
         subject { json[:subjects] }
-        it { is_expected.to contain_exactly(to_map(user1), to_map(user2)) }
+        it { is_expected.to include(to_map(user1)) }
+        it { is_expected.to include(to_map(user2)) }
       end
     end
   end
