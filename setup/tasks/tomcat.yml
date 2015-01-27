@@ -11,6 +11,15 @@
     tar zx -C /opt/spin/tomcat -f /opt/spin/downloads/apache-tomcat-{{ tomcat.version }}.tar.gz
     creates=/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}/
 
+- name: 'Symlink current Tomcat version'
+  file:
+    name: '/opt/spin/tomcat/current'
+    src: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}'
+    owner: root
+    group: root
+    state: link
+    force: yes
+
 - name: 'Download MariaDB connector library'
   get_url:
     url: 'http://mirror.aarnet.edu.au/pub/MariaDB/client-java-{{ tomcat.mariadb.version }}/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
@@ -105,12 +114,3 @@
     - server.xml
     - catalina.properties
     - env.conf
-
-- name: 'Symlink current Tomcat version'
-  file:
-    name: '/opt/spin/tomcat/current'
-    src: '/opt/spin/tomcat/apache-tomcat-{{ tomcat.version }}'
-    owner: root
-    group: root
-    state: link
-    force: yes
