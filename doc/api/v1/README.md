@@ -2,7 +2,7 @@
 
 This describes the resources that make up the SPIN API v1.
 
-If you have any problems please contact [??](mailto:??subject=SPIN API v1 help).
+If you have any problems please your technical support team for SPIN.
 
 ## Access
 
@@ -23,7 +23,7 @@ Either of these changes should not impact well behaved clients that correctly pa
 All clients **MUST** be well behaved, extensions to the API will not be broadcast in advance.
 
 ## Authentication
-All clients **MUST** posses and supply a valid SSL certificate signed by the AAF Certificate Authority for the federation in which they are operating to establish their validity. For current details on certificate generation and signing contact [??](mailto:??subject=SPIN API certificate) who will work with you to securely complete the request.
+All clients **MUST** posses and supply a valid SSL certificate signed by the AAF Certificate Authority for the federation in which they are operating to establish their validity. For current details on certificate generation and signing contact your technical support team who will work with you to securely complete the request.
 
 Once provided with a certificate administrators **MUST** create an API Account within the SPIN web interface.
 
@@ -43,7 +43,7 @@ Requests that attempt to access resources or undertake actions with an API accou
 All requests to the API are logged for future audit purposes against the verified client certificate. This certificate **MUST** be kept secure at all times.
 
 ### Security Issues
-Should you become aware of a problem with your client certificate you **MUST** advise [??](mailto:??subject=SPIN API security) as soon as you're aware of it so it can be revoked.
+Should you become aware of a problem with your client certificate you **MUST** advise your technical support team as soon as you're aware of it so it can be revoked.
 
 ## HTTP Redirects
 
