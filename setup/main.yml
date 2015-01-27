@@ -97,6 +97,8 @@
         - httpd
         - mod_ssl
         - mod_perl
+        - perl-JSON
+        - perl-Digest-SHA
         # Ruby dependencies:
         - gcc
         - gcc-c++
