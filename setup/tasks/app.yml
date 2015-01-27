@@ -76,6 +76,18 @@
     - support.md
   notify: Restart spin
 
+- name: 'Install site branding'
+  copy:
+    src: assets/app/{{ item }}
+    dest: /opt/spin/app/assets/images/{{ item }}
+    owner: root
+    group: spin
+    mode: 0640
+  with_items:
+    - logo.png
+    - favicon.png
+  notify: Restart spin
+
 - name: 'Create database user'
   mysql_user:
     name: '{{ db.username }}'
