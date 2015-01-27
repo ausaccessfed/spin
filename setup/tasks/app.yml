@@ -79,7 +79,7 @@
 - name: 'Install site branding'
   copy:
     src: assets/app/{{ item }}
-    dest: /opt/spin/app/assets/images/{{ item }}
+    dest: /opt/spin/app/app/assets/images/{{ item }}
     owner: root
     group: spin
     mode: 0640
