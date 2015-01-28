@@ -7,13 +7,13 @@ module API
 
     subject { response }
 
-    context 'post /api/organisation' do
-      let(:organisation) { build(:organisation) }
+    def to_map(organisation)
+      organisation.attributes.symbolize_keys
+        .slice(:name, :id, :external_id)
+    end
 
-      def to_map(organisation)
-        organisation.attributes.symbolize_keys
-          .except(:created_at, :updated_at)
-      end
+    context 'post /api/organisations' do
+      let(:organisation) { build(:organisation) }
 
       def run
         post_params = { organisation: to_map(organisation) }
@@ -31,16 +31,12 @@ module API
       end
     end
 
-    context 'patch /api/organisation/:id' do
+    context 'patch /api/organisations/:id' do
       let!(:organisation) { create(:organisation) }
       let(:updated_organisation) do
         build(:organisation,
               external_id: organisation.external_id,
               id: organisation.id)
-      end
-      def to_map(organisation)
-        organisation.attributes.symbolize_keys
-          .except(:created_at, :updated_at, :id)
       end
 
       def run

@@ -13,8 +13,8 @@ module API
       render status: :ok, nothing: true
     end
 
-    def show
-      check_access!('api:organisations:read')
+    def index
+      check_access!('api:organisations:list')
       @organisations = Organisation.all
     end
 

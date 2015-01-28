@@ -1,7 +1,7 @@
 module API
   class SubjectsController < APIController
-    def show
-      check_access!('api:subjects:read')
+    def index
+      check_access!('api:subjects:list')
       @subjects = Subject.all
     end
 

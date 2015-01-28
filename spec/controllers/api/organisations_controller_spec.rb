@@ -10,15 +10,15 @@ module API
       user
     end
 
+    def to_map(organisation)
+      organisation.attributes.symbolize_keys.slice(:name, :id, :external_id)
+    end
+
     before { request.env['HTTP_X509_DN'] = "CN=#{api_subject.x509_cn}" }
     subject { response }
 
     context 'post create' do
       let(:organisation) { build(:organisation) }
-
-      def to_map(organisation)
-        organisation.attributes.symbolize_keys.slice(:name, :id, :external_id)
-      end
 
       def run
         post_params = { organisation: to_map(organisation) }
@@ -42,11 +42,6 @@ module API
         build(:organisation,
               external_id: organisation.external_id,
               id: organisation.id)
-      end
-
-      def to_map(organisation)
-        organisation.attributes.symbolize_keys
-          .except(:created_at, :updated_at, :id)
       end
 
       def run
@@ -73,11 +68,11 @@ module API
       end
     end
 
-    context 'get :show' do
-      before { get :show, format: 'json' }
+    context 'get :index' do
+      before { get :index, format: 'json' }
 
       it { is_expected.to have_http_status(:ok) }
-      it { is_expected.to render_template('api/organisations/show') }
+      it { is_expected.to render_template('api/organisations/index') }
 
       it 'assigns the organisations' do
         expect(assigns[:organisations]).to eq(Organisation.all)

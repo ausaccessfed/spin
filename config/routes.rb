@@ -27,15 +27,9 @@ Rails.application.routes.draw do
 
   v1 = APIConstraints.new(version: 1, default: true)
   namespace :api, defaults: { format: 'json' } do
-    scope 'subjects', constraints: v1 do
-      get '/' => 'subjects#show'
-      delete '/:id' => 'subjects#destroy'
-    end
-    scope 'organisations', constraints: v1 do
-      post '/' => 'organisations#create'
-      patch '/:id' => 'organisations#update'
-      get '/' => 'organisations#show'
-      delete '/:id' => 'organisations#destroy'
+    resources 'subjects', only: %i(index destroy), constraints: v1
+    resources 'organisations', except: 'show', constraints: v1 do
+      resources 'projects', except: 'show', constraints: v1
     end
   end
 
