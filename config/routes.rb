@@ -29,7 +29,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     resources 'subjects', only: %i(index destroy), constraints: v1
     resources 'organisations', except: 'show', constraints: v1 do
-      resources 'projects', except: 'show', constraints: v1
+      resources 'projects', except: 'show', constraints: v1 do
+        resources 'roles', controller: 'project_roles', constraints: v1
+      end
     end
   end
 
