@@ -95,3 +95,7 @@ The information supplied thus far is applicable to **all endpoints provided** by
 Specific details on interacting with supplied endpoint categories are provided in the following documents:
 
 1. [Subjects](subjects.md)
+2. [Organisations](organisations.md)
+3. [Projects](projects.md)
+4. [ProjectRoles](project_roles.md)
+5. [Subject / ProjectRole association](subject_project_roles.md)

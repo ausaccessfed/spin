@@ -32,3 +32,16 @@ Status: 200 OK
    ]
 }
 ```
+
+## Delete Subject
+
+Delete Subject by id
+
+```
+DELETE /api/subjects/:id
+```
+### Response
+
+```
+Status: 200 OK
+```
