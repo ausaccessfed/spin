@@ -1,4 +1,4 @@
-class RoleArnBelongsToProjectValidator < ActiveModel::EachValidator
+class RoleARNBelongsToProjectValidator < ActiveModel::EachValidator
   def validate_each(obj, attribute, value)
     return if obj.project.nil?
     project_prefix = prefix(obj.project.provider_arn)

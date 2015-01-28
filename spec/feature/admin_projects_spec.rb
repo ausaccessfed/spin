@@ -157,7 +157,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
 
         scenario 'shows flash message' do
           expect(page).to have_content('Unable to save Project' \
-                                       ' Provider arn format must be ' \
+                                       ' Provider ARN format must be ' \
                                        '‘arn:aws:iam:' \
                                        ':(number):saml-provider/(string)’')
         end

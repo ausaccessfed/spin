@@ -51,7 +51,7 @@ RSpec.describe ProjectRole, type: :model do
         subject { project_role.errors.full_messages.first }
 
         it 'has the expected validation message' do
-          is_expected.to eq('Role arn must have the same IAM as the Project\'' \
+          is_expected.to eq('Role ARN must have the same IAM as the Project\'' \
                             's Provider ARN (arn:aws:iam::1)')
         end
       end
