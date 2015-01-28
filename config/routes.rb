@@ -29,6 +29,13 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     scope 'subjects', constraints: v1 do
       get '/' => 'subjects#show'
+      delete '/:id' => 'subjects#destroy'
+    end
+    scope 'organisations', constraints: v1 do
+      post '/' => 'organisations#create'
+      patch '/:id' => 'organisations#update'
+      get '/' => 'organisations#show'
+      delete '/:id' => 'organisations#destroy'
     end
   end
 
