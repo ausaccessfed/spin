@@ -17,7 +17,7 @@ module API
     before { request.env['HTTP_X509_DN'] = "CN=#{api_subject.x509_cn}" }
     subject { response }
 
-    context 'post create' do
+    context 'post :create' do
       let(:organisation) { build(:organisation) }
 
       def run
@@ -36,7 +36,7 @@ module API
       end
     end
 
-    context 'patch update' do
+    context 'patch :update' do
       let!(:organisation) { create(:organisation) }
       let(:updated_organisation) do
         build(:organisation,

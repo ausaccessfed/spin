@@ -21,7 +21,7 @@ module API
     before { request.env['HTTP_X509_DN'] = "CN=#{api_subject.x509_cn}" }
     subject { response }
 
-    context 'post create' do
+    context 'post :create' do
       let(:project) { build(:project) }
 
       def run
@@ -39,7 +39,7 @@ module API
       end
     end
 
-    context 'patch update' do
+    context 'patch :update' do
       let!(:project) do
         create(:project,
                orig_attrs.merge(organisation: organisation))
@@ -78,7 +78,7 @@ module API
       it { is_expected.to render_template('api/projects/index') }
 
       it 'assigns the projects' do
-        expect(assigns[:projects]).to eq(Project.all)
+        expect(assigns[:projects]).to eq(organisation.projects)
       end
     end
 
