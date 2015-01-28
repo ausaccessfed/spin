@@ -33,5 +33,24 @@ module API
         end
       end
     end
+
+    context 'delete :id' do
+      def run
+        delete :destroy, id: object.id, format: 'json'
+      end
+
+      let!(:object) { create(:subject) }
+
+      subject { -> { run } }
+
+      it { is_expected.to change(Subject, :count).by(-1) }
+      it { is_expected.to have_assigned(:object, object) }
+
+      context 'the response' do
+        before { run }
+        subject { response }
+        it { is_expected.to have_http_status(:ok) }
+      end
+    end
   end
 end
