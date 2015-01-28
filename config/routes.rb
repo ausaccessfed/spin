@@ -28,9 +28,13 @@ Rails.application.routes.draw do
   v1 = APIConstraints.new(version: 1, default: true)
   namespace :api, defaults: { format: 'json' } do
     resources 'subjects', only: %i(index destroy), constraints: v1
-    resources 'organisations', except: 'show', constraints: v1 do
-      resources 'projects', except: 'show', constraints: v1 do
-        resources 'roles', controller: 'project_roles', constraints: v1
+    resources 'organisations', except: '%i(new show)', constraints: v1 do
+      resources 'projects', except: '%i(new show)', constraints: v1 do
+        resources 'roles', except: %i(new show), controller: 'project_roles',
+                           constraints: v1 do
+          resources 'members', controller: 'subject_project_roles',
+                               only: %i(create destroy)
+        end
       end
     end
   end
