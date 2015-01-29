@@ -30,6 +30,24 @@ if [ ! -e main.yml ]; then
   exit 1
 fi
 
+expect_file() {
+  [ -e $1 ] || {
+    echo "Missing file: $1"
+    echo
+    echo 'Please ensure you have followed the installation instructions.'
+    exit 1
+  }
+}
+
+expect_file '/opt/spin/app/setup/spin.config'
+expect_file '/opt/spin/app/setup/assets/app/support.md'
+expect_file '/opt/spin/app/setup/assets/app/consent.md'
+expect_file '/opt/spin/app/setup/assets/app/logo.png'
+expect_file '/opt/spin/app/setup/assets/app/favicon.png'
+expect_file '/opt/spin/app/setup/assets/apache/server.key'
+expect_file '/opt/spin/app/setup/assets/apache/server.crt'
+expect_file '/opt/spin/app/setup/assets/apache/intermediate.crt'
+
 yum -y install epel-release
 yum -y install ansible
 
