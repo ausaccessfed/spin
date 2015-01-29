@@ -31,5 +31,21 @@ module API
         it { is_expected.to include(to_map(user2)) }
       end
     end
+
+    context 'delete /api/subjects/:id' do
+      def run
+        delete "/api/subjects/#{user1.id}", nil, headers
+      end
+
+      subject { -> { run } }
+
+      it { is_expected.to change(Subject, :count).by(-1) }
+
+      context 'the response' do
+        before { run }
+        subject { response }
+        it { is_expected.to have_http_status(:ok) }
+      end
+    end
   end
 end
