@@ -88,7 +88,7 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
 
         scenario 'shows flash message' do
           expect(page).to have_content('Unable to create Project Role' \
-                                       ' Role arn format must be ' \
+                                       ' Role ARN format must be ' \
                                        '‘arn:aws:iam:' \
                                        ':(number):role/(string)’')
         end

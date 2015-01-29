@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   mount RapidRack::Engine => '/auth'
   get 'projects', to: 'projects#index'
-  get 'aws_idp', to: 'aws_idp#index' # Placeholder for now ...
   get 'dashboard', to: 'dashboard#index'
   post 'login', to: 'sessions#create'
+  get 'aws_login', to: 'aws_session_instances#auto', as: :aws_login
+  post 'aws_login', to: 'aws_session_instances#login'
 
   scope '/admin' do
     resources :subjects, only: %i(index show destroy)
@@ -33,4 +34,28 @@ Rails.application.routes.draw do
   end
 
   root to: 'welcome#index'
+
+  if Rails.env.development? || Rails.env.test?
+    idp = lambda do |env|
+      req = Rack::Request.new(env)
+      instance = AWSSessionInstance
+                 .find_by_identifier(req.cookies['spin_session_identifier'])
+
+      if instance
+        content = <<-EOF.gsub(/^ +/, '')
+          A real deployment would sign in to AWS now.
+
+          Subject: #{instance.subject.name}
+          Project: #{instance.project_role.project.name}
+          Role:    #{instance.project_role.name}
+        EOF
+      else
+        content = 'No session instance found'
+      end
+
+      [200, { 'Content-Type' => 'text/plain' }, [content]]
+    end
+
+    mount idp => '/idp'
+  end
 end

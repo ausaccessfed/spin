@@ -48,16 +48,16 @@ module Authentication
     def finish(env)
       return unless env['rack.session']
       subject = Subject.find(env['rack.session']['subject_id'])
-      return redirect_to('/dashboard') if subject.permits?('admin')
+      return redirect_to('/dashboard') if subject.roles.any?
       redirect_subject(subject)
     end
 
     def redirect_subject(subject)
-      case subject.active_project_count
+      case subject.project_roles.count
       when 0
         redirect_to('/dashboard')
       when 1
-        redirect_to('/aws_idp')
+        redirect_to('/aws_login')
       else
         redirect_to('/projects')
       end

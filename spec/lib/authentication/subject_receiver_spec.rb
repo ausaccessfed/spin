@@ -139,7 +139,7 @@ module Authentication
 
         it 'redirects to aws auth' do
           expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/aws_idp' }, []])
+            .to eq([302, { 'Location' => '/aws_login' }, []])
         end
       end
 

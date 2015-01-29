@@ -39,7 +39,7 @@ guard 'brakeman', run_on_start: true, quiet: true do
   watch('Gemfile')
 end
 
-guard 'unicorn', daemonized: true, port: 8080 do
+guard 'unicorn', daemonized: true, config_file: 'config/dev_unicorn.rb' do
   watch('Gemfile.lock')
   watch(/^config\/.+\.rb$/)
 end

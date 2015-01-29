@@ -4,6 +4,8 @@ source 'https://rails-assets.org'
 gem 'rails', '4.1.8'
 gem 'sass-rails', '~> 4.0.3'
 gem 'jquery-rails'
+gem 'uglifier', require: false
+gem 'therubyracer', require: false
 gem 'mysql2' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession' # Permissions for Ruby
@@ -11,6 +13,8 @@ gem 'rails-assets-semantic-ui'
 gem 'rails-assets-jquery', '~> 1.11' # JQuery
 gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
                     branch: 'develop'
+
+gem 'god', require: false
 gem 'unicorn', require: false # Web container
 gem 'redis'
 gem 'kramdown'
@@ -23,6 +27,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.1' # Testing framework
   gem 'factory_girl_rails' # Fixtures replacement
   gem 'faker' # Library for generating fake data
+  gem 'timecop'
 
   gem 'pry', require: false # IRB alternative
   gem 'brakeman', '~> 2.6', require: false # Security scanner
