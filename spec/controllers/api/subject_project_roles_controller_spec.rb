@@ -126,7 +126,7 @@ module API
           context 'body' do
             subject { response.body }
             it do
-              is_expected.to eq("{\"erro  r\":\"Subject " \
+              is_expected.to eq("{\"error\":\"Subject " \
                "#{subject_project_role.subject_id} not found\"}")
             end
           end
