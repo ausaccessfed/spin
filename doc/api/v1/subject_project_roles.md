@@ -17,7 +17,7 @@ Status: 200 OK
 ## Disassociate Subject and Project Roles
 
 ```
-DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_project_role_id
+DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_id
 ```
 ### Response
 

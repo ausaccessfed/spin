@@ -76,5 +76,9 @@ module API
       error = exception.message
       render json: { message: message, error: error }, status: :bad_request
     end
+
+    def error_from_validations(object)
+      object.errors.full_messages.join("\n")
+    end
   end
 end

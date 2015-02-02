@@ -34,6 +34,63 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
+        context 'body' do
+          subject { response.body }
+          it do
+            is_expected.to eq("Subject #{user.id} granted")
+          end
+        end
+      end
+
+      context 'when the subject is already associated' do
+        let!(:subject_project_role) do
+          create(:subject_project_role,
+                 project_role: project_role, subject: user)
+        end
+
+        it { is_expected.to change(SubjectProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:precondition_failed) }
+
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq('Subject already has this role granted')
+            end
+          end
+        end
+      end
+
+      context 'when the subject does not exist' do
+        let(:user_id) { user.id }
+        def run
+          user_id = user.id
+          user.destroy!
+          post :create, organisation_id: organisation.id,
+                        project_id: project.id,
+                        role_id: project_role.id, subject_project_roles:
+                  { subject_id: user_id }
+        end
+
+        subject { -> { run } }
+
+        it { is_expected.to change(SubjectProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:precondition_failed) }
+
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("Subject #{user_id} not found")
+            end
+          end
+        end
       end
     end
 
@@ -46,7 +103,7 @@ module API
       def run
         delete :destroy, organisation_id: organisation.id,
                          project_id: project.id, role_id: project_role.id,
-                         id: subject_project_role.id, format: 'json'
+                         id: subject_project_role.subject_id, format: 'json'
       end
 
       subject { -> { run } }
@@ -57,6 +114,58 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
+        context 'body' do
+          subject { response.body }
+          it do
+            is_expected
+              .to eq("Subject #{subject_project_role.subject_id} revoked")
+          end
+        end
+      end
+
+      context 'when the subject does not exist' do
+        before do
+          subject_project_role.subject.destroy!
+        end
+
+        it { is_expected.to change(SubjectProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:precondition_failed) }
+
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq('Subject ' \
+                  "#{subject_project_role.subject_id} not found")
+            end
+          end
+        end
+      end
+
+      context 'when the association does not exist' do
+        before do
+          subject_project_role.destroy!
+        end
+
+        it { is_expected.to change(SubjectProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:precondition_failed) }
+
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq('Role ' \
+                  "#{subject_project_role.project_role.id} is not granted" \
+                  " to Subject #{ subject_project_role.subject_id }")
+            end
+          end
+        end
       end
     end
   end

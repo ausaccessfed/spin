@@ -21,6 +21,7 @@ Status: 200 OK
             "id": 1,
             "name": "Role 1",
             "role_arn": "arn:aws:iam::1:role/SADADSZ"
+            "granted_subjects": [5, 3, 9]
         }
     ]
 }

@@ -40,7 +40,7 @@ module API
       end
 
       def run
-        delete "#{base_url}/#{subject_project_role.id}", nil, headers
+        delete "#{base_url}/#{user.id}", nil, headers
       end
 
       subject { -> { run } }

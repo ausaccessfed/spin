@@ -11,6 +11,7 @@ module API
 
     def to_map(project_role)
       project_role.attributes.symbolize_keys.slice(:name, :role_arn, :id)
+        .merge(granted_subjects: project_role.subjects.map(&:id))
     end
 
     def base_url
@@ -76,6 +77,18 @@ module API
       let!(:project_role2) do
         create(:project_role,
                orig_attrs.merge(project: project))
+      end
+
+      let!(:subject_project_role1) do
+        create(:subject_project_role,
+               subject: create(:subject),
+               project_role: project_role1)
+      end
+
+      let!(:subject_project_role2) do
+        create(:subject_project_role,
+               subject: create(:subject),
+               project_role: project_role1)
       end
       def run
         get base_url, nil, headers
