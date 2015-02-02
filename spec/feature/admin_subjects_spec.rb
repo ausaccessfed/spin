@@ -24,6 +24,10 @@ RSpec.feature 'Managing the Subjects', type: :feature do
     expect(page).to have_content('View Delete')
   end
 
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
+  end
+
   scenario 'viewing a subject record' do
     within('table tr', text: user.name) do
       click_link('View')

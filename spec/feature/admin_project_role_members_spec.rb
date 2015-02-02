@@ -38,6 +38,10 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     click_link 'Members (1)'
   end
 
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
+  end
+
   scenario 'has view role path' do
     expect(current_path).to eq("/admin/organisations/#{organisation.id}/" \
                                  "projects/#{project.id}/" \

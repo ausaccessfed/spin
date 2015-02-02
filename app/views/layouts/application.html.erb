@@ -57,6 +57,13 @@
 </section>
 
 <%= aaf_footer do -%>
+  <%- if @subject -%>
+    <p>
+      Logged in as: <strong><%= @subject.name %></strong>
+      (<%= @subject.targeted_id %>)
+    </p>
+  <%- end -%>
+
   <p>
     SPIN
     <br/>

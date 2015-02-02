@@ -31,6 +31,10 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
     click_link 'Project Roles (1)'
   end
 
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
+  end
+
   scenario 'shows the project_role name in the list' do
     expect(page).to have_css('table tr td', text: project_role.name)
   end

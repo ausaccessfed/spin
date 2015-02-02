@@ -28,6 +28,10 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     click_link 'Projects (1)'
   end
 
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
+  end
+
   scenario 'shows the project name in the list' do
     expect(page).to have_css('table tr td', text: project.name)
   end
