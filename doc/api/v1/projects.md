@@ -44,7 +44,6 @@ DELETE /api/organisations/:id/projects/:id
 
 ```
 Status: 200 OK
-Response: Project <id> deleted
 ```
 
 ## Create Project
@@ -55,14 +54,19 @@ Content-Type: application/json
 ```
 Request Body:
 ```json
-{ "project":  { "name": "Proj 1", "provider_arn": "arn:aws:iam::1:saml-provider/5112", "state": "true" } }
+{
+   "project":{
+      "name":"Proj 1",
+      "provider_arn":"arn:aws:iam::1:saml-provider/5112",
+      "state":"true"
+   }
+}
 ```
 
 ### Response
 
 ```
-Status: 200 OK
-Response: Project <id> created
+Status: 201 OK
 ```
 
 ## Update Project
@@ -73,12 +77,17 @@ Content-Type: application/json
 ```
 Request Body:
 ```json
-{ "project":  { "name": "Proj 2", "provider_arn": "arn:aws:iam::1:saml-provider/4", "state": "false"  } }
+{
+   "project":{
+      "name":"Proj 2",
+      "provider_arn":"arn:aws:iam::1:saml-provider/4",
+      "state":"false"
+   }
+}
 ```
 
 ### Response
 
 ```
 Status: 200 OK
-Response: Project <id> updated
 ```

@@ -8,14 +8,17 @@ Content-Type: application/json
 ```
 Request Body:
 ```json
-{ "subject_project_roles":  { "subject_id": "<id>" } }
+{
+   "subject_project_roles":{
+      "subject_id":"<id>"
+   }
+}
 ```
 
 ### Response
 
 ```
-Status: 200 OK
-Response: Subject <id> granted
+Status: 201 OK
 ```
 
 ## Disassociate Subject and Project Roles
@@ -27,5 +30,4 @@ DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_id
 
 ```
 Status: 200 OK
-Response: Subject <id> revoked
 ```
