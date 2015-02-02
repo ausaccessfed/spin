@@ -34,12 +34,6 @@ module API
           before { run }
           subject { response }
           it { is_expected.to have_http_status(:ok) }
-          context 'body' do
-            subject { response.body }
-            it do
-              is_expected.to eq("Organisation #{Organisation.last.id} created")
-            end
-          end
         end
       end
 
@@ -95,12 +89,6 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
-        context 'body' do
-          subject { response.body }
-          it do
-            is_expected.to eq("Organisation #{organisation.id} updated")
-          end
-        end
       end
     end
 
@@ -147,12 +135,6 @@ module API
           before { run }
           subject { response }
           it { is_expected.to have_http_status(:ok) }
-          context 'body' do
-            subject { response.body }
-            it do
-              is_expected.to eq("Organisation #{organisation.id} deleted")
-            end
-          end
         end
       end
     end

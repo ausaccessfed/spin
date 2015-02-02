@@ -36,12 +36,6 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
-        context 'body' do
-          subject { response.body }
-          it do
-            is_expected.to eq("Project #{Project.last.id} created")
-          end
-        end
       end
 
       context 'with invalid params' do
@@ -94,12 +88,6 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
-        context 'body' do
-          subject { response.body }
-          it do
-            is_expected.to eq("Project #{project.id} updated")
-          end
-        end
       end
 
       context 'with invalid params' do
@@ -178,12 +166,6 @@ module API
           before { run }
           subject { response }
           it { is_expected.to have_http_status(:ok) }
-          context 'body' do
-            subject { response.body }
-            it do
-              is_expected.to eq("Project #{project.id} deleted")
-            end
-          end
         end
       end
     end

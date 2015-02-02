@@ -10,31 +10,20 @@ module API
       check_access!("#{access_prefix}:grant")
       subj_id = assoc_params[:subject_id]
       subject = Subject.find_by_id(subj_id)
-
-      return subject_not_found_response(subj_id) if subject.nil?
-
-      @assoc = @project_role.subject_project_roles.build(assoc_params)
-      return render status: :precondition_failed,
-                    plain: error_from_validations(@assoc) unless @assoc.save
-
-      render status: :ok, plain: "Subject #{subj_id} granted"
+      return precondition_failed(subject_not_found(subj_id)) if subject.nil?
+      @assoc = @project_role.subject_project_roles.create!(assoc_params)
+      render status: :ok, nothing: true
     end
 
     def destroy
       check_access!("#{access_prefix}:revoke")
       subj_id = params[:id]
       subject = Subject.find_by_id(subj_id)
-
-      return subject_not_found_response(subj_id) if subject.nil?
-
+      return precondition_failed(subject_not_found(subj_id)) if subject.nil?
       @assoc = @project_role.subject_project_roles.find_by_subject_id(subj_id)
-
-      return render status: :precondition_failed,
-                    plain: role_not_granted(subj_id) if @assoc.nil?
-
+      return precondition_failed(role_not_granted(subj_id)) if @assoc.nil?
       @assoc.destroy!
-
-      render status: :ok, plain: "Subject #{subj_id} revoked"
+      render status: :ok, nothing: true
     end
 
     private
@@ -43,9 +32,8 @@ module API
       "Role #{ @project_role.id } is not granted to Subject #{subject_id}"
     end
 
-    def subject_not_found_response(subject_id)
-      render status: :precondition_failed,
-             plain: "Subject #{subject_id} not found"
+    def subject_not_found(subject_id)
+      "Subject #{subject_id} not found"
     end
 
     def assoc_params

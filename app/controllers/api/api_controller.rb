@@ -80,16 +80,16 @@ module API
       render json: { message: message, error: error }, status: :bad_request
     end
 
-    def error_from_validations(object)
-      object.errors.full_messages.join("\n")
-    end
-
     def record_not_found(_error)
       render json: { error: 'Resource not found' }, status: :not_found
     end
 
     def invalid_record(error)
       render json: { error: error.message }, status: :bad_request
+    end
+
+    def precondition_failed(precondition)
+      render json: { error: precondition }, status: :precondition_failed
     end
   end
 end

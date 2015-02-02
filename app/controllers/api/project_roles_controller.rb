@@ -8,7 +8,7 @@ module API
     def create
       check_access!("#{access_prefix}:create")
       @project_role = @project.project_roles.create!(project_role_params)
-      render status: :ok, plain: "ProjectRole #{@project_role.id} created"
+      render status: :ok, nothing: true
     end
 
     def update
@@ -16,7 +16,7 @@ module API
       project_role_id = params[:id]
       @project_role = @project.project_roles.find(project_role_id)
       @project_role.update_attributes!(project_role_params)
-      render status: :ok, plain: "ProjectRole #{project_role_id} updated"
+      render status: :ok, nothing: true
     end
 
     def index
@@ -29,7 +29,7 @@ module API
       project_role_id = params[:id]
       @project_role = @project.project_roles.find(project_role_id)
       @project_role.destroy!
-      render status: :ok, plain: "ProjectRole #{project_role_id} deleted"
+      render status: :ok, nothing: true
     end
 
     private

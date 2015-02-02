@@ -34,12 +34,6 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
-        context 'body' do
-          subject { response.body }
-          it do
-            is_expected.to eq("Subject #{user.id} granted")
-          end
-        end
       end
 
       context 'when the subject is already associated' do
@@ -53,12 +47,13 @@ module API
         context 'the response' do
           before { run }
           subject { response }
-          it { is_expected.to have_http_status(:precondition_failed) }
+          it { is_expected.to have_http_status(:bad_request) }
 
           context 'body' do
             subject { response.body }
             it do
-              is_expected.to eq('Subject already has this role granted')
+              is_expected.to eq("{\"error\":\"Validation failed: Subject" \
+                                " already has this role granted\"}")
             end
           end
         end
@@ -87,7 +82,7 @@ module API
           context 'body' do
             subject { response.body }
             it do
-              is_expected.to eq("Subject #{user_id} not found")
+              is_expected.to eq("{\"error\":\"Subject #{user_id} not found\"}")
             end
           end
         end
@@ -114,13 +109,6 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
-        context 'body' do
-          subject { response.body }
-          it do
-            is_expected
-              .to eq("Subject #{subject_project_role.subject_id} revoked")
-          end
-        end
       end
 
       context 'when the subject does not exist' do
@@ -138,8 +126,8 @@ module API
           context 'body' do
             subject { response.body }
             it do
-              is_expected.to eq('Subject ' \
-                  "#{subject_project_role.subject_id} not found")
+              is_expected.to eq("{\"erro  r\":\"Subject " \
+               "#{subject_project_role.subject_id} not found\"}")
             end
           end
         end
@@ -160,9 +148,9 @@ module API
           context 'body' do
             subject { response.body }
             it do
-              is_expected.to eq('Role ' \
-                  "#{subject_project_role.project_role.id} is not granted" \
-                  " to Subject #{ subject_project_role.subject_id }")
+              is_expected.to eq("{\"error\":\"Role" \
+                 " #{subject_project_role.project_role.id} is not granted to " \
+                 "Subject #{subject_project_role.subject_id}\"}")
             end
           end
         end
