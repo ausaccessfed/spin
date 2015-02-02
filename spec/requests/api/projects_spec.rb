@@ -9,7 +9,7 @@ module API
     subject { response }
 
     def to_map(project)
-      project.attributes.symbolize_keys.slice(:name, :provider_arn, :state,
+      project.attributes.symbolize_keys.slice(:name, :provider_arn, :active,
                                               :id)
     end
 

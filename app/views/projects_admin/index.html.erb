@@ -12,7 +12,7 @@
     <tr>
       <th>Name</th>
       <th>Provider ARN</th>
-      <th>State</th>
+      <th>Active</th>
       <th/>
     </tr>
   </thead>
@@ -21,7 +21,13 @@
       <tr>
         <td><%= project.name %></td>
         <td><%= project.provider_arn %></td>
-        <td><%= project.state %></td>
+        <td>
+          <%- if project.active? -%>
+            <%= icon_tag('green checkmark') %> Yes
+          <%- else -%>
+            <%= icon_tag('yellow warning sign') %> No
+          <%- end -%>
+        </td>
         <td>
           <%- if permitted?("organisations:#{@organisation.id}:projects:#{project.id}:roles:list") -%>
               <%= button_link_to(organisation_project_roles_path(@organisation, project), class: 'tiny icon') do -%>

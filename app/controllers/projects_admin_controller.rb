@@ -57,7 +57,7 @@ class ProjectsAdminController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :provider_arn, :state)
+    params.require(:project).permit(:name, :provider_arn, :active)
   end
 
   def access_prefix

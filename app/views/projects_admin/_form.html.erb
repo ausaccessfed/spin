@@ -2,7 +2,7 @@
   <%= field_block do -%>
     <%= f.label :name do -%>
       Name
-      <%= field_help_text('The project name') %>
+      <%= field_help_text('Name of the Project running resources on AWS') %>
     <%- end -%>
     <%= f.text_field :name %>
   <%- end -%>
@@ -10,17 +10,19 @@
   <%= field_block do -%>
     <%= f.label :provider_arn do -%>
       Provider ARN
-      <%= field_help_text('The Provider ARN referenced on the AWS project') %>
+      <%= field_help_text('The unique Provider ARN for this project assigned by AWS after SPIN Identity Provider registration is completed.') %>
     <%- end -%>
     <%= f.text_field :provider_arn %>
   <%- end -%>
 
-  <%= field_block do -%>
-    <%= f.label :state do -%>
-      State
-      <%= field_help_text('The project state') %>
+  <%- unless current_page?(action: 'new') %>
+    <%= field_block do -%>
+      <%= f.label :active do -%>
+        Active
+        <%= field_help_text('Current status of this project. Projects which are inactive are not eligible for AWS access by assigned users.') %>
+      <%- end -%>
+      <%= f.check_box :active %>
     <%- end -%>
-    <%= f.text_field :state %>
   <%- end -%>
 
   <%= error_messages_tag %>
@@ -39,10 +41,23 @@
 
 <%- end -%>
 
+<%-
+  message = %Q( <strong>Provider ARN</strong>
+
+                <p>This is a unique code explicitly created by AWS when projects correctly register the SPIN Identity Provider.</p>
+
+                <p>
+                  To obtain this value visit the 'Identity and Access Management' > 'Identity Providers' page within the AWS console
+                  and navigate to the record for the SPIN Identity Provider (usually called 'SPIN').
+                </p>
+
+                <p>
+                  The required value will have the format:
+                  <pre>arn:aws:iam::<strong>&ltnumber&gt</strong>:saml-provider/<strong>&ltstring&gt</strong></pre>
+                </p>)
+-%>
 <%= validate_form('#project-form', :project) do -%>
-  <%= validate_field(:provider_arn, empty: 'Please enter a Provider ARN',
-                     provider_arn: 'Provider ARN format must be' \
-                     ' <pre>arn:aws:iam::<strong>&ltnumber&gt</strong>' \
-                     ':saml-provider/<strong>&ltstring&gt</strong></pre>') %>
+  <%= validate_field(:name, empty: 'Please provide the projects name') %>
+  <%= validate_field(:provider_arn, provider_arn: message) %>
 <%- end -%>
 

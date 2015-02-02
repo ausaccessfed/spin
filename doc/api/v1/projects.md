@@ -20,13 +20,13 @@ Status: 200 OK
       {
          "id":1,
          "provider_arn":"arn:aws:iam::1:saml-provider/12321"
-         "state":"true",
+         "active":"true",
          "name":"Project X"
       },
       {
          "id":2,
          "provider_arn":"arn:aws:iam::1:saml-provider/123115"
-         "state":"true",
+         "active":"true",
          "name":"Project Z"
       }
    ]
@@ -58,7 +58,7 @@ Request Body:
    "project":{
       "name":"Proj 1",
       "provider_arn":"arn:aws:iam::1:saml-provider/5112",
-      "state":"true"
+      "active":"true"
    }
 }
 ```
@@ -81,7 +81,7 @@ Request Body:
    "project":{
       "name":"Proj 2",
       "provider_arn":"arn:aws:iam::1:saml-provider/4",
-      "state":"false"
+      "active":"false"
    }
 }
 ```
