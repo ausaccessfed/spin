@@ -19,6 +19,9 @@ module API
 
     attr_reader :subject
 
+    rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+    rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
+
     protected
 
     def ensure_authenticated
@@ -79,6 +82,14 @@ module API
 
     def error_from_validations(object)
       object.errors.full_messages.join("\n")
+    end
+
+    def record_not_found(_error)
+      render json: { error: 'Resource not found' }, status: :not_found
+    end
+
+    def invalid_record(error)
+      render json: { error: error.message }, status: :bad_request
     end
   end
 end

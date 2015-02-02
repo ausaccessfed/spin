@@ -3,14 +3,15 @@ module API
     def create
       check_access!('api:organisations:create')
       @organisation = Organisation.create!(organisation_params)
-      render status: :ok, nothing: true
+      render status: :ok, plain: "Organisation #{@organisation.id} created"
     end
 
     def update
       check_access!('api:organisations:update')
-      @organisation = Organisation.find(params[:id])
+      organisation_id = params[:id]
+      @organisation = Organisation.find(organisation_id)
       @organisation.update_attributes!(organisation_params)
-      render status: :ok, nothing: true
+      render status: :ok, plain: "Organisation #{organisation_id} updated"
     end
 
     def index
@@ -20,9 +21,10 @@ module API
 
     def destroy
       check_access!('api:organisations:delete')
-      @organisation = Organisation.find(params[:id])
+      organisation_id = params[:id]
+      @organisation = Organisation.find(organisation_id)
       @organisation.destroy!
-      render status: :ok, nothing: true
+      render status: :ok, plain: "Organisation #{organisation_id} deleted"
     end
 
     private
