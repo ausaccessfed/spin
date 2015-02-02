@@ -8,7 +8,7 @@ module API
     def create
       check_access!("#{access_prefix}:create")
       @project_role = @project.project_roles.create!(project_role_params)
-      render status: :ok, nothing: true
+      render status: :created, nothing: true
     end
 
     def update

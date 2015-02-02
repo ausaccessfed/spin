@@ -7,7 +7,7 @@ module API
     def create
       check_access!("#{access_prefix}:create")
       @project = @organisation.projects.create!(project_params)
-      render status: :ok, nothing: true
+      render status: :created, nothing: true
     end
 
     def update

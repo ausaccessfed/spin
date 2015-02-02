@@ -30,7 +30,7 @@ module API
       context 'the response' do
         before { run }
         subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it { is_expected.to have_http_status(:created) }
       end
     end
 

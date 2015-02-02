@@ -14,7 +14,7 @@ module API
         subject_not_found_response(subj_id)
       else
         @assoc = @project_role.subject_project_roles.create!(assoc_params)
-        render status: :ok, nothing: true
+        render status: :created, nothing: true
       end
     end
 

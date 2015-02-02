@@ -3,7 +3,7 @@ module API
     def create
       check_access!('api:organisations:create')
       @organisation = Organisation.create!(organisation_params)
-      render status: :ok, nothing: true
+      render status: :created, nothing: true
     end
 
     def update
