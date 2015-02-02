@@ -16,9 +16,12 @@ are:
 
 Steps:
 
-1.  Register your service with AAF Rapid Connect 
+1.  Register your service with AAF Rapid Connect
     ([test](https://rapid.test.aaf.edu.au) /
     [production](https://rapid.aaf.edu.au))
+
+    NB: Ensure you SECRET **does not contain a ' character** as this is used within configuration files
+    as a delimiter and will cause startup to fail.
 
     After registration, please contact AAF to request that your registration be
     converted to an `auresearch` service to ensure SPIN works correctly.
