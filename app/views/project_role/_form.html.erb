@@ -19,7 +19,7 @@
   <%= field_block do -%>
     <%= f.label :role_arn do -%>
       Role ARN
-      <%= field_help_text('The ARN referenced in the AWS project role') %>
+      <%= field_help_text('The unique ARN for this role assigned by AWS after role creation is completed.') %>
     <%- end -%>
     <%= f.text_field :role_arn %>
   <%- end -%>
@@ -39,9 +39,21 @@
   </div>
 <%- end -%>
 
+<%-
+  message = %Q( <p>Role ARN is a unique code created by AWS when projects create AWS roles to provide access within the AWS console.</p>
+
+                <p>
+                  To obtain this value visit the 'Identity and Access Management' > 'Roles' page within the AWS console
+                  and navigate to the record for required role (possibly 'Administrator').
+                </p>
+
+                <p>
+                  The required value will have the format:
+                  <pre>arn:aws:iam::<strong>&ltnumber&gt</strong>:role/<strong>&ltstring&gt</strong></pre>
+                </p>)
+-%>
+
 <%= validate_form('#project_role-form', :project_role) do -%>
-  <%= validate_field(:role_arn, empty: 'Please enter a Role ARN',
-                     role_arn: 'Role ARN format must be' \
-                     ' <pre>arn:aws:iam::<strong>&ltnumber&gt</strong>' \
-                     ':role/<strong>&ltstring&gt</strong></pre>') %>
+  <%= validate_field(:name, empty: 'Please provide a descriptive role name') %>
+  <%= validate_field(:role_arn, role_arn: message) %>
 <%- end -%>
