@@ -12,6 +12,7 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
+Response: Subject 1 granted
 ```
 
 ## Disassociate Subject and Project Roles
@@ -23,4 +24,5 @@ DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_id
 
 ```
 Status: 200 OK
+Response: Subject 1 revoked
 ```
