@@ -44,6 +44,7 @@ DELETE /api/organisations/:id/projects/:id
 
 ```
 Status: 200 OK
+Response: Project :id deleted
 ```
 
 ## Create Project
@@ -58,6 +59,7 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
+Response: Project <id> created
 ```
 
 ## Update Project
@@ -72,4 +74,5 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
+Response: Project :id updated
 ```

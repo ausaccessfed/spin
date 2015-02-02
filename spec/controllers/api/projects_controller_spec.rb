@@ -36,6 +36,33 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
+        context 'body' do
+          subject { response.body }
+          it do
+            is_expected.to eq("Project #{Project.last.id} created")
+          end
+        end
+      end
+
+      context 'with invalid params' do
+        let(:project) { build(:project, name: nil) }
+
+        subject { -> { run } }
+
+        it { is_expected.to change(Project, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:bad_request) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("{\"error\":\"Validation failed: Name can't" \
+                                " be blank\"}")
+            end
+          end
+        end
       end
     end
 
@@ -59,8 +86,7 @@ module API
 
       context 'the updated project' do
         it 'has the attributes' do
-          expect(to_map(project.reload))
-            .to eq(to_map(updated_project))
+          expect(to_map(project.reload)).to eq(to_map(updated_project))
         end
       end
 
@@ -68,6 +94,39 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
+        context 'body' do
+          subject { response.body }
+          it do
+            is_expected.to eq("Project #{project.id} updated")
+          end
+        end
+      end
+
+      context 'with invalid params' do
+        let(:updated_project) { build(:project, provider_arn: 'a') }
+
+        def run
+          patch :update, organisation_id: organisation.id, id: project.id,
+                         project: to_map(updated_project).merge(format: 'json')
+        end
+
+        subject { -> { run } }
+
+        it { is_expected.to change(Project, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:bad_request) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("{\"error\":\"Validation failed: Provider ARN" \
+               " format must be 'arn:aws:iam::(number):saml-provider/" \
+               "(string)'\"}")
+            end
+          end
+        end
       end
     end
 
@@ -83,24 +142,49 @@ module API
     end
 
     context 'delete :id' do
-      let!(:project) do
-        create(:project,
-               orig_attrs.merge(organisation: organisation))
+      context 'when the project does not exist' do
+        def run
+          delete :destroy, organisation_id: organisation.id, id: -1,
+                           format: 'json'
+        end
+
+        subject { -> { run } }
+
+        it { is_expected.to change(Organisation, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:not_found) }
+        end
       end
 
-      def run
-        delete :destroy, organisation_id: organisation.id, id: project.id,
-                         format: 'json'
-      end
+      context 'when the project does exist' do
+        let!(:project) do
+          create(:project,
+                 orig_attrs.merge(organisation: organisation))
+        end
 
-      subject { -> { run } }
+        def run
+          delete :destroy, organisation_id: organisation.id, id: project.id,
+                           format: 'json'
+        end
 
-      it { is_expected.to change(Project, :count).by(-1) }
+        subject { -> { run } }
 
-      context 'the response' do
-        before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it { is_expected.to change(Project, :count).by(-1) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:ok) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("Project #{project.id} deleted")
+            end
+          end
+        end
       end
     end
   end
