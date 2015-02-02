@@ -42,7 +42,7 @@ DELETE /api/organisations/:id
 
 ```
 Status: 200 OK
-Response: Organisation :id deleted
+Response: Organisation <id> deleted
 ```
 
 ## Create Organisation
@@ -50,6 +50,9 @@ Response: Organisation :id deleted
 ```
 POST /api/organisations
 Content-Type: application/json
+```
+Request Body:
+```json
 { "organisation":  { "name": "Org 1", "external_id": "ExtID1" } }
 ```
 
@@ -65,6 +68,9 @@ Response: Organisation <id> created
 ```
 PATCH /api/organisations/:id
 Content-Type: application/json
+```
+Request Body:
+```json
 { "organisation":  { "name": "Org 1 - UPDATE", "external_id": "ExtID1 - UPDATE" } }
 ```
 
@@ -72,5 +78,5 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
-Response: Organisation :id updated
+Response: Organisation <id> updated
 ```

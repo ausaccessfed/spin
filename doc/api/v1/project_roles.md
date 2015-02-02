@@ -38,7 +38,7 @@ DELETE /api/organisations/:id/projects/:id/roles/:id
 
 ```
 Status: 200 OK
-Response: ProjectRole :id deleted
+Response: ProjectRole <id> deleted
 ```
 
 ## Create Project Role
@@ -46,6 +46,9 @@ Response: ProjectRole :id deleted
 ```
 POST /api/organisations/:id/projects/:id/roles
 Content-Type: application/json
+```
+Request Body:
+```json
 { "project_role":  { "name": "Proj Role 1", "role_arn": "arn:aws:iam::1:role/5112" } }
 ```
 
@@ -61,6 +64,9 @@ Response: ProjectRole <id> created
 ```
 PATCH /api/organisations/:id/projects/:id/roles/:id
 Content-Type: application/json
+```
+Request Body:
+```json
 { "project_role":  { "name": "Proj Role 2", "role_arn": "arn:aws:iam::1:role/5f2" } }
 ```
 
@@ -68,5 +74,5 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
-Response: ProjectRole :id updated
+Response: ProjectRole <id> updated
 ```
