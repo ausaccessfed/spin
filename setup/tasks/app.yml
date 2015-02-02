@@ -82,7 +82,7 @@
     dest: /opt/spin/app/app/assets/images/{{ item }}
     owner: root
     group: spin
-    mode: 0640
+    mode: 0644
   with_items:
     - logo.png
     - favicon.png
