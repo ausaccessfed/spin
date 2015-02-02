@@ -38,6 +38,31 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
+        context 'body' do
+          subject { response.body }
+          it do
+            is_expected.to eq("ProjectRole #{ProjectRole.last.id} created")
+          end
+        end
+      end
+
+      context 'with invalid params' do
+        let(:project_role) { build(:project_role, name: nil) }
+
+        it { is_expected.to change(ProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:bad_request) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("{\"error\":\"Validation failed: Name can't" \
+                                " be blank\"}")
+            end
+          end
+        end
       end
     end
 
@@ -72,6 +97,34 @@ module API
         before { run }
         subject { response }
         it { is_expected.to have_http_status(:ok) }
+        context 'body' do
+          subject { response.body }
+          it do
+            is_expected.to eq("ProjectRole #{updated_project_role.id} updated")
+          end
+        end
+      end
+
+      context 'with invalid params' do
+        let(:updated_project_role) do
+          build(:project_role, id: project_role.id,
+                               role_arn: 'arn:aws:iam::1:$')
+        end
+
+        it { is_expected.to change(ProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:bad_request) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("{\"error\":\"Validation failed: Role ARN" \
+              " format must be 'arn:aws:iam::(number):role/(string)'\"}")
+            end
+          end
+        end
       end
     end
 
@@ -90,11 +143,6 @@ module API
     end
 
     context 'delete :id' do
-      let!(:project_role) do
-        create(:project_role,
-               orig_attrs.merge(project: project))
-      end
-
       def run
         delete :destroy, organisation_id: organisation.id,
                          project_id: project.id, id: project_role.id,
@@ -103,12 +151,48 @@ module API
 
       subject { -> { run } }
 
-      it { is_expected.to change(ProjectRole, :count).by(-1) }
+      context 'when the project role exists' do
+        let!(:project_role) do
+          create(:project_role,
+                 orig_attrs.merge(project: project))
+        end
 
-      context 'the response' do
-        before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it { is_expected.to change(ProjectRole, :count).by(-1) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:ok) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("ProjectRole #{project_role.id} deleted")
+            end
+          end
+        end
+      end
+
+      context 'when the project role does not exist' do
+        def run
+          delete :destroy, organisation_id: organisation.id,
+                           project_id: project.id, id: -1, format: 'json'
+        end
+
+        subject { -> { run } }
+
+        it { is_expected.to change(ProjectRole, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:not_found) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("{\"error\":\"Resource not found\"}")
+            end
+          end
+        end
       end
     end
   end

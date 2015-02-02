@@ -38,6 +38,7 @@ DELETE /api/organisations/:id/projects/:id/roles/:id
 
 ```
 Status: 200 OK
+Response: ProjectRole :id deleted
 ```
 
 ## Create Project Role
@@ -52,6 +53,7 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
+Response: ProjectRole <id> created
 ```
 
 ## Update Project Role
@@ -66,4 +68,5 @@ Content-Type: application/json
 
 ```
 Status: 200 OK
+Response: ProjectRole :id updated
 ```

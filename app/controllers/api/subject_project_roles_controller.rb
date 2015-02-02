@@ -34,7 +34,7 @@ module API
 
       @assoc.destroy!
 
-      render status: :ok,  plain: "Subject #{subj_id} revoked"
+      render status: :ok, plain: "Subject #{subj_id} revoked"
     end
 
     private
