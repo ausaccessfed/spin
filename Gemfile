@@ -8,7 +8,7 @@ gem 'uglifier', require: false
 gem 'therubyracer', require: false
 gem 'mysql2' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
-gem 'accession' # Permissions for Ruby
+gem 'accession',  '1.0.0'
 gem 'rails-assets-semantic-ui'
 gem 'rails-assets-jquery', '~> 1.11' # JQuery
 gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
