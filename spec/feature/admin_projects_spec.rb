@@ -173,7 +173,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
         end
       end
 
-      context 'with valid data and' do
+      context 'with valid data' do
         before do
           fill_in 'project_name', with: name
           fill_in 'project_provider_arn', with: provider_arn
