@@ -20,7 +20,7 @@
   <%- @role.subject_roles.each do |assoc| -%>
     <tr>
       <td><%= assoc.subject.name %></td>
-      <td><a href='mailto:<%= assoc.subject.mail %>'><%= assoc.subject.mail %></a></td>
+      <td><%= mail_to(assoc.subject.mail) %></td>
       <td>
         <%- if permitted?("admin:roles:revoke") -%>
           <%= delete_button_tag(role_member_path(@role, assoc),
@@ -32,7 +32,7 @@
   <%- @role.api_subject_roles.each do |assoc| -%>
     <tr>
       <td><%= assoc.api_subject.x509_cn %></td>
-      <td><a href='mailto:<%= assoc.api_subject.contact_mail %>'><%= assoc.api_subject.contact_mail %></a></td>
+      <td><%= mail_to(assoc.api_subject.contact_mail) %></td>
       <td>
         <%- if permitted?("admin:roles:revoke") -%>
           <%= delete_button_tag(role_api_member_path(@role, assoc),

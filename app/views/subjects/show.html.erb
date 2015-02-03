@@ -16,7 +16,7 @@
   </tr>
   <tr>
     <td>Email Address</td>
-    <td><a href='mailto:<%= @object.mail %>'><%= @object.mail %></a></td>
+    <td><%= mail_to(@object.mail) %></td>
   </tr>
   <tr>
     <td>Shared Token</td>

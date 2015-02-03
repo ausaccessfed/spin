@@ -21,7 +21,7 @@
   <%- @objects.each do |object| -%>
     <tr>
       <td><%= object.name %></td>
-      <td><%= link_to(object.mail, "mailto:#{object.mail}") %></td>
+      <td><%= mail_to(object.mail) %></td>
       <td>
         <%- if object.functioning? -%>
           <%= icon_tag('green checkmark') %> Yes
