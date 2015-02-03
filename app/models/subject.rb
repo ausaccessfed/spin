@@ -16,7 +16,7 @@ class Subject < ActiveRecord::Base
   validates :name, :mail, presence: true
   validates :targeted_id, :shared_token, presence: true, if: :complete?
   validates :complete, :enabled, inclusion: { in: [true, false] }
-  validates :shared_token, uniqueness: true, allow_nil: true
+  validates :shared_token, uniqueness: true, presence: true
 
   def functioning?
     enabled?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202054224) do
+ActiveRecord::Schema.define(version: 20150203051806) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20150202054224) do
     t.string   "name",                         null: false
     t.string   "mail",                         null: false
     t.string   "targeted_id"
-    t.string   "shared_token"
+    t.string   "shared_token",                 null: false
     t.boolean  "complete",     default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
