@@ -32,7 +32,7 @@
           <%- if permitted?("organisations:#{@organisation.id}:projects:#{project.id}:roles:list") -%>
               <%= button_link_to(organisation_project_roles_path(@organisation, project), class: 'tiny icon') do -%>
                   <%= icon_tag('lock icon') %>
-                  Project Roles <em>(<%= project.project_roles.count %>)</em>
+                  Project Roles
               <%- end -%>
           <%- end -%>
 

@@ -25,7 +25,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     click_link('Organisations', match: :first)
     expect(current_path).to eq('/admin/organisations')
     expect(page).to have_css('table tr td', text: organisation.name)
-    click_link 'Projects (1)'
+    click_link 'Projects'
   end
 
   scenario 'shows active subject' do
@@ -41,7 +41,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
   end
 
   scenario 'shows actions for the project' do
-    expect(page).to have_content('Project Roles (0) Edit Delete')
+    expect(page).to have_content('Project Roles Edit Delete')
   end
 
   scenario 'shows New Project button' do
@@ -62,7 +62,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     end
 
     scenario 'does not shows actions for the project' do
-      expect(page).to_not have_content('Project Roles (0) Edit Delete')
+      expect(page).to_not have_content('Project Roles Edit Delete')
     end
   end
 

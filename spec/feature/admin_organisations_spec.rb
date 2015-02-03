@@ -34,7 +34,7 @@ RSpec.feature 'Managing the Organisation', type: :feature do
   end
 
   scenario 'shows actions for the organisation' do
-    expect(page).to have_content('Projects (0) Edit Delete')
+    expect(page).to have_content('Projects Edit Delete')
   end
 
   scenario 'shows New Organisation button' do

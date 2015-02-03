@@ -13,6 +13,7 @@
   <thead>
   <tr>
     <th>Member</th>
+    <th>Email Address</th>
     <th/>
   </tr>
   </thead>
@@ -20,6 +21,7 @@
   <%- @project_role.subject_project_roles.each do |assoc| -%>
     <tr>
       <td><%= assoc.subject.name %></td>
+      <td><a href='mailto:<%= assoc.subject.mail %>'><%= assoc.subject.mail %></a></td>
       <td>
         <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:revoke") -%>
           <%= delete_button_tag(organisation_project_role_member_path(@organisation, @project, @project_role, assoc),
