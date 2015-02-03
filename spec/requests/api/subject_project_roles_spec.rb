@@ -30,7 +30,7 @@ module API
       context 'the response' do
         before { run }
         subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it { is_expected.to have_http_status(:created) }
       end
     end
 
@@ -40,7 +40,7 @@ module API
       end
 
       def run
-        delete "#{base_url}/#{subject_project_role.id}", nil, headers
+        delete "#{base_url}/#{user.id}", nil, headers
       end
 
       subject { -> { run } }

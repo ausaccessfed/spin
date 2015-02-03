@@ -19,6 +19,9 @@ module API
 
     attr_reader :subject
 
+    rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+    rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
+
     protected
 
     def ensure_authenticated
@@ -75,6 +78,18 @@ module API
       message = 'The request parameters could not be successfully processed.'
       error = exception.message
       render json: { message: message, error: error }, status: :bad_request
+    end
+
+    def record_not_found(_error)
+      render json: { error: 'Resource not found' }, status: :not_found
+    end
+
+    def invalid_record(error)
+      render json: { error: error.message }, status: :bad_request
+    end
+
+    def precondition_failed(precondition)
+      render json: { error: precondition }, status: :precondition_failed
     end
   end
 end

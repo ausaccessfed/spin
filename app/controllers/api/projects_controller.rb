@@ -7,12 +7,13 @@ module API
     def create
       check_access!("#{access_prefix}:create")
       @project = @organisation.projects.create!(project_params)
-      render status: :ok, nothing: true
+      render status: :created, nothing: true
     end
 
     def update
       check_access!("#{access_prefix}:update")
-      @project = @organisation.projects.find(params[:id])
+      project_id = params[:id]
+      @project = @organisation.projects.find(project_id)
       @project.update_attributes!(project_params)
       render status: :ok, nothing: true
     end
@@ -24,7 +25,8 @@ module API
 
     def destroy
       check_access!("#{access_prefix}:delete")
-      @project = @organisation.projects.find(params[:id])
+      project_id = params[:id]
+      @project = @organisation.projects.find(project_id)
       @project.destroy!
       render status: :ok, nothing: true
     end

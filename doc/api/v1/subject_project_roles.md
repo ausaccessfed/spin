@@ -5,19 +5,26 @@
 ```
 POST /api/organisations/:id/projects/:id/roles/:id/members
 Content-Type: application/json
-{ "subject_project_roles":  { "subject_id": "1" } }
+```
+Request Body:
+```json
+{
+   "subject_project_roles":{
+      "subject_id":"<id>"
+   }
+}
 ```
 
 ### Response
 
 ```
-Status: 200 OK
+Status: 201 OK
 ```
 
 ## Disassociate Subject and Project Roles
 
 ```
-DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_project_role_id
+DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_id
 ```
 ### Response
 

@@ -16,20 +16,18 @@ Status: 200 OK
 
 ```json
 {
-   "organisations":[
-      {
-         "id":1,
-         "shared_token":"W4ohH-6FCupmiBdwRv_w18AToQ"
-         "mail":"russell.ianniello@aaf.edu.au",
-         "name":"Russell Ianniello"
-      },
-      {
-         "id":2,
-         "shared_token":"6FCupmW4ohH-iBdwRv_w18AToQ"
-         "mail":"joe.blogs@aaf.edu.au",
-         "name":"Joe Blogs"
-      }
-   ]
+    "organisations": [
+        {
+            "id": 1,
+            "name": "Organisation 1",
+            "external_id": "ORG1"
+        },
+        {
+            "id": 2,
+            "name": "Organisation 2",
+            "external_id": "ORG2"
+        }
+    ]
 }
 ```
 
@@ -51,13 +49,21 @@ Status: 200 OK
 ```
 POST /api/organisations
 Content-Type: application/json
-{ "organisation":  { "name": "Org 1", "external_id": "ExtID1" } }
+```
+Request Body:
+```json
+{
+   "organisation":{
+      "name":"Org 1",
+      "external_id":"ExtID1"
+   }
+}
 ```
 
 ### Response
 
 ```
-Status: 200 OK
+Status: 201 OK
 ```
 
 ## Update Organisation
@@ -65,7 +71,15 @@ Status: 200 OK
 ```
 PATCH /api/organisations/:id
 Content-Type: application/json
-{ "organisation":  { "name": "Org 1 - UPDATE", "external_id": "ExtID1 - UPDATE" } }
+```
+Request Body:
+```json
+{
+   "organisation":{
+      "name":"Org 1 - UPDATE",
+      "external_id":"ExtID1 - UPDATE"
+   }
+}
 ```
 
 ### Response

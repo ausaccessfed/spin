@@ -18,21 +18,44 @@ module API
     subject { response }
 
     context 'post :create' do
-      let(:organisation) { build(:organisation) }
-
       def run
         post_params = { organisation: to_map(organisation) }
         post :create, post_params.merge(format: 'json')
       end
 
-      subject { -> { run } }
+      context 'with valid params' do
+        let(:organisation) { build(:organisation) }
 
-      it { is_expected.to change(Organisation, :count).by(1) }
+        subject { -> { run } }
 
-      context 'the response' do
-        before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it { is_expected.to change(Organisation, :count).by(1) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:created) }
+        end
+      end
+
+      context 'with invalid params' do
+        let(:organisation) { build(:organisation, name: nil) }
+
+        subject { -> { run } }
+
+        it { is_expected.to change(Organisation, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:bad_request) }
+          context 'body' do
+            subject { response.body }
+            it do
+              is_expected.to eq("{\"error\":\"Validation failed:" \
+                                " Name can't be blank\"}")
+            end
+          end
+        end
       end
     end
 
@@ -44,8 +67,9 @@ module API
               id: organisation.id)
       end
 
+      let(:patch_params) { { organisation: to_map(updated_organisation) } }
+
       def run
-        patch_params = { organisation: to_map(updated_organisation) }
         patch :update, id: organisation.id,
                        organisation: patch_params.merge(format: 'json')
       end
@@ -80,20 +104,38 @@ module API
     end
 
     context 'delete :id' do
-      def run
-        delete :destroy, id: object.id, format: 'json'
+      context 'when the organisation does not exist' do
+        def run
+          delete :destroy, id: -1, format: 'json'
+        end
+
+        subject { -> { run } }
+
+        it { is_expected.to change(Organisation, :count).by(0) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:not_found) }
+        end
       end
 
-      let!(:object) { create(:organisation) }
+      context 'when the organisation exists' do
+        def run
+          delete :destroy, id: organisation.id, format: 'json'
+        end
 
-      subject { -> { run } }
+        let!(:organisation) { create(:organisation) }
 
-      it { is_expected.to change(Organisation, :count).by(-1) }
+        subject { -> { run } }
 
-      context 'the response' do
-        before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it { is_expected.to change(Organisation, :count).by(-1) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it { is_expected.to have_http_status(:ok) }
+        end
       end
     end
   end

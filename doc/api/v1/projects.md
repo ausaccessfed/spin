@@ -51,13 +51,22 @@ Status: 200 OK
 ```
 POST /api/organisations/:id/projects/
 Content-Type: application/json
-{ "project":  { "name": "Proj 1", "provider_arn": "arn:aws:iam::1:saml-provider/5112", "state": "true" } }
+```
+Request Body:
+```json
+{
+   "project":{
+      "name":"Proj 1",
+      "provider_arn":"arn:aws:iam::1:saml-provider/5112",
+      "state":"true"
+   }
+}
 ```
 
 ### Response
 
 ```
-Status: 200 OK
+Status: 201 OK
 ```
 
 ## Update Project
@@ -65,7 +74,16 @@ Status: 200 OK
 ```
 PATCH /api/organisations/:id/projects/:id
 Content-Type: application/json
-{ "project":  { "name": "Proj 2", "provider_arn": "arn:aws:iam::1:saml-provider/4", "state": "false"  } }
+```
+Request Body:
+```json
+{
+   "project":{
+      "name":"Proj 2",
+      "provider_arn":"arn:aws:iam::1:saml-provider/4",
+      "state":"false"
+   }
+}
 ```
 
 ### Response

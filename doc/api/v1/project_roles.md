@@ -21,6 +21,7 @@ Status: 200 OK
             "id": 1,
             "name": "Role 1",
             "role_arn": "arn:aws:iam::1:role/SADADSZ"
+            "granted_subjects": [5, 3, 9]
         }
     ]
 }
@@ -44,13 +45,21 @@ Status: 200 OK
 ```
 POST /api/organisations/:id/projects/:id/roles
 Content-Type: application/json
-{ "project_role":  { "name": "Proj Role 1", "role_arn": "arn:aws:iam::1:role/5112" } }
+```
+Request Body:
+```json
+{
+   "project_role":{
+      "name":"Proj Role 1",
+      "role_arn":"arn:aws:iam::1:role/5112"
+   }
+}
 ```
 
 ### Response
 
 ```
-Status: 200 OK
+Status: 201 OK
 ```
 
 ## Update Project Role
@@ -58,7 +67,15 @@ Status: 200 OK
 ```
 PATCH /api/organisations/:id/projects/:id/roles/:id
 Content-Type: application/json
-{ "project_role":  { "name": "Proj Role 2", "role_arn": "arn:aws:iam::1:role/5f2" } }
+```
+Request Body:
+```json
+{
+   "project_role":{
+      "name":"Proj Role 2",
+      "role_arn":"arn:aws:iam::1:role/5f2"
+   }
+}
 ```
 
 ### Response
