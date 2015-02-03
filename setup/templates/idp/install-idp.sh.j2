@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+export JAVA_HOME=/usr/lib/jvm/jre-openjdk
+
+cd /opt/spin/shibboleth/shibboleth-dist/shibboleth-identityprovider-{{ idp.version }}/
+
+./install.sh <<EOF
+/opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}
+{{ service_hostname }}
+{{ idp_keystore_password }}
+EOF
+
+rmdir /opt/spin/shibboleth/shibboleth-idp/shibboleth-idp-{{ idp.version }}/logs

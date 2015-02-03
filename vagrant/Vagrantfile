@@ -1,0 +1,41 @@
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = '2'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = 'aafc7'
+  config.ssh.username = 'root'
+
+  # Detect the developers SSH keypair to secure the host
+  # This allows us to dump use of the 'insecure' vagrant
+  # keypair on box provision making it seemless for developers.
+  if File.exist?(File.join(Dir.home, '.ssh', 'id_rsa'))
+    # We still use the vagrant private key for initial
+    # bootstrap actions until the provision event kicks in
+    config.ssh.private_key_path = [File.join(Dir.home, '.ssh', 'id_rsa'),
+                                   'vagrant_id_rsa']
+
+    id_rsa_pub_data = File.read(File.join(Dir.home, '.ssh', 'id_rsa.pub'))
+    config.vm.provision 'shell' do |s|
+      s.inline = <<-EOF
+        echo -n '#{id_rsa_pub_data}' > /root/.ssh/authorized_keys
+        systemctl restart network.service
+      EOF
+    end
+  end
+
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  config.vm.define 'spin' do |h|
+    h.vm.network 'private_network', ip: '192.168.56.99'
+    h.vm.provider 'virtualbox' do |vb|
+      vb.name = 'spin'
+      vb.customize [
+        'modifyvm', :id,
+        '--memory', 1536,
+        '--cpus', 2
+      ]
+    end
+
+    h.vm.hostname = 'spin'
+  end
+end

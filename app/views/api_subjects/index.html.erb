@@ -1,0 +1,63 @@
+<%=
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        'API Accounts'
+    )
+%>
+
+<%= page_header('API Accounts') %>
+
+<table class="ui basic compact table">
+  <thead>
+  <tr>
+    <th>X.509 CN</th>
+    <th>Description</th>
+    <th>Functioning</th>
+    <th/>
+  </tr>
+  </thead>
+  <tbody>
+  <%- @api_subjects.each do |api_subject| -%>
+    <tr>
+      <td><%= api_subject.x509_cn %></td>
+      <td><%= api_subject.description %></td>
+      <td>
+        <%- if api_subject.functioning? -%>
+          <%= icon_tag('green checkmark') %> Yes
+        <%- else -%>
+          <%= icon_tag('yellow warning sign') %> No
+        <%- end -%>
+      </td>
+      <td>
+        <%- if permitted?('admin:api_subjects:read') -%>
+          <%= button_link_to(api_subject, class: 'tiny icon') do -%>
+            <%= icon_tag('content') %>
+            View
+          <%- end -%>
+        <%- end -%>
+
+        <%- if permitted?('admin:api_subjects:update') -%>
+          <%= button_link_to([:edit, api_subject], class: 'tiny icon') do -%>
+            <%= icon_tag('edit') %>
+            Edit
+          <%- end -%>
+        <%- end -%>
+
+        <%- if permitted?('admin:api_subjects:delete') -%>
+          <%= delete_button_tag(api_subject) %>
+        <%- end -%>
+      </td>
+    </tr>
+  <%- end -%>
+  </tbody>
+</table>
+
+
+<%- if permitted?("admin:api_subjects:create") -%>
+  <div class="line-of-buttons">
+    <%= button_link_to(new_api_subject_path, class: 'large green icon') do -%>
+      <%= icon_tag('add') %>
+      New API Account
+    <%- end -%>
+  </div>
+<%- end -%>

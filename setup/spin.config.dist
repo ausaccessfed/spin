@@ -1,0 +1,22 @@
+---
+# IP address and hostname for SPIN
+service_hostname: spin.example.org
+service_ip: 172.16.17.18
+
+# Freeform string to describe the environment. Shown in the application banner.
+environment_string: 'My Node'
+
+# After performing Rapid Connect registration, please contact support@aaf.edu.au
+# to request that your service be converted to an "auresearch" service before
+# proceeding.
+rapidconnect:
+  # Your unique URL provided after registration.
+  url: 'https://rapid.test.aaf.edu.au/jwt/authnrequest/auresearch/9bZmShi-XeTr3aJd5G8S-Q'
+  # Your Rapid Connect secret
+  secret: 'Em6DbXMGKqe-sz967vr_xLExxCVr4sImjmkMkEjzFXpgpTwPy02dhg'
+  # The Rapid Connect issuer. This will match the host part of your unique URL.
+  # Test Federation:        https://rapid.test.aaf.edu.au
+  # Production Federation:  https://rapid.aaf.edu.au
+  issuer: 'https://rapid.test.aaf.edu.au'
+  # The "URL" you provided during registration (NOT the callback URL)
+  audience: 'https://spin.example.org'

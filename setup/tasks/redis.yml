@@ -1,0 +1,16 @@
+---
+- name: 'Install Redis configuration'
+  template:
+    src: templates/redis/redis.conf.j2
+    dest: /etc/redis.conf
+    owner: root
+    group: redis
+    mode: 0640
+  register: config
+
+- name: 'Restart Redis'
+  service: name=redis state=restarted
+  when: config | changed
+
+- name: 'Start Redis'
+  service: name=redis state=started enabled=yes

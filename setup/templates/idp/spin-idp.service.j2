@@ -1,0 +1,15 @@
+[Unit]
+Description=SPIN Identity Provider
+After=syslog.target network.target mariadb.target
+
+[Service]
+EnvironmentFile=/opt/spin/tomcat/current/conf/env.conf
+Type=forking
+ExecStart=/opt/spin/tomcat/current/bin/startup.sh
+ExecStop=/opt/spin/tomcat/current/bin/shutdown.sh
+SuccessExitStatus=143
+User=spin
+Group=spin
+
+[Install]
+WantedBy=multi-user.target

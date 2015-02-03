@@ -1,0 +1,38 @@
+<%= form_for(@organisation, html: {id: 'organisation-form'}) do |f| -%>
+
+  <%= field_block do -%>
+    <%= f.label :name do -%>
+      Name
+      <%= field_help_text('Name of the Organisation running projects on AWS') %>
+    <%- end -%>
+    <%= f.text_field :name %>
+  <%- end -%>
+
+  <%= field_block do -%>
+    <%= f.label :external_id do -%>
+      Unique Identifier
+      <%= field_help_text('A unique identifier for this Organisation as determined by the spin operator e.g. A billing account code or domain name') %>
+    <%- end -%>
+    <%= f.text_field :external_id %>
+  <%- end -%>
+
+  <%= error_messages_tag %>
+
+  <div class="line-of-buttons">
+    <%= f.button(class: 'large green icon') do -%>
+      <%= icon_tag('checkmark') %>
+      <%= submit_label %>
+    <%- end -%>
+
+    <%= button_link_to(organisations_path, class: 'large icon') do -%>
+      <%= icon_tag('cancel') %>
+      Cancel
+    <%- end -%>
+  </div>
+
+<%- end -%>
+
+<%= validate_form('#organisation-form', :organisation) do -%>
+  <%= validate_field(:name, empty: 'Please enter a name for this Organisation') %>
+  <%= validate_field(:external_id, empty: 'Please enter a Unique Identifier for this Organisation') %>
+<%- end -%>

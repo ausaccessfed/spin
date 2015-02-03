@@ -1,0 +1,45 @@
+<%=
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        {'Roles' => roles_path},
+        {@role.name => role_path(@role)},
+        'Permissions'
+    )
+%>
+
+<%= page_header("Permissions for #{@role.name}") %>
+
+<table class="ui very basic compact table">
+  <thead>
+  <tr>
+    <th>Permission String</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%- @permissions.each do |permission| -%>
+    <tr>
+      <td><code><%= permission.value %></code></td>
+      <td><%= delete_button_tag(url_for([@role, permission])) %></td>
+    </tr>
+  <%- end -%>
+  </tbody>
+</table>
+
+<div class="ui section divider"></div>
+
+<h3 class="ui header">Add New Permission</h3>
+
+<%= form_for([@role, @new_permission], html: {id: 'new-permission'}) do |f| -%>
+  <%= field_block do -%>
+    <%= f.label :value do -%>
+      Permission String
+    <%- end -%>
+    <%= f.text_field :value %>
+  <%- end -%>
+
+  <%= button_tag(type: 'submit', class: 'large green icon') do -%>
+    <%= icon_tag('add') %>
+    Add
+  <%- end -%>
+<%- end -%>

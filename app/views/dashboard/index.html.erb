@@ -1,0 +1,43 @@
+<%= page_header('Welcome to SPIN') %>
+
+<%- if permitted?('admin') -%>
+  <h4>Administration</h4>
+  <ul>
+    <%- if permitted?('admin:subjects') -%>
+      <li><%= link_to('Subjects', subjects_path) %></li>
+    <%- end -%>
+    <%- if permitted?('admin:api_subjects') -%>
+      <li><%= link_to('API Accounts', api_subjects_path) %></li>
+    <%- end -%>
+    <%- if permitted?('admin:roles') -%>
+      <li> <%= link_to('Roles', roles_path) %></li>
+    <%- end -%>
+  </ul>
+
+<%- end -%>
+
+<%- if permitted?('organisations') -%>
+  <h4>AWS Management</h4>
+  <ul>
+    <li><%= link_to('Organisations', organisations_path) %></li>
+  </ul>
+<%- end -%>
+<br/>
+
+<%- case @subject.projects.count -%>
+<%- when 0 -%>
+  <%- if !permitted?('admin') -%>
+    <%= error_message('You must have a project assigned to continue') do -%>
+    <%- end -%>
+    <%= raw support_html %>
+  <%- end -%>
+<%- when 1 -%>
+  <p>Please
+    <%= link_to(' click here', aws_login_path) %>
+    to continue to AWS.</p>
+<%- else -%>
+  <p>Please
+    <%= link_to(' select your project', projects_path) -%>
+    to continue to AWS.</p>
+  </p>
+<%- end -%>
