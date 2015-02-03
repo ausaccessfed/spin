@@ -15,4 +15,6 @@ class Project < ActiveRecord::Base
                              with: PROVIDER_ARN_REGEX,
                              message: 'format must be \'arn:aws:iam:' \
                                       ':(number):saml-provider/(string)\'' }
+
+  validates :active, inclusion: { in: [true, false] }
 end
