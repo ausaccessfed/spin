@@ -166,8 +166,8 @@ s = Subject.first
 r = Role.first
 
 o = Organisation.create!(name: "Test Org", external_id: "ID1" )
-p = Project.create!(name:"Test Proj 1", provider_arn: "AWS_ACC1", state: "A", organisation_id: o.id)
-pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "TP1", project_id: p.id)
+p = Project.create!(name:"Test Proj 1", provider_arn: "arn:aws:iam::1:saml-provider/1", active: true, organisation_id: o.id)
+pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "arn:aws:iam::1:role/1", project_id: p.id)
 spr = SubjectProjectRole.create!(subject_id: s.id, project_role_id: pr.id)
 sr = SubjectRole.create!(subject_id:Subject.last.id, role_id:r.id)
 ```
