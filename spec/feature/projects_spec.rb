@@ -40,9 +40,14 @@ RSpec.feature 'After the user has authenticated with idP', type: :feature do
   context 'with more than 1 project' do
     include_context 'with 3 projects'
 
+    before { click_button 'Login' }
+
     scenario 'redirects to projects page' do
-      click_button 'Login'
       expect(current_path).to eq('/projects')
+    end
+
+    scenario 'shows active subject' do
+      expect(page).to have_text('Logged in as:')
     end
   end
 end

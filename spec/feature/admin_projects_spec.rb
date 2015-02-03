@@ -25,7 +25,11 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     click_link('Organisations', match: :first)
     expect(current_path).to eq('/admin/organisations')
     expect(page).to have_css('table tr td', text: organisation.name)
-    click_link 'Projects (1)'
+    click_link 'Projects'
+  end
+
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
   end
 
   scenario 'shows the project name in the list' do
@@ -37,7 +41,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
   end
 
   scenario 'shows actions for the project' do
-    expect(page).to have_content('Project Roles (0) Edit Delete')
+    expect(page).to have_content('Project Roles Edit Delete')
   end
 
   scenario 'shows New Project button' do
@@ -58,7 +62,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     end
 
     scenario 'does not shows actions for the project' do
-      expect(page).to_not have_content('Project Roles (0) Edit Delete')
+      expect(page).to_not have_content('Project Roles Edit Delete')
     end
   end
 
@@ -81,6 +85,10 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
                                  with: project.provider_arn)
     end
 
+    scenario 'shows active checkbox' do
+      expect(page).to have_field('project_active')
+    end
+
     scenario 'cancels' do
       click_link 'Cancel'
       expect(current_path).to eq("/admin/organisations/#{organisation.id}/" \
@@ -88,10 +96,11 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     end
 
     context 'saves' do
-      given(:more_bs) { Faker::Company.bs }
+      given(:name) { Faker::Company.name }
 
       before do
-        fill_in 'project_name', with: more_bs
+        fill_in 'project_name', with: name
+        uncheck('project_active')
         click_button 'Save'
       end
 
@@ -101,11 +110,15 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
       end
 
       scenario 'shows flash message' do
-        expect(page).to have_content("Updated Project #{more_bs}")
+        expect(page).to have_content("Updated Project #{name}")
       end
 
       scenario 'shows the updated project' do
-        expect(page).to have_css('table tr td', text: more_bs)
+        expect(page).to have_css('table tr td', text: name)
+      end
+
+      scenario 'show an inactive status' do
+        expect(page).to have_css('table tr td', text: 'No')
       end
     end
   end
@@ -127,14 +140,13 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
     end
 
     context 'saves' do
-      given(:bs) { Faker::Company.bs }
+      given(:name) { Faker::Company.name }
       given(:provider_arn) do
         "arn:aws:iam::#{Faker::Number.number(3)}:" \
                              "saml-provider/#{Faker::Lorem.characters(10)}"
       end
-      given(:state) { Faker::Lorem.characters(6) }
 
-      context 'with invalid data' do
+      context 'with invalid name' do
         before do
           fill_in 'project_provider_arn', with: provider_arn
           click_button 'Create'
@@ -142,8 +154,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
 
         scenario 'shows flash message' do
           expect(page).to have_content('Unable to save Project' \
-                                       ' Name can’t be blank' \
-                                       ' State can’t be blank')
+                                       ' Name can’t be blank')
         end
       end
 
@@ -151,7 +162,6 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
         before do
           fill_in 'project_provider_arn', with: 'x'
           fill_in 'project_name', with: Faker::Lorem.word
-          fill_in 'project_state', with: Faker::Lorem.characters(10)
           click_button 'Create'
         end
 
@@ -165,9 +175,8 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
 
       context 'with valid data' do
         before do
-          fill_in 'project_name', with: bs
+          fill_in 'project_name', with: name
           fill_in 'project_provider_arn', with: provider_arn
-          fill_in 'project_state', with: state
           click_button 'Create'
         end
 
@@ -177,11 +186,15 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
         end
 
         scenario 'shows flash message' do
-          expect(page).to have_content("Created Project #{bs}")
+          expect(page).to have_content("Created Project #{name}")
         end
 
         scenario 'shows the created project' do
-          expect(page).to have_css('table tr td', text: bs)
+          expect(page).to have_css('table tr td', text: name)
+        end
+
+        scenario 'show an active status' do
+          expect(page).to have_css('table tr td', text: 'Yes')
         end
       end
     end

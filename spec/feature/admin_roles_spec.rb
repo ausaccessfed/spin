@@ -28,6 +28,10 @@ RSpec.feature 'Roles Admin', type: :feature do
     expect(current_path).to eq('/admin/roles')
   end
 
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
+  end
+
   scenario 'viewing the role list' do
     expect(page).to have_css('tr td', text: role.name)
     expect(page).to have_css('tr td', text: other_role.name)

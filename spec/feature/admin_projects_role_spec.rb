@@ -26,9 +26,13 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
     click_link('Organisations', match: :first)
     expect(current_path).to eq('/admin/organisations')
     expect(page).to have_css('table tr td', text: organisation.name)
-    click_link 'Projects (1)'
+    click_link 'Projects'
     expect(page).to have_css('table tr td', text: project.name)
-    click_link 'Project Roles (1)'
+    click_link 'Project Roles'
+  end
+
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
   end
 
   scenario 'shows the project_role name in the list' do
@@ -36,7 +40,7 @@ RSpec.feature 'Managing the AWS Roles of an Project', type: :feature do
   end
 
   scenario 'shows actions for the project_role' do
-    expect(page).to have_content('Members (0) Edit Delete')
+    expect(page).to have_content('Members Edit Delete')
   end
 
   scenario 'shows New Project Role button' do

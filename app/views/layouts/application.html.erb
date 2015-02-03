@@ -57,12 +57,19 @@
 </section>
 
 <%= aaf_footer do -%>
+  <%- if @subject -%>
+    <p>
+      Logged in as: <strong><%= @subject.name %></strong>
+      (<%= @subject.targeted_id %>)
+    </p>
+  <%- end -%>
+
   <p>
-    SPIN
-    <br/>
-    Developed for the
-    <a href="http://www.aaf.edu.au">Australian Access Federation</a>
-    by Russell Ianniello
+    SPIN <strong><%= ApplicationHelper::VERSION %></strong>
+    <br>
+    Developed by Russell Ianniello, Bradley Beddoes and Shaun Mangelsdorf at
+    the <a href="http://www.aaf.edu.au">Australian Access Federation</a> for
+    member nodes of the <a href="https://www.rdsi.edu.au/">Research Data Storage Initiative</a>.
   </p>
 <%- end -%>
 </body>

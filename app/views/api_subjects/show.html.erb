@@ -24,7 +24,7 @@
   </tr>
   <tr>
     <td>Contact Email Address</td>
-    <td><%= @api_subject.contact_mail %></td>
+    <td><%= mail_to(@api_subject.contact_mail) %></td>
   </tr>
   </tbody>
 </table>

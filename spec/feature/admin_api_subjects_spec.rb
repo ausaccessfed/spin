@@ -17,6 +17,10 @@ RSpec.feature 'API Subjects Admin', type: :feature do
     expect(current_path).to eq('/admin/api_subjects')
   end
 
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
+  end
+
   scenario 'viewing the api subject list' do
     expect(page).to have_css('tr td', text: api_subject.x509_cn)
   end

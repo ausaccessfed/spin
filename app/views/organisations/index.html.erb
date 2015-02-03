@@ -10,7 +10,7 @@
   <thead>
   <tr>
     <th>Name</th>
-    <th>External ID</th>
+    <th>Unique Identifier</th>
     <th/>
   </tr>
   </thead>
@@ -23,7 +23,7 @@
         <%- if permitted?("organisations:#{organisation.id}:projects:list") -%>
           <%= button_link_to([organisation, :projects], class: 'tiny icon') do -%>
             <%= icon_tag('folder outline icon') %>
-            Projects <em>(<%= organisation.projects.count %>)</em>
+            Projects
           <%- end -%>
         <%- end -%>
 

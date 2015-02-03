@@ -31,11 +31,15 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     click_link('Organisations', match: :first)
     expect(current_path).to eq('/admin/organisations')
     expect(page).to have_css('table tr td', text: organisation.name)
-    click_link 'Projects (1)'
+    click_link 'Projects'
     expect(page).to have_css('table tr td', text: project.name)
-    click_link 'Project Roles (1)'
+    click_link 'Project Roles'
     expect(page).to have_css('table tr td', text: project_role.name)
-    click_link 'Members (1)'
+    click_link 'Members'
+  end
+
+  scenario 'shows active subject' do
+    expect(page).to have_text('Logged in as:')
   end
 
   scenario 'has view role path' do
@@ -49,7 +53,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
   end
 
   scenario 'shows actions for the subject' do
-    expect(page).to have_content("#{user.name} Revoke")
+    expect(page).to have_content("#{user.name} #{user.mail} Revoke")
   end
 
   scenario 'shows Add Subject button' do
@@ -124,7 +128,8 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
       end
 
       scenario 'shows that subject is granted' do
-        expect(page).to have_content("#{another_user.name} Revoke")
+        expect(page)
+          .to have_content("#{another_user.name} #{another_user.mail} Revoke")
       end
     end
   end
