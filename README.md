@@ -20,7 +20,7 @@ Steps:
     ([test](https://rapid.test.aaf.edu.au) /
     [production](https://rapid.aaf.edu.au))
 
-    NB: Ensure you SECRET **does not contain a ' character** as this is used within configuration files
+    NB: Ensure your SECRET **does not contain a ' character** as this is used within configuration files
     as a delimiter and will cause startup to fail.
 
     After registration, please contact AAF to request that your registration be
