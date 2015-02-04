@@ -8,8 +8,9 @@ RSpec.describe ProjectsController, type: :controller do
     end
 
     context 'as a permitted user' do
+      let(:subject) { create(:subject) }
+
       context 'with no projects assigned' do
-        let(:subject) { create(:subject) }
         before do
           session[:subject_id] = subject.id
           get :index
@@ -22,14 +23,16 @@ RSpec.describe ProjectsController, type: :controller do
         end
       end
 
-      context 'with many projects assigned' do
-        let(:authorized_subject) do
-          create(:subject,
-                 :assigned_to_many_projects)
+      context 'with multiple inactive and active projects' do
+        include_context 'projects'
+
+        before do
+          2.times { create_active_project(subject) }
+          5.times { create_inactive_project(subject) }
         end
 
         before do
-          session[:subject_id] = authorized_subject.id
+          session[:subject_id] = subject.id
           get :index
         end
 
@@ -37,10 +40,14 @@ RSpec.describe ProjectsController, type: :controller do
           expect(response).to have_http_status(:success)
         end
 
-        it 'has a unique set of projects' do
+        it 'has the expected number of Project objects' do
           expect(assigns(:projects).keys)
             .to contain_exactly(an_instance_of(Project),
                                 an_instance_of(Project))
+        end
+
+        it 'have the status of active' do
+          expect(assigns(:projects).keys.find(&:active)).to_not be_nil
         end
       end
     end

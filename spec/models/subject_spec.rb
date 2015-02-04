@@ -70,4 +70,41 @@ RSpec.describe Subject, type: :model do
       it_behaves_like 'an association which cascades delete'
     end
   end
+
+  describe '#active_project_roles' do
+    include_context 'projects'
+
+    subject { create(:subject) }
+    let(:projects) { subject.active_project_roles }
+
+    context 'without projects' do
+      it 'provides nothing' do
+        expect(projects.count).to eq(0)
+      end
+    end
+
+    context 'with an active project' do
+      before { create_active_project(subject) }
+      it 'provides the project' do
+        expect(projects.count).to eq(1)
+      end
+    end
+
+    context 'with an inactive project' do
+      before { create_inactive_project(subject) }
+      it 'does not provide the project' do
+        expect(projects.count).to eq(0)
+      end
+    end
+
+    context 'with multiple inactive and active projects' do
+      before do
+        5.times { create_active_project(subject) }
+        2.times { create_inactive_project(subject) }
+      end
+      it 'provides the active project only' do
+        expect(projects.count).to eq(5)
+      end
+    end
+  end
 end

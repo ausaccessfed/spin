@@ -1,6 +1,6 @@
 class AWSSessionInstancesController < ApplicationController
   def auto
-    project_role = subject.project_roles.first
+    project_role = subject.active_project_roles.first
 
     # Access is implied because we're automatically signing in to the subject's
     # only project role.
@@ -16,7 +16,7 @@ class AWSSessionInstancesController < ApplicationController
     # A ProjectRole doesn't imply any permissions, so we only need to check the
     # subject's membership in the role.
     public_action
-    fail(Forbidden) unless subject.project_roles.include?(project_role)
+    fail(Forbidden) unless subject.active_project_roles.include?(project_role)
 
     perform_login(subject, project_role)
   end

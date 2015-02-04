@@ -14,12 +14,12 @@ RSpec.shared_examples 'a mocked subject' do
       .and_return(subject_for_session)
 
     allow(subject_for_session)
-      .to receive(:project_roles)
-      .and_return(project_roles)
-
-    allow(subject_for_session)
       .to receive(:roles)
       .and_return(roles)
+
+    allow(subject_for_session)
+      .to receive(:active_project_roles)
+      .and_return(project_roles)
   end
 end
 

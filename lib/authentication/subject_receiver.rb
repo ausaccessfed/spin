@@ -53,7 +53,7 @@ module Authentication
     end
 
     def redirect_subject(subject)
-      case subject.project_roles.count
+      case subject.active_project_roles.count
       when 0
         redirect_to('/dashboard')
       when 1
