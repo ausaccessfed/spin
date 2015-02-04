@@ -11,6 +11,7 @@ class Project < ActiveRecord::Base
   validates :organisation, :name, presence: true
 
   validates :provider_arn, presence: true,
+                           uniqueness: true,
                            format: {
                              with: PROVIDER_ARN_REGEX,
                              message: 'format must be \'arn:aws:iam:' \

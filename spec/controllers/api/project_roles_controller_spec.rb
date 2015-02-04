@@ -61,13 +61,7 @@ module API
     end
 
     context 'patch :update' do
-      let!(:project_role) do
-        create(:project_role,
-               orig_attrs.merge(project: project))
-      end
-      let(:updated_project_role) do
-        build(:project_role, id: project_role.id)
-      end
+      let!(:project_role) { create(:project_role, project: project) }
 
       def run
         patch :update, organisation_id: organisation.id, project_id: project.id,
@@ -76,32 +70,44 @@ module API
                          .merge(format: 'json')
       end
 
-      subject { -> { run } }
-
-      it { is_expected.to change(ProjectRole, :count).by(0) }
-
-      context 'the updated project_role' do
-        it 'has the attributes' do
-          expect(to_map(project_role.reload))
-            .to eq(to_map(updated_project_role))
+      context 'with valid params' do
+        let(:updated_project_role) do
+          build(:project_role, id: project_role.id,
+                               project: project_role.project)
         end
-      end
 
-      context 'the response' do
-        before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it 'does not change the project_role count' do
+          expect { run }.not_to change(ProjectRole, :count)
+        end
+
+        context 'request outcomes' do
+          before { run }
+          it 'recieves http 201' do
+            run
+            expect(response).to have_http_status(:ok)
+          end
+
+          context 'the updated project_role' do
+            it 'has the attributes' do
+              expect(to_map(project_role.reload))
+                .to eq(to_map(updated_project_role))
+            end
+          end
+        end
       end
 
       context 'with invalid params' do
         let(:updated_project_role) do
           build(:project_role, id: project_role.id,
+                               project: project_role.project,
                                role_arn: 'arn:aws:iam::1:$')
         end
 
-        it { is_expected.to change(ProjectRole, :count).by(0) }
+        it 'does not change the project_role count' do
+          expect { run }.not_to change(ProjectRole, :count)
+        end
 
-        context 'the response' do
+        context 'response' do
           before { run }
           subject { response }
           it { is_expected.to have_http_status(:bad_request) }

@@ -3,6 +3,7 @@ require 'simplecov'
 require 'factory_girl_rails'
 require 'faker'
 require 'mail'
+require 'pry-rails'
 
 Dir['./spec/support/*.rb'].each { |f| require f }
 

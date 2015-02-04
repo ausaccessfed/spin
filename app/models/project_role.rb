@@ -11,6 +11,7 @@ class ProjectRole < ActiveRecord::Base
   validates :project, :name, presence: true
 
   validates :role_arn, presence: true,
+                       uniqueness: true,
                        format: {
                          with: ROLE_ARN_REGEX,
                          message: 'format must be \'arn:aws:iam::' \
