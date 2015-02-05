@@ -51,5 +51,5 @@
   <%= validate_field(:x509_cn, empty: 'Please enter an X.509 CN',
                      urlsafe_base64: 'Please enter a valid X.509 CN') %>
   <%= validate_field(:contact_name, empty: 'Please enter a contact name') %>
-  <%= validate_field(:contact_mail, empty: 'Please enter a contact email address') %>
+  <%= validate_field(:contact_mail, email: 'Please enter a valid contact email address') %>
 <%- end -%>
