@@ -6,18 +6,31 @@ RSpec.feature 'Visiting the welcome page', type: :feature do
     RapidRack::TestAuthenticator.jwt = create(:jwt, aaf_attributes: attrs)
   end
 
+  def md_to_sanitised_text(file)
+    md = Rails.root.join(file).read
+    sanitised_text = Kramdown::Document.new(md).to_html
+    Sanitize.clean(sanitised_text)
+  end
+
   context 'visiting /' do
     before { visit '/' }
 
-    scenario 'displays consent and log in button' do
+    scenario 'displays welcome text' do
       expect(page).to have_text('Welcome to SPIN')
       expect(page).to have_link('Welcome')
+    end
 
-      consent_md = Rails.root.join('config/consent.md').read
-      consent_html = Kramdown::Document.new(consent_md).to_html
-      sanitised_consent = Sanitize.clean(consent_html)
-
+    scenario 'displays consent' do
+      sanitised_consent = md_to_sanitised_text('config/consent.md')
       expect(page.body).to have_content(sanitised_consent)
+    end
+
+    scenario 'displays welcome text' do
+      sanitised_welcome_text = md_to_sanitised_text('config/welcome.md')
+      expect(page.body).to have_content(sanitised_welcome_text)
+    end
+
+    scenario 'displays log in fields' do
       expect(page).to have_field('agree_to_consent')
       expect(page).to have_button('Log In')
     end
