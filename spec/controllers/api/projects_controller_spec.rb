@@ -12,7 +12,7 @@ module API
       user
     end
 
-    let(:orig_attrs) { attributes_for(:project).except(:organisation) }
+    # let(:orig_attrs) { attributes_for(:project).except(:organisation) }
 
     def to_map(project)
       project.attributes.symbolize_keys.slice(:name, :provider_arn, :state)
@@ -61,33 +61,26 @@ module API
     end
 
     context 'patch :update' do
-      let!(:project) do
-        create(:project,
-               orig_attrs.merge(organisation: organisation))
-      end
-      let(:updated_project) do
-        build(:project, id: project.id)
-      end
+      let!(:project) { create(:project, organisation: organisation) }
+      let(:updated_project) { build(:project, id: project.id) }
 
       def run
         patch :update, organisation_id: organisation.id, id: updated_project.id,
                        project: to_map(updated_project).merge(format: 'json')
       end
 
-      subject { -> { run } }
-
-      it { is_expected.to change(Project, :count).by(0) }
-
-      context 'the updated project' do
-        it 'has the attributes' do
-          expect(to_map(project.reload)).to eq(to_map(updated_project))
-        end
+      it 'does not change project count' do
+        expect { run }.not_to change(Project, :count)
       end
 
-      context 'the response' do
+      context 'request outcomes' do
         before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it 'updates project instance with new attributes' do
+          expect(to_map(project.reload)).to eq(to_map(updated_project))
+        end
+        it 'recieves http 200' do
+          expect(response).to have_http_status(:ok)
+        end
       end
 
       context 'with invalid params' do
@@ -148,10 +141,7 @@ module API
       end
 
       context 'when the project does exist' do
-        let!(:project) do
-          create(:project,
-                 orig_attrs.merge(organisation: organisation))
-        end
+        let!(:project) { create(:project, organisation: organisation) }
 
         def run
           delete :destroy, organisation_id: organisation.id, id: project.id,

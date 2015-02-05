@@ -38,10 +38,8 @@ module API
     end
 
     context 'patch /api/organisations/:id/projects/:id/roles/:id' do
-      let!(:project_role) do
-        create(:project_role,
-               orig_attrs.merge(project: project))
-      end
+      let!(:project_role) { create(:project_role, project: project) }
+
       let(:updated_project_role) do
         build(:project_role, id: project_role.id)
       end
@@ -51,56 +49,36 @@ module API
         patch "#{base_url}/#{project_role.id}",  patch_params, headers
       end
 
-      subject { -> { run } }
-
-      it { is_expected.to change(ProjectRole, :count).by(0) }
-
-      context 'the updated project_role' do
-        it 'has the attributes' do
-          expect(to_map(project_role.reload))
-            .to eq(to_map(updated_project_role))
-        end
+      it 'does not change the project role count' do
+        expect { run }.not_to change(ProjectRole, :count)
       end
 
-      context 'the response' do
+      context 'request outcomes' do
         before { run }
-        subject { response }
-        it { is_expected.to have_http_status(:ok) }
+        it 'recieves http 201' do
+          run
+          expect(response).to have_http_status(:ok)
+        end
+
+        context 'the updated project_role' do
+          it 'has the attributes' do
+            expect(to_map(project_role.reload))
+              .to eq(to_map(updated_project_role))
+          end
+        end
       end
     end
 
     context 'get /api/organisations/:id/projects/:id/roles' do
-      let!(:project_role1) do
-        create(:project_role,
-               orig_attrs.merge(project: project))
-      end
-      let!(:project_role2) do
-        create(:project_role,
-               orig_attrs.merge(project: project))
-      end
-
-      let!(:subject_project_role1) do
-        create(:subject_project_role,
-               subject: create(:subject),
-               project_role: project_role1)
-      end
-
-      let!(:subject_project_role2) do
-        create(:subject_project_role,
-               subject: create(:subject),
-               project_role: project_role1)
-      end
-      def run
-        get base_url, nil, headers
-      end
-
+      let!(:project_role1) { create(:project_role, project: project) }
+      let!(:project_role2) { create(:project_role, project: project) }
       let(:json) { JSON.parse(response.body, symbolize_names: true) }
 
-      before { run }
+      before { get base_url, nil, headers }
 
       it { is_expected.to have_http_status(:ok) }
 
-      context 'the response' do
+      context 'provides assigned roles' do
         subject { json[:project_roles] }
         it { is_expected.to include(to_map(project_role1)) }
         it { is_expected.to include(to_map(project_role2)) }

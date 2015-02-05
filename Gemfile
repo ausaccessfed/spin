@@ -30,6 +30,8 @@ group :development, :test do
   gem 'timecop'
 
   gem 'pry', require: false # IRB alternative
+  gem 'pry-rails', require: false
+  gem 'pry-byebug', require: false
   gem 'brakeman', '~> 2.6', require: false # Security scanner
   gem 'simplecov', require: false # Code coverage
   gem 'shoulda-matchers'

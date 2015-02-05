@@ -3,9 +3,16 @@ require 'rails_helper'
 RSpec.describe ProjectRole, type: :model do
   it_behaves_like 'an audited model'
 
-  it { is_expected.to validate_presence_of(:project) }
-  it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_presence_of(:role_arn) }
+  context 'validations' do
+    it { is_expected.to validate_presence_of(:project) }
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:role_arn) }
+
+    context 'instance validations' do
+      subject { create :project_role }
+      it { is_expected.to validate_uniqueness_of(:role_arn) }
+    end
+  end
 
   context 'associated objects' do
     context 'subject_project_roles' do
