@@ -154,6 +154,27 @@ https://<<your spin host>>/idp/profile/Metadata/SAML
 8. Under **Roles** / **Administrator**, the **Role ARN** shown should be
    assigned to the project role in SPIN.
 
+# Issuing an API Certificate
+
+A simple tool is provided to help with issuing API certificates. As part of
+installation, a CA is created for you in `/opt/spin/ca`. The tool accepts an
+X.509 Certificate Signing Request, and uses it to issue a certificate with a
+random CN for use with SPIN.
+
+To run the tool, execute the following command:
+
+```
+/opt/spin/app/bin/api-ca sign
+```
+
+After pasting the CSR, the details will be printed out and confirmation
+requested. Type `yes` when asked, and the certificate will be signed and printed
+out.
+
+**Note:** This command relies on the `SPIN_CA_DIR` environment variable, which
+is set during installation. If you're having issues, ensure this environment
+variable has been correctly set.
+
 # Developer Notes
 
 ## Seeding the database
