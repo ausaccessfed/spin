@@ -24,7 +24,7 @@
 <%- end -%>
 <br/>
 
-<%- case @subject.projects.count -%>
+<%- case @subject.active_project_roles.count -%>
 <%- when 0 -%>
   <%- if !permitted?('admin') -%>
     <%= error_message('You must have a project assigned to continue') do -%>

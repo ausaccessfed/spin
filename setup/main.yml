@@ -99,6 +99,8 @@
         - mod_perl
         - perl-JSON
         - perl-Digest-SHA
+        - ImageMagick
+        - ImageMagick-devel
         # Ruby dependencies:
         - gcc
         - gcc-c++

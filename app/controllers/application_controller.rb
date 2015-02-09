@@ -59,6 +59,6 @@ class ApplicationController < ActionController::Base
   end
 
   def error_from_validations(object)
-    object.errors.full_messages.join("\n")
+    object.errors.full_messages.join("\n\n")
   end
 end

@@ -7,19 +7,9 @@
 <div class="ui grid">
 
   <div class="eight wide column">
-
-    SPIN provides a means for researchers to authenticate via the AAF to access
-    to a project account in Amazon Web Services (AWS)
-    <ul>
-      <li>Sample point</li>
-      <li>Sample point</li>
-      <li>Sample point</li>
-    </ul>
-    Here is some sample links <a href="#">Here</a>
-    <br/>
-    And another one <a href="#">Here</a>
-
+    <%= raw @welcome %>
   </div>
+
   <div class="eight wide column">
     <h3 class="ui block top attached header">Log In</h3>
 
@@ -50,12 +40,6 @@
           <%= submit_tag("Log In", class: 'large ui primary button') %>
 
         <% end %>
-
-        <h4 class="muted">How else can we help?</h4>
-        <ul class="muted">
-          <li>Sample link <a href="#">Here</a>
-          <li>Another sample link <a href="#">Here</a>
-        </ul>
       </div>
     </div>
   </div>

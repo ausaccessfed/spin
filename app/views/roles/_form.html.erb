@@ -4,6 +4,8 @@
     <%= f.text_field :name %>
   <%- end -%>
 
+  <%= error_messages_tag %>
+
   <div class="line-of-buttons">
     <%= f.button(class: 'large green icon') do -%>
       <%= icon_tag('checkmark') %>
@@ -15,4 +17,7 @@
       Cancel
     <%- end -%>
   </div>
+<%- end -%>
+<%= validate_form('#role-form', :role) do -%>
+  <%= validate_field(:name, empty: 'Please provide a role name') %>
 <%- end -%>

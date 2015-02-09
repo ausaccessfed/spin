@@ -7,7 +7,6 @@ class Subject < ActiveRecord::Base
   # AWS project roles
   has_many :subject_project_roles, dependent: :destroy
   has_many :project_roles, through: :subject_project_roles
-  has_many :projects, -> { uniq }, through: :project_roles
 
   # SPIN roles
   has_many :subject_roles, dependent: :destroy
@@ -16,7 +15,7 @@ class Subject < ActiveRecord::Base
   validates :name, :mail, presence: true
   validates :targeted_id, :shared_token, presence: true, if: :complete?
   validates :complete, :enabled, inclusion: { in: [true, false] }
-  validates :shared_token, uniqueness: true, allow_nil: true
+  validates :shared_token, uniqueness: true, presence: true
 
   def functioning?
     enabled?
@@ -24,5 +23,9 @@ class Subject < ActiveRecord::Base
 
   def permissions
     roles.flat_map { |role| role.permissions.map(&:value) }
+  end
+
+  def active_project_roles
+    project_roles.select { |project_role| project_role.project.active }
   end
 end

@@ -55,6 +55,23 @@ RSpec.describe AWSSessionInstancesController, type: :controller do
         it { is_expected.to render_template('errors/forbidden') }
       end
     end
+
+    context 'when the user has no active project roles' do
+      let(:project) { create(:project, active: false) }
+      let(:project_role) { create(:project_role, project: project) }
+
+      before { user.project_roles << project_role }
+
+      it { is_expected.not_to change(AWSSessionInstance, :count) }
+
+      context 'the response' do
+        before { run }
+        subject { response }
+
+        it { is_expected.to have_http_status(:forbidden) }
+        it { is_expected.to render_template('errors/forbidden') }
+      end
+    end
   end
 
   context '#auto' do
