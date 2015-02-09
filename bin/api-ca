@@ -1,0 +1,217 @@
+#!/usr/bin/env ruby
+
+ENV['BUNDLE_GEMFILE'] = File.expand_path('../Gemfile', File.dirname(__FILE__))
+
+SPIN_CA_DIR = ENV['SPIN_CA_DIR']
+fail('Please set SPIN_CA_DIR environment variable') if SPIN_CA_DIR.nil?
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'thor'
+require 'openssl'
+require 'securerandom'
+require 'fileutils'
+
+FileUtils.mkdir_p(SPIN_CA_DIR)
+%w(certs requests).each do |subdir|
+  FileUtils.mkdir_p(File.join(SPIN_CA_DIR, subdir))
+end
+
+class APICertificateAuthority < Thor
+  desc 'init', 'Initialize the CA certificate'
+  option :cn, required: true, desc: 'The subject CN to use when creating the CA'
+  long_desc <<-LONGDESC
+  Creates a CA certificate if one does not already exist. If a CA certificate
+  already exists this command will succeed after taking no action.
+  LONGDESC
+  def init
+    if File.exist?(ca_key_file) || File.exist?(ca_cert_file)
+      $stderr.puts("A CA Certificate already exists in #{SPIN_CA_DIR}")
+      return
+    end
+
+    key = generate_ca_key
+    cert = generate_ca_certificate(key)
+
+    $stderr.puts("Generated new CA Certificate\n\n#{cert.to_text}")
+  end
+
+  desc 'sign', 'Signs an X.509 Certificate Signing Request'
+  option :cn, desc: 'The subject CN to use when signing the certificate'
+  long_desc <<-LONGDESC
+  Signs a certificate to be used as an SSL Client certificate for authenticating
+  access to API endpoints.
+
+  An optional CN can be provided, to assist with the case where a certificate
+  is being regenerated and the owner wants to retain the same CN. The provided
+  CN is expected to conform to all necessary requirements.
+  LONGDESC
+  def sign
+    req = OpenSSL::X509::Request.new(read_request)
+
+    $stderr.puts(req.to_text)
+    confirm('Do you wish to sign this request? (yes/no) ')
+
+    cn = client_cn
+    cert = generate_certificate(req, cn)
+    write_file(client_req_file(cn), req.to_pem)
+
+    $stderr.puts(cert.to_text)
+    $stderr.puts(cert.to_pem)
+  end
+
+  private
+
+  END_ANCHOR = '-----END CERTIFICATE REQUEST-----'
+  private_constant :END_ANCHOR
+
+  def read_request
+    $stderr.puts('Please paste the Certificate Signing Request:')
+    req = []
+    req << $stdin.readline.strip until req.include?(END_ANCHOR)
+    req.join("\n")
+  end
+
+  def generate_ca_key
+    key = OpenSSL::PKey::RSA.new(2048)
+    write_file(ca_key_file, key.to_pem)
+
+    key
+  end
+
+  def generate_ca_certificate(key)
+    cert = base_certificate(key.public_key, options.cn)
+    cert.issuer = cert.subject
+    cert.serial = initialize_serial
+
+    add_x509_ca_extensions(cert)
+    sign_certificate(cert, key)
+    write_file(ca_cert_file, cert.to_pem)
+
+    cert
+  end
+
+  def generate_certificate(req, cn)
+    cert = base_certificate(req.public_key, cn)
+    cert.serial = next_serial
+    cert.issuer = ca_cert.subject
+
+    add_x509_client_extensions(cert)
+    sign_certificate(cert, ca_key)
+    write_file(client_cert_file(cn), cert.to_pem)
+
+    cert
+  end
+
+  def ensure_unique(cn)
+    return unless File.exist?(client_cert_file(cn))
+    fail('Identifier collision, please try again')
+  end
+
+  def client_cn
+    return options.cn if options.cn
+    SecureRandom.urlsafe_base64(30).tap { |cn| ensure_unique(cn) }
+  end
+
+  def base_certificate(public_key, cn)
+    cert = OpenSSL::X509::Certificate.new
+
+    cert.public_key = public_key
+    cert.not_before = not_before
+    cert.not_after = not_after
+    cert.version = 3
+    cert.subject = OpenSSL::X509::Name.parse("/CN=#{cn}/")
+
+    cert
+  end
+
+  def not_before
+    Time.now.utc
+  end
+
+  def not_after
+    Time.now.utc + (20 * 365 * 24 * 60 * 60)
+  end
+
+  def sign_certificate(cert, key)
+    cert.sign(key, OpenSSL::Digest::SHA256.new)
+  end
+
+  def add_x509_ca_extensions(cert)
+    ef = OpenSSL::X509::ExtensionFactory.new
+    ef.subject_certificate = cert
+    ef.issuer_certificate = cert
+
+    cert.add_extension(ef.create_extension('basicConstraints',
+                                           'CA:TRUE,pathlen:0', true))
+    cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash'))
+    cert.add_extension(ef.create_extension('authorityKeyIdentifier',
+                                           'keyid:always,issuer:always'))
+  end
+
+  def add_x509_client_extensions(cert)
+    ef = OpenSSL::X509::ExtensionFactory.new
+    ef.subject_certificate = cert
+    ef.issuer_certificate = ca_cert
+
+    cert.add_extension(ef.create_extension('basicConstraints', 'CA:FALSE'))
+    cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash'))
+  end
+
+  def next_serial
+    serial_file = File.join(SPIN_CA_DIR, 'serial.txt')
+    n = File.read(serial_file).to_i
+
+    n += SecureRandom.random_number(255) + 1
+    write_serial(n)
+    n
+  end
+
+  def initialize_serial
+    n = SecureRandom.random_number(0xFFFFFFFF)
+    write_serial(n)
+    n
+  end
+
+  def write_serial(n)
+    serial_file = File.join(SPIN_CA_DIR, 'serial.txt')
+    write_file(serial_file, n.to_s)
+  end
+
+  def write_file(file, content)
+    File.open(file, 'w') { |f| f.write(content) }
+    FileUtils.chmod(0600, file)
+  end
+
+  def ca_key_file
+    File.join(SPIN_CA_DIR, 'ca.key')
+  end
+
+  def ca_cert_file
+    File.join(SPIN_CA_DIR, 'ca.crt')
+  end
+
+  def ca_key
+    OpenSSL::PKey::RSA.new(File.read(ca_key_file))
+  end
+
+  def ca_cert
+    OpenSSL::X509::Certificate.new(File.read(ca_cert_file))
+  end
+
+  def client_cert_file(cn)
+    File.join(SPIN_CA_DIR, 'certs', "#{cn}.crt")
+  end
+
+  def client_req_file(cn)
+    File.join(SPIN_CA_DIR, 'requests', "#{cn}.req")
+  end
+
+  def confirm(text)
+    $stderr.print(text)
+    exit(1) unless $stdin.readline.strip == 'yes'
+  end
+end
+
+APICertificateAuthority.start(ARGV) if $PROGRAM_NAME == __FILE__

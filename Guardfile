@@ -23,9 +23,11 @@ guard :rspec, cmd: 'bundle exec rspec' do
   watch(%r{^spec/support/(.+)\.rb$})                  { 'spec' }
   watch('config/routes.rb')                           { 'spec/routing' }
   watch('app/controllers/application_controller.rb')  { 'spec/controllers' }
+  watch(/bin\/(.+)$/) { |m| "spec/bin/#{m[1].gsub('-', '_')}_spec.rb" }
 end
 
 guard :rubocop, cli: '-R -D' do
+  watch(/bin\/.+/)
   watch(/(Gemfile|Guardfile|Rakefile)$/)
   watch(/.+\.rb$/)
   watch(/.+\.rake$/)
