@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <logger name="edu.internet2.middleware.shibboleth" level="DEBUG"/>
+  <logger name="org.opensaml" level="INFO"/>
+
+  <appender name="IDP_ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>/var/log/spin/shibboleth-idp/idp-access.log</File>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>/var/log/spin/shibboleth-idp/idp-access-%d{yyyy-MM-dd}.log</FileNamePattern>
+    </rollingPolicy>
+
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <charset>UTF-8</charset>
+      <Pattern>%msg%n</Pattern>
+    </encoder>
+  </appender>
+
+  <appender name="IDP_AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>/var/log/spin/shibboleth-idp/idp-audit.log</File>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>/var/log/spin/shibboleth-idp/idp-audit-%d{yyyy-MM-dd}.log</FileNamePattern>
+    </rollingPolicy>
+
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <charset>UTF-8</charset>
+      <Pattern>%msg%n</Pattern>
+    </encoder>
+  </appender>
+
+  <appender name="IDP_PROCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>/var/log/spin/shibboleth-idp/idp-process.log</File>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>/var/log/spin/shibboleth-idp/idp-process-%d{yyyy-MM-dd}.log</FileNamePattern>
+    </rollingPolicy>
+
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <charset>UTF-8</charset>
+      <Pattern>%date{HH:mm:ss.SSS} - %level [%logger:%line] - %msg%n</Pattern>
+    </encoder>
+  </appender>
+
+  <logger name="Shibboleth-Access" level="ALL">
+    <appender-ref ref="IDP_ACCESS"/>
+  </logger>
+
+  <logger name="Shibboleth-Audit" level="ALL">
+    <appender-ref ref="IDP_AUDIT"/>
+  </logger>
+
+  <logger name="org.springframework" level="OFF"/>
+
+  <logger name="org.apache.catalina" level="ERROR"/>
+
+  <root level="ERROR">
+    <appender-ref ref="IDP_PROCESS"/>
+  </root>
+</configuration>

@@ -1,0 +1,5 @@
+This is an example welcome page for SPIN.
+
+Please edit and place in config/welcome.md
+
+Please format this file using [markdown syntax](http://daringfireball.net/projects/markdown/syntax)

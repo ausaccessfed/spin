@@ -1,0 +1,48 @@
+<%= page_header('Select a Project') %>
+
+<%= divider_tag %>
+
+<script type="text/javascript">
+// Without this, the IdP will cache multiple principal names which can break the
+// second authentication attempt. Terminate the IdP session at this point.
+jQuery(function($) { $.get('/idp/profile/Logout'); });
+</script>
+
+<p>
+  You have access to multiple projects. To continue to AWS, please choose the
+  project you wish to access.
+</p>
+
+<table class="ui complex collapsing projects table">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @projects.each do |project, roles| -%>
+      <%- roles.each_with_index do |role, index| -%>
+        <tr>
+          <%- if index == 0 -%>
+            <td rowspan="<%= roles.length %>" class="project">
+              <%= project.name %>
+            </td>
+          <%- end -%>
+          <td><%= role.name %></td>
+          <td>
+            <%= form_tag(aws_login_path, method: :post) do -%>
+              <%= hidden_fields do -%>
+                <%= hidden_field_tag(:project_role_id, role.id) %>
+              <%- end -%>
+              <%= button_tag(class: 'submit') do -%>
+                Select
+              <%- end -%>
+            <%- end -%>
+          </td>
+        </tr>
+      <%- end -%>
+    <%- end -%>
+  </tbody>
+</table>

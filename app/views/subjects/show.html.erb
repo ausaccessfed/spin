@@ -1,0 +1,36 @@
+<%=
+    breadcrumbs(
+        {'Administration' => dashboard_path},
+        {'Subjects' => subjects_path},
+        @object.name
+    )
+%>
+
+<%= page_header('View Subject') %>
+
+<table class="ui definition table">
+  <tbody>
+  <tr>
+    <td>Display Name</td>
+    <td><%= @object.name %></td>
+  </tr>
+  <tr>
+    <td>Email Address</td>
+    <td><%= mail_to(@object.mail) %></td>
+  </tr>
+  <tr>
+    <td>Shared Token</td>
+    <td><%= @object.shared_token %></td>
+  </tr>
+  <tr>
+    <td>Targeted ID</td>
+    <td><%= @object.targeted_id %></td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="line-of-buttons">
+  <%- if permitted?('admin:subjects:delete') -%>
+    <%= delete_button_tag(@object, class: 'large') %>
+  <%- end -%>
+</div>

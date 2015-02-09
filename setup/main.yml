@@ -1,0 +1,141 @@
+---
+- hosts: spin-server
+  vars:
+    db:
+      name: spin
+      username: spin_app
+      idp_username: spin_idp
+    tomcat:
+      major: 8
+      version: 8.0.15
+      sha256sum: 2cc244070d01193c541e526564068e6f4e9ecade22380e38e681e931f3dc3699
+      mariadb:
+        version: 1.1.7
+        sha256sum: ff0b807b9209fbd5e05d62152006f6a43868ba7f55bb9716035dc6d8a5382390
+    idp:
+      version: 2.4.3
+      sha256sum: 23cd7b5170c36add811939e225f049f1505b9a02be3a1a5d6937761a0b23868b
+    ruby:
+      version: 2.1.5
+  vars_files:
+    - spin.config
+  tasks:
+    - name: 'Set SELinux to permissive'
+      selinux:
+        policy: targeted
+        state: permissive
+
+    - name: 'Ensure SPIN distribution has been extracted correctly'
+      shell: >
+        if [ ! -e /opt/spin/app/config/application.rb ]; then
+          echo
+          echo
+          echo '*** Please ensure the contents of the SPIN distribution are extracted to /opt/spin ***'
+          exit 1
+        fi
+      changed_when: false
+
+    - name: 'Create service user'
+      user:
+        name: spin
+        home: /opt/spin
+        password: '!!'
+
+    - name: 'Create readable directories'
+      file:
+        name: '{{ item }}'
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      with_items:
+        - /opt/spin
+        - /opt/spin/app
+
+    - name: 'Create required directories'
+      file:
+        name: '{{ item }}'
+        state: directory
+        owner: root
+        group: spin
+        mode: 0750
+      with_items:
+        - /opt/spin/app/setup
+        - /opt/spin/downloads
+        - /opt/spin/tomcat
+        - /opt/spin/shibboleth
+        - /opt/spin/shibboleth/shibboleth-dist
+        - /opt/spin/shibboleth/shibboleth-idp
+
+    - name: 'Create credentials directory'
+      file:
+        name: /opt/spin/passwords
+        state: directory
+        owner: root
+        group: root
+        mode: 0700
+
+    - name: 'Symlink credentials directory'
+      file:
+        name: /opt/spin/app/setup/passwords
+        src: /opt/spin/passwords
+        state: link
+        owner: root
+        group: root
+
+    - name: 'Install required packages'
+      yum: pkg={{ item }} state=installed
+      with_items:
+        - ntp
+        - mariadb-server
+        - mariadb-devel
+        - mariadb
+        - redis
+        - java-1.7.0-openjdk-headless
+        - MySQL-python
+        - git
+        - httpd
+        - mod_ssl
+        - mod_perl
+        - perl-JSON
+        - perl-Digest-SHA
+        - ImageMagick
+        - ImageMagick-devel
+        # Ruby dependencies:
+        - gcc
+        - gcc-c++
+        - patch
+        - readline-devel
+        - zlib-devel
+        - openssl-devel
+        - libyaml-devel
+        - libffi-devel
+        - gdbm-devel
+        - ncurses-devel
+
+    - name: 'Enable NTP service'
+      service: name=ntpd state=started enabled=yes
+
+    - include: tasks/db.yml
+    - include: tasks/ruby.yml
+    - include: tasks/redis.yml
+    - include: tasks/app.yml
+    - include: tasks/tomcat.yml
+    - include: tasks/idp.yml
+    - include: tasks/apache.yml
+
+  handlers:
+    - name: Restart spin
+      service:
+        name: spin
+        state: restarted
+
+    - name: Restart spin-idp
+      service:
+        name: spin-idp
+        state: restarted
+
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted

@@ -1,0 +1,51 @@
+<%= javascript_include_tag params[:controller] %>
+<%= stylesheet_link_tag params[:controller] %>
+
+<%= page_header('Welcome to SPIN') %>
+
+<%= divider_tag %>
+<div class="ui grid">
+
+  <div class="eight wide column">
+    <%= raw @welcome %>
+  </div>
+
+  <div class="eight wide column">
+    <h3 class="ui block top attached header">Log In</h3>
+
+    <div class="ui bottom attached secondary segment">
+      <div class="grouped fields">
+
+        <%= info_message('You must review and accept the following to continue') do -%>
+        <%- end -%>
+
+        <%= form_tag(login_path, method: "post", id: 'consent-form', class: 'ui form segment') do %>
+
+          <div class="consent">
+            <%= raw @consent %>
+          </div>
+          <p></p>
+
+          <div class="inline field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="agree_to_consent">
+              <label>I agree to the terms and conditions</label>
+            </div>
+          </div>
+
+          <p></p>
+
+          <%= error_messages_tag %>
+
+          <%= submit_tag("Log In", class: 'large ui primary button') %>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= validate_form('#consent-form') do -%>
+  <%= validate_field(:agree_to_consent, checked: 'You must agree to the terms and conditions') %>
+<%- end -%>
+

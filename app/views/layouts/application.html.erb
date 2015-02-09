@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head profile="http://www.w3.org/2005/10/profile">
+  <%= tag('link', rel: 'icon', type: 'image/png', href: image_path('favicon.png')) %>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPIN</title>
+
+  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<%= aaf_header(title: 'SPIN', environment: environment_string) do -%>
+  <%= nav_bar do -%>
+    <%- if @subject -%>
+      <%= nav_item('Dashboard', dashboard_path) %>
+    <%- else -%>
+      <%= nav_item('Welcome', root_path) %>
+    <%- end -%>
+
+    <%- if permitted?('organisations:list') -%>
+      <%= nav_item('Organisations', organisations_path) %>
+    <%- end -%>
+
+    <%- if permitted?('admin') -%>
+      <%= nav_dropdown('Administration') do -%>
+        <%- if permitted?('admin:subjects:list') -%>
+          <%= nav_item('Subjects', subjects_path) %>
+        <%- end -%>
+        <%- if permitted?('admin:api_subjects:list') -%>
+          <%= nav_item('API Accounts', api_subjects_path) %>
+        <%- end -%>
+        <%- if permitted?('admin:roles:list') -%>
+          <%= nav_item('Roles', roles_path) %>
+        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+
+    <%= nav_items_right do -%>
+      <%- if @subject -%>
+        <%= nav_item('Log out', '/auth/logout') %>
+      <%- end -%>
+    <%- end -%>
+
+  <%- end -%>
+<%- end -%>
+
+<section class="content">
+
+  <section class="flash">
+    <%= render(partial: 'layouts/flashes') %>
+  </section>
+
+  <main><%= yield %></main>
+</section>
+
+<%= aaf_footer do -%>
+  <%- if @subject -%>
+    <p>
+      Logged in as: <strong><%= @subject.name %></strong>
+      (<%= @subject.targeted_id %>)
+    </p>
+  <%- end -%>
+
+  <p>
+    SPIN <strong><%= ApplicationHelper::VERSION %></strong>
+    <br>
+    Developed by Russell Ianniello, Bradley Beddoes and Shaun Mangelsdorf at
+    the <a href="http://www.aaf.edu.au">Australian Access Federation</a> for
+    member nodes of the <a href="https://www.rdsi.edu.au/">Research Data Storage Initiative</a>.
+  </p>
+<%- end -%>
+</body>
+</html>
