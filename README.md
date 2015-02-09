@@ -161,7 +161,7 @@ installation, a CA is created for you in `/opt/spin/ca`. The tool accepts an
 X.509 Certificate Signing Request, and uses it to issue a certificate with a
 random CN for use with SPIN.
 
-To run the tool, execute the following command:
+To run the tool, execute the following command **as the `root` user**:
 
 ```
 /opt/spin/app/bin/api-ca sign
