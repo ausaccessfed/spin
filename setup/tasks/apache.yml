@@ -83,6 +83,16 @@
     - intermediate.crt
   notify: 'Restart Apache'
 
+- name: 'Copy ca.crt'
+  assemble:
+    src: /opt/spin/ca
+    dest: /opt/spin/keypairs/client-ca.crt
+    regexp: ca.crt
+    owner: root
+    group: apache
+    mode: 0640
+  notify: 'Restart Apache'
+
 - name: 'Open Apache firewall ports'
   firewalld:
     port: '{{ item }}'
