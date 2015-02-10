@@ -1,7 +1,7 @@
 # Overview
 
 This document provides an overview of the [Example SPIN API client](spin_api_client.thor).
-It's strongly recommended to get an understanding of the [SPIN API](../doc/api/v1/README.MD) before continuing.
+It's strongly recommended to get an understanding of the [SPIN API](../doc/api/v1/README.md) before continuing.
 
 This client is intended for ad-hoc testing and demonstration of the SPIN API only.
 
