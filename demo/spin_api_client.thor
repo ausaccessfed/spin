@@ -2,7 +2,7 @@ require 'rest_client'
 require 'json'
 
 class SpinApiClient < Thor
-  BASE_URL = 'http://localhost:8080/api'
+  BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
 
   desc 'get_subjects', 'GET /subjects'
   def get_subjects
