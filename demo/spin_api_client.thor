@@ -1,114 +1,135 @@
+#!/usr/bin/env ruby
+
 require 'rest_client'
 require 'json'
 
 class SpinApiClient < Thor
   BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
+  API_VERSION = '1'
+  SPIN_CLIENT_CERT_FILE_PATH = 'spin.crt'
+  SERVER_KEY_FILE_PATH = 'server.key'
+  SERVER_KEY_PASSWORD = 'password'
 
   desc 'get_subjects', 'GET /subjects'
-  def get_subjects
+
+  def list_subjects
     run('get', subjects_path)
   end
 
   desc 'delete_subject', 'DELETE /subjects/<subject_id>'
-  method_option :subject_id, :required => true
+  method_option :subject_id, required: true
+
   def delete_subject
     run('delete', subject_path)
   end
 
   desc 'get_organisations', 'GET /organisations'
-  def get_organisations
+
+  def list_organisations
     run('get', organisations_path)
   end
 
   desc 'create_organisation', 'POST /organisations'
-  method_option :name, :required => true
-  method_option :external_id, :required => true
+  method_option :name, required: true
+  method_option :external_id, required: true
+
   def create_organisation
     run('post', organisations_path, build_organisation_json)
   end
 
   desc 'delete_organisation', 'DELETE /organisations/<organisation_id>'
-  method_option :organisation_id, :required => true
+  method_option :organisation_id, required: true
+
   def delete_organisation
     run('delete', organisation_path)
   end
 
-  method_option :organisation_id, :required => true
+  method_option :organisation_id, required: true
   desc 'get_projects', 'GET /organisations/<organisation_id>/projects'
-  def get_projects
+
+  def list_projects
     run('get', organisation_projects_path)
   end
 
-  method_option :organisation_id, :required => true
-  method_option :name, :required => true
-  method_option :provider_arn, :required => true
+  method_option :organisation_id, required: true
+  method_option :name, required: true
+  method_option :provider_arn, required: true
   desc 'create_project', 'POST /organisations/<organisation_id>/projects'
+
   def create_project
     run('post', organisation_projects_path, build_project_json)
   end
 
-  method_option :organisation_id, :required => true
-  method_option :project_id, :required => true
-  desc 'delete_project', 'DELETE /organisations/<organisation_id>/projects/<project_id>'
+  method_option :organisation_id, required: true
+  method_option :project_id, required: true
+  desc 'delete_project', 'DELETE /organisations/<organisation_id>/projects/' \
+                         '<project_id>'
+
   def delete_project
     run('delete', organisation_project_path)
   end
 
-  method_option :organisation_id, :required => true
-  method_option :project_id, :required => true
-  desc 'get_roles', 'GET /organisations/<organisation_id>/projects/<project_id>/roles'
-  def get_roles
+  method_option :organisation_id, required: true
+  method_option :project_id, required: true
+  desc 'get_roles', 'GET /organisations/<organisation_id>/projects/' \
+                    '<project_id>/roles'
+
+  def list_roles
     run('get', organisation_project_roles_path)
   end
 
-  method_option :organisation_id, :required => true
-  method_option :project_id, :required => true
-  method_option :name, :required => true
-  method_option :role_arn, :required => true
-  desc 'create_role', 'POST /organisations/<organisation_id>/projects/<project_id>/roles/'
+  method_option :organisation_id, required: true
+  method_option :project_id, required: true
+  method_option :name, required: true
+  method_option :role_arn, required: true
+  desc 'create_role', 'POST /organisations/<organisation_id>/projects/' \
+                      '<project_id>/roles/'
+
   def create_role
     run('post', organisation_project_roles_path, build_project_role_json)
   end
 
+  method_option :organisation_id, required: true
+  method_option :project_id, required: true
+  method_option :role_id, required: true
+  desc 'delete_role', 'DELETE /organisations/<organisation_id>/projects/' \
+                      '<project_id>/roles/<role_id>'
 
-  method_option :organisation_id, :required => true
-  method_option :project_id, :required => true
-  method_option :role_id, :required => true
-  desc 'delete_role', 'DELETE /organisations/<organisation_id>/projects/<project_id>/roles/<role_id>'
   def delete_role
     run('delete', organisation_project_role_path)
   end
 
-  method_option :organisation_id, :required => true
-  method_option :project_id, :required => true
-  method_option :role_id, :required => true
-  method_option :subject_id, :required => true
-  desc 'grant_project_role_to_subject', 'POST /organisations/<organisation_id>/projects/<project_id>/roles/<role_id>/members'
+  method_option :organisation_id, required: true
+  method_option :project_id, required: true
+  method_option :role_id, required: true
+  method_option :subject_id, required: true
+  desc 'grant_project_role_to_subject', 'POST /organisations/' \
+               '<organisation_id>/projects/<project_id>/roles/<role_id>/members'
+
   def grant_project_role_to_subject
-    run('post', organisation_project_role_members_path, build_grant_subject_json)
+    run('post', organisation_project_role_members_path,
+        build_grant_subject_json)
   end
 
-  method_option :organisation_id, :required => true
-  method_option :project_id, :required => true
-  method_option :role_id, :required => true
-  method_option :subject_id, :required => true
-  desc 'revoke_project_role_from_subject', 'DELETE /organisations/<organisation_id>/projects/<project_id>/roles/<role_id>/members/<subject_id>'
+  method_option :organisation_id, required: true
+  method_option :project_id, required: true
+  method_option :role_id, required: true
+  method_option :subject_id, required: true
+  desc 'revoke_project_role_from_subject', 'DELETE /organisations/' \
+        '<organisation_id>/projects/<project_id>/roles/<role_id>/members/' \
+         '<subject_id>'
+
   def revoke_project_role_from_subject
-    run('delete', "#{organisation_project_role_members_path}/#{options[:subject_id]}")
+    run('delete',
+        "#{organisation_project_role_members_path}/#{options[:subject_id]}")
   end
-
 
   private
 
   def run(method, request_path, body = nil, base_url = BASE_URL)
     puts_request(base_url, method, request_path, body)
-
-    begin
-      response = send_request(base_url, method, request_path, body)
-      puts_response(response)
-    rescue => e
-      puts_error(e)
-    end
+    response = send_request(base_url, method, request_path, body)
+    puts_response(response)
   end
 
   def puts_request(base_url, method, request_path, body)
@@ -117,12 +138,31 @@ class SpinApiClient < Thor
   end
 
   def send_request(base_url, method, request_path, body)
-    if (body)
-      RestClient.send(method, "#{base_url}#{request_path}", body,
-                      :content_type => :json, :accept => :json)
+    url = "#{base_url}#{request_path}"
+    client = RestClient::Resource.new(url, connection_options)
+
+    if body
+      client.send(method, body, headers)
     else
-      RestClient.send(method, "#{base_url}#{request_path}")
+      client.send(method, headers)
     end
+  end
+
+  def headers
+    {
+      content_type: :json,
+      accept: "application/vnd.aaf.spin.v#{API_VERSION}+json"
+    }
+  end
+
+  def connection_options
+    {
+      ssl_client_cert: OpenSSL::X509::Certificate.new(
+          File.read(SPIN_CLIENT_CERT_FILE_PATH)),
+      ssl_client_key: OpenSSL::PKey::RSA.new(File.read(SERVER_KEY_FILE_PATH),
+                                             SERVER_KEY_PASSWORD),
+      verify_ssl: OpenSSL::SSL::VERIFY_NONE
+    }
   end
 
   def puts_error(e)
@@ -134,9 +174,7 @@ class SpinApiClient < Thor
     puts("\n-->")
     puts(response.code)
     response_body = response.to_str
-    if (response_body != ' ')
-      puts(json_to_formatted_string(response_body))
-    end
+    puts(json_to_formatted_string(response_body)) if (response_body != ' ')
   end
 
   def json_to_formatted_string(response)
@@ -147,21 +185,24 @@ class SpinApiClient < Thor
     JSON.parse(response)
   end
 
-
   def build_organisation_json
-    "{ \"organisation\":{ \"name\":\"#{options[:name]}\", \"external_id\":\"#{options[:external_id]}\" }}"
+    "{ \"organisation\":{ \"name\":\"#{options[:name]}\"," \
+    " \"external_id\":\"#{options[:external_id]}\" }}"
   end
 
   def build_project_json
-    "{ \"project\":{ \"name\":\"#{options[:name]}\", \"provider_arn\":\"#{options[:provider_arn]}\", \"active\":\"true\" } }"
+    "{ \"project\":{ \"name\":\"#{options[:name]}\"," \
+    " \"provider_arn\":\"#{options[:provider_arn]}\", \"active\":\"true\" } }"
   end
 
   def build_project_role_json
-    "{ \"project_role\":{ \"name\":\"#{options[:name]}\", \"role_arn\":\"#{options[:role_arn]}\" } }"
+    "{ \"project_role\":{ \"name\":\"#{options[:name]}\"," \
+    " \"role_arn\":\"#{options[:role_arn]}\" } }"
   end
 
   def build_grant_subject_json
-    "{ \"subject_project_roles\":{ \"subject_id\":\"#{options[:subject_id]}\"} }"
+    "{ \"subject_project_roles\":" \
+     "{ \"subject_id\":\"#{options[:subject_id]}\"} }"
   end
 
   def subjects_path
@@ -199,5 +240,4 @@ class SpinApiClient < Thor
   def organisation_project_role_members_path
     "#{organisation_project_role_path}/members"
   end
-
 end

@@ -7,9 +7,22 @@ This client is intended for ad-hoc testing and demonstration of the SPIN API onl
 
 # Pre-requisites
 
-* [Ruby](https://www.ruby-lang.org/en/downloads/) (verified with 2.1.5)
+* [Ruby](https://www.ruby-lang.org/en/downloads/) (version 2.1.5)
 * [rest-client](https://github.com/rest-client/rest-client) (Install with ```gem install 'rest-client'```)
 * [thor](https://github.com/erikhuda/thor) (Install with ```gem install 'thor'```)
+
+# Configuration
+
+The client may be configured by modifying [thor file](spin_api_client.thor):
+```ruby
+  BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
+  API_VERSION = '1'
+  SPIN_CLIENT_CERT_FILE_PATH = 'spin.crt'
+  SERVER_KEY_FILE_PATH = 'server.key'
+  SERVER_KEY_PASSWORD = 'password'
+```
+For details about SPIN API certificate please see [Issuing an API Certificate](../README.md)
+For details about API headers and versioning see [Specifying API version](../doc/api/v1/README.md)
 
 # Commands
 
@@ -36,10 +49,11 @@ thor spin_api_client:revoke_project_role_from_subject --organisation-id=ORGANISA
 
 # Example usage
 
-After executing a thor command you will see the following:
+After executing a ```thor``` command you will see the following:
  - The request method and path generated i.e. ```GET https://spin-demo.test.aaf.edu.au/api/organisations```
  - The response code i.e. ```200```
  - The response body (if present)
+
 
 ## Subjects
 ### ```get_subjects```
