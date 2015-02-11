@@ -116,8 +116,14 @@ class SpinApiClient < Thor
 
   def run(method, request_path, body = nil, base_url = BASE_URL)
     puts_request(base_url, method, request_path, body)
-    response = send_request(base_url, method, request_path, body)
-    puts_response(response)
+
+    begin
+      response = send_request(base_url, method, request_path, body)
+      puts_response(response)
+    rescue => e
+      puts_error(e)
+      raise e
+    end
   end
 
   def puts_request(base_url, method, request_path, body)
