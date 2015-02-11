@@ -21,8 +21,9 @@ The client may be configured by modifying [thor file](spin_api_client.thor):
   SERVER_KEY_FILE_PATH = 'server.key'
   SERVER_KEY_PASSWORD = 'password'
 ```
-For details about SPIN API certificate please see [Issuing an API Certificate](../README.md#issuing-an-api-certificate)
-For details about API headers and versioning see [Specifying API version](../doc/api/v1/README.md#specifying-api-version)
+For details about SPIN API certificate please see [Issuing an API Certificate](../README.md#issuing-an-api-certificate).
+
+For details about API headers and versioning see [Specifying API version](../doc/api/v1/README.md#specifying-api-version).
 
 # Commands
 
@@ -47,13 +48,12 @@ thor spin_api_client:grant_project_role_to_subject --organisation-id=ORGANISATIO
 thor spin_api_client:revoke_project_role_from_subject --organisation-id=ORGANISATION_ID --project-id=PROJECT_ID --role-id=ROLE_ID --subject-id=SUBJECT_ID  # DELETE /organisations/<organisation_id>/projects/<project_id>/roles/<role_id>/members/<subject_id>
 ```
 
-# Example usage
-
-After executing a ```thor``` command you will see the following:
+After executing a spin_api_client command you will typically see the following:
  - The request method and path generated i.e. ```GET https://spin-demo.test.aaf.edu.au/api/organisations```
  - The response code i.e. ```200```
  - The response body (if present)
 
+# Example usage
 
 ## Subjects
 ### ```get_subjects```
