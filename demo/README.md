@@ -21,8 +21,8 @@ The client may be configured by modifying [thor file](spin_api_client.thor):
   SERVER_KEY_FILE_PATH = 'server.key'
   SERVER_KEY_PASSWORD = 'password'
 ```
-For details about SPIN API certificate please see [Issuing an API Certificate](../README.md)
-For details about API headers and versioning see [Specifying API version](../doc/api/v1/README.md)
+For details about SPIN API certificate please see [Issuing an API Certificate](../README.md#issuing-an-api-certificate)
+For details about API headers and versioning see [Specifying API version](../doc/api/v1/README.md#specifying-api-version)
 
 # Commands
 
