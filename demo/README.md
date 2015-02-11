@@ -13,11 +13,11 @@ This client is intended for ad-hoc testing and demonstration of the SPIN API onl
 
 # Configuration
 
-The client may be configured by modifying [thor file](spin_api_client.thor):
+The client may be configured by modifying the [client](spin_api_client.thor) directly:
 ```ruby
   BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
   API_VERSION = '1'
-  SPIN_CLIENT_CERT_FILE_PATH = 'spin.crt'
+  SPIN_CLIENT_CERT_FILE_PATH = 'server.crt'
   SERVER_KEY_FILE_PATH = 'server.key'
   SERVER_KEY_PASSWORD = 'password'
 ```

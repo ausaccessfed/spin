@@ -6,7 +6,7 @@ require 'json'
 class SpinApiClient < Thor
   BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
   API_VERSION = '1'
-  SPIN_CLIENT_CERT_FILE_PATH = 'spin.crt'
+  SPIN_CLIENT_CERT_FILE_PATH = 'server.crt'
   SERVER_KEY_FILE_PATH = 'server.key'
   SERVER_KEY_PASSWORD = 'password'
 
