@@ -11,43 +11,37 @@ class SpinApiClient < Thor
   SERVER_KEY_PASSWORD = 'password'
 
   desc 'get_subjects', 'GET /subjects'
-
-  def list_subjects
+  def get_subjects
     run('get', subjects_path)
   end
 
   desc 'delete_subject', 'DELETE /subjects/<subject_id>'
   method_option :subject_id, required: true
-
   def delete_subject
     run('delete', subject_path)
   end
 
   desc 'get_organisations', 'GET /organisations'
-
-  def list_organisations
+  def get_organisations
     run('get', organisations_path)
   end
 
   desc 'create_organisation', 'POST /organisations'
   method_option :name, required: true
   method_option :external_id, required: true
-
   def create_organisation
     run('post', organisations_path, build_organisation_json)
   end
 
   desc 'delete_organisation', 'DELETE /organisations/<organisation_id>'
   method_option :organisation_id, required: true
-
   def delete_organisation
     run('delete', organisation_path)
   end
 
   method_option :organisation_id, required: true
   desc 'get_projects', 'GET /organisations/<organisation_id>/projects'
-
-  def list_projects
+  def get_projects
     run('get', organisation_projects_path)
   end
 
@@ -55,7 +49,6 @@ class SpinApiClient < Thor
   method_option :name, required: true
   method_option :provider_arn, required: true
   desc 'create_project', 'POST /organisations/<organisation_id>/projects'
-
   def create_project
     run('post', organisation_projects_path, build_project_json)
   end
@@ -64,7 +57,6 @@ class SpinApiClient < Thor
   method_option :project_id, required: true
   desc 'delete_project', 'DELETE /organisations/<organisation_id>/projects/' \
                          '<project_id>'
-
   def delete_project
     run('delete', organisation_project_path)
   end
@@ -73,8 +65,7 @@ class SpinApiClient < Thor
   method_option :project_id, required: true
   desc 'get_roles', 'GET /organisations/<organisation_id>/projects/' \
                     '<project_id>/roles'
-
-  def list_roles
+  def get_roles
     run('get', organisation_project_roles_path)
   end
 
@@ -84,7 +75,6 @@ class SpinApiClient < Thor
   method_option :role_arn, required: true
   desc 'create_role', 'POST /organisations/<organisation_id>/projects/' \
                       '<project_id>/roles/'
-
   def create_role
     run('post', organisation_project_roles_path, build_project_role_json)
   end
@@ -105,7 +95,6 @@ class SpinApiClient < Thor
   method_option :subject_id, required: true
   desc 'grant_project_role_to_subject', 'POST /organisations/' \
                '<organisation_id>/projects/<project_id>/roles/<role_id>/members'
-
   def grant_project_role_to_subject
     run('post', organisation_project_role_members_path,
         build_grant_subject_json)
@@ -118,7 +107,6 @@ class SpinApiClient < Thor
   desc 'revoke_project_role_from_subject', 'DELETE /organisations/' \
         '<organisation_id>/projects/<project_id>/roles/<role_id>/members/' \
          '<subject_id>'
-
   def revoke_project_role_from_subject
     run('delete',
         "#{organisation_project_role_members_path}/#{options[:subject_id]}")
