@@ -186,23 +186,22 @@ class SpinApiClient < Thor
   end
 
   def build_organisation_json
-    "{ \"organisation\":{ \"name\":\"#{options[:name]}\"," \
-    " \"external_id\":\"#{options[:external_id]}\" }}"
+    JSON.generate(organisation: { name: options[:name],
+                                  external_id: options[:external_id] })
   end
 
   def build_project_json
-    "{ \"project\":{ \"name\":\"#{options[:name]}\"," \
-    " \"provider_arn\":\"#{options[:provider_arn]}\", \"active\":\"true\" } }"
+    JSON.generate(project: { name: options[:name],
+                             provider_arn: options[:provider_arn] })
   end
 
   def build_project_role_json
-    "{ \"project_role\":{ \"name\":\"#{options[:name]}\"," \
-    " \"role_arn\":\"#{options[:role_arn]}\" } }"
+    JSON.generate(project_role: { name: options[:name],
+                                  role_arn: options[:role_arn] })
   end
 
   def build_grant_subject_json
-    "{ \"subject_project_roles\":" \
-     "{ \"subject_id\":\"#{options[:subject_id]}\"} }"
+    JSON.generate(subject_project_roles: { subject_id: options[:subject_id] })
   end
 
   def subjects_path
