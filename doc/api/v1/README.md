@@ -99,3 +99,7 @@ Specific details on interacting with supplied endpoint categories are provided i
 3. [Projects](projects.md)
 4. [ProjectRoles](project_roles.md)
 5. [Subject / ProjectRole association](subject_project_roles.md)
+
+## SPIN API Client
+
+See [Sample SPIN API Client](../../../demo/README.md).

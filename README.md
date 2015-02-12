@@ -202,3 +202,8 @@ SPIN distribution archive used in Step 2 of the deployment process.*
 ```shell
 git archive --prefix=spin/app/ HEAD | gzip -c > spin.tar.gz
 ```
+
+## SPIN API Client
+
+See [Sample SPIN API Client](demo/README.md).
+
