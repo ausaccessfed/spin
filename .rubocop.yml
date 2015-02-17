@@ -15,12 +15,12 @@ Style/FileName:
 
 Style/AccessorMethodName:
   Exclude:
-   - demo/spin_api_client.thor
+   - api-client-demo/spin_api_client.thor
 
 Metrics/ClassLength:
   Exclude:
     - bin/api-ca
-    - demo/spin_api_client.thor
+    - api-client-demo/spin_api_client.thor
 
 Metrics/MethodLength:
   Exclude:

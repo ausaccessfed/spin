@@ -8,3 +8,8 @@ log
 coverage
 .idea
 tmp
+
+api-client-demo/api.key
+api-client-demo/api.csr
+api-client-demo/api.crt
+
