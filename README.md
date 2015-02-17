@@ -176,6 +176,25 @@ out.
 is set during installation. If you're having issues, ensure this environment
 variable has been correctly set.
 
+Once the API certificate has been issued there are 3 further steps to undertake:
+
+1. Provide the created certificate to the user requesting access to the SPIN API
+1. Within SPIN create a new API subject to represent this certificate under the Administration menu.
+You'll require the value for CN for this certificate which was output on completion the signing command above.
+1. Add the API account to the Global Administrator role so it can control all aspects of SPIN
+
+Example of retrieving correct CN value to create API account within SPIN
+
+```
+$>/opt/spin/app/bin/api-ca sign
+...
+Do you wish to sign this request? (yes/no) yes
+...
+     Subject: CN=2AC8MfGxTR40WRmLw6H8ZNyjPcRqsmLNdX_DK0-c
+...
+```
+You would enter **`2AC8MfGxTR40WRmLw6H8ZNyjPcRqsmLNdX_DK0-c`** into the UI when requested.
+
 # Developer Notes
 
 ## Seeding the database

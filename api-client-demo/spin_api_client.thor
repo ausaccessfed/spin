@@ -4,11 +4,10 @@ require 'rest_client'
 require 'json'
 
 class SpinApiClient < Thor
-  BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
+  API_BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
   API_VERSION = '1'
-  SPIN_CLIENT_CERT_FILE_PATH = 'server.crt'
-  SERVER_KEY_FILE_PATH = 'server.key'
-  SERVER_KEY_PASSWORD = 'password'
+  API_KEY = 'api.key'
+  API_CERT = 'api.crt'
 
   desc 'get_subjects', 'GET /subjects'
   def get_subjects
@@ -114,7 +113,7 @@ class SpinApiClient < Thor
 
   private
 
-  def run(method, request_path, body = nil, base_url = BASE_URL)
+  def run(method, request_path, body = nil, base_url = API_BASE_URL)
     puts_request(base_url, method, request_path, body)
 
     begin
@@ -152,9 +151,8 @@ class SpinApiClient < Thor
   def connection_options
     {
       ssl_client_cert: OpenSSL::X509::Certificate.new(
-          File.read(SPIN_CLIENT_CERT_FILE_PATH)),
-      ssl_client_key: OpenSSL::PKey::RSA.new(File.read(SERVER_KEY_FILE_PATH),
-                                             SERVER_KEY_PASSWORD),
+          File.read(API_CERT)),
+      ssl_client_key: OpenSSL::PKey::RSA.new(File.read(API_KEY)),
       verify_ssl: OpenSSL::SSL::VERIFY_NONE
     }
   end
