@@ -224,5 +224,5 @@ git archive --prefix=spin/app/ HEAD | gzip -c > spin.tar.gz
 
 ## SPIN API Client
 
-See [Sample SPIN API Client](demo/README.md).
+See [Sample SPIN API Client](api-client-demo/README.md).
 

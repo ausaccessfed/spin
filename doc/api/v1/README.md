@@ -102,4 +102,4 @@ Specific details on interacting with supplied endpoint categories are provided i
 
 ## SPIN API Client
 
-See [Sample SPIN API Client](../../../demo/README.md).
+See [Sample SPIN API Client](../../../api-client-demo/README.md).
