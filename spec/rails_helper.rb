@@ -23,6 +23,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.include ControllerMatchers, type: :controller
   config.include DeleteButton, type: :feature, js: true
+  config.include SanitizedMarkdownRenderer, type: :feature
   config.infer_spec_type_from_file_location!
   Capybara.javascript_driver = :webkit
 end

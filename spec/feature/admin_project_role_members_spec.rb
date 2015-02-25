@@ -53,7 +53,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
   end
 
   scenario 'shows actions for the subject' do
-    expect(page).to have_content("#{user.name} #{user.mail} Revoke")
+    expect(page).to contain_rendered_content("#{user.name} #{user.mail} Revoke")
   end
 
   scenario 'shows Add Subject button' do
@@ -64,7 +64,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     before { click_delete_button(text: 'Revoke') }
 
     scenario 'shows flash' do
-      expect(page).to have_content("Revoked #{project_role.name} " \
+      expect(page).to contain_rendered_content("Revoked #{project_role.name} " \
                                    "from #{user.name}")
     end
 
@@ -119,7 +119,8 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
       end
 
       scenario 'shows flash' do
-        expect(page).to have_content("Granted #{project_role.name} " \
+        expect(page).to contain_rendered_content(
+                            "Granted #{project_role.name} " \
                                    "to #{another_user.name}")
       end
 
@@ -129,7 +130,8 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
 
       scenario 'shows that subject is granted' do
         expect(page)
-          .to have_content("#{another_user.name} #{another_user.mail} Revoke")
+          .to contain_rendered_content("#{another_user.name} " \
+           " #{another_user.mail} Revoke")
       end
     end
   end
