@@ -134,5 +134,44 @@ RSpec.describe ProjectRole, type: :model do
           .for(:role_arn)
       end
     end
+
+    context 'with whitespace' do
+      let(:role_arn) { 'arn:aws:iam::1:role/a' }
+
+      context 'preceding' do
+        let(:role_arn_preceding_whitespace) { ' ' + role_arn }
+        it 'is allowed' do
+          is_expected.to allow_value(role_arn_preceding_whitespace)
+            .for(:role_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project_role, role_arn: role_arn_preceding_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.role_arn).to eq(role_arn)
+          end
+        end
+      end
+
+      context 'trailing' do
+        let(:role_arn_trailing_whitespace) { role_arn + ' ' }
+
+        it 'is allowed' do
+          is_expected.to allow_value(role_arn_trailing_whitespace)
+            .for(:role_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project_role, role_arn: role_arn_trailing_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.role_arn).to eq(role_arn)
+          end
+        end
+      end
+    end
   end
 end

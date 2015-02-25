@@ -18,4 +18,12 @@ class Project < ActiveRecord::Base
                                       ':(number):saml-provider/(string)\'' }
 
   validates :active, inclusion: { in: [true, false] }
+
+  before_validation :strip_provider_arn_whitespace
+
+  private
+
+  def strip_provider_arn_whitespace
+    self.provider_arn = provider_arn.strip if provider_arn
+  end
 end

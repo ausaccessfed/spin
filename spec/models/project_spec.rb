@@ -81,6 +81,47 @@ RSpec.describe Project, type: :model do
           .for(:provider_arn)
       end
     end
+
+    context 'with whitespace' do
+      let(:provider_arn) { 'arn:aws:iam::1:saml-provider/1' }
+
+      context 'preceding' do
+        let(:provider_arn_preceding_whitespace) { ' ' + provider_arn }
+        it 'is allowed' do
+          is_expected.to allow_value(provider_arn_preceding_whitespace)
+            .for(:provider_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project,
+                   provider_arn: provider_arn_preceding_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.provider_arn).to eq(provider_arn)
+          end
+        end
+      end
+
+      context 'trailing' do
+        let(:provider_arn_trailing_whitespace) { provider_arn + ' ' }
+
+        it 'is allowed' do
+          is_expected.to allow_value(provider_arn_trailing_whitespace)
+            .for(:provider_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project,
+                   provider_arn: provider_arn_trailing_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.provider_arn).to eq(provider_arn)
+          end
+        end
+      end
+    end
   end
 
   context 'associated objects' do

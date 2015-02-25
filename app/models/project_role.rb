@@ -17,4 +17,12 @@ class ProjectRole < ActiveRecord::Base
                          message: 'format must be \'arn:aws:iam::' \
                                    '(number):role/(string)\'' },
                        role_arn_belongs_to_project: true
+
+  before_validation :strip_role_arn_whitespace
+
+  private
+
+  def strip_role_arn_whitespace
+    self.role_arn = role_arn.strip if role_arn
+  end
 end
