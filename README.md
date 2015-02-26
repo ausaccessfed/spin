@@ -126,7 +126,7 @@ download your SPIN IdP's metadata document from:
 https://<<your spin host>>/idp/profile/Metadata/SAML
 ```
 
-1. Under the root account visit the Security Credentials page.
+1. Under the root account visit the "Identity & Access Management" page.
 2. Click 'Identity Providers' in the left navigation menu.
 3. Click 'Create Provider', and create a provider as follows:
     - Provider Type: **SAML**
