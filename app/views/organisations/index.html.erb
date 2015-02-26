@@ -18,7 +18,7 @@
   <%- @organisations.each do |organisation| -%>
     <tr>
       <td><%= organisation.name %></td>
-      <td><%= organisation.external_id %></td>
+      <td><%= organisation.unique_identifier %></td>
       <td>
         <%- if permitted?("organisations:#{organisation.id}:projects:list") -%>
           <%= button_link_to([organisation, :projects], class: 'tiny icon') do -%>

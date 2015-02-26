@@ -9,11 +9,11 @@
   <%- end -%>
 
   <%= field_block do -%>
-    <%= f.label :external_id do -%>
+    <%= f.label :unique_identifier do -%>
       Unique Identifier
       <%= field_help_text('A unique identifier for this Organisation as determined by the spin operator e.g. A billing account code or domain name') %>
     <%- end -%>
-    <%= f.text_field :external_id %>
+    <%= f.text_field :unique_identifier %>
   <%- end -%>
 
   <%= error_messages_tag %>
@@ -34,5 +34,5 @@
 
 <%= validate_form('#organisation-form', :organisation) do -%>
   <%= validate_field(:name, empty: 'Please enter a name for this Organisation') %>
-  <%= validate_field(:external_id, empty: 'Please enter a Unique Identifier for this Organisation') %>
+  <%= validate_field(:unique_identifier, empty: 'Please enter a Unique Identifier for this Organisation') %>
 <%- end -%>

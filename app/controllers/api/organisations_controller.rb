@@ -30,7 +30,7 @@ module API
     private
 
     def organisation_params
-      params.require(:organisation).permit(:name, :external_id)
+      params.require(:organisation).permit(:name, :unique_identifier)
     end
   end
 end

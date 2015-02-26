@@ -27,7 +27,7 @@ class SpinApiClient < Thor
 
   desc 'create_organisation', 'POST /organisations'
   method_option :name, required: true
-  method_option :external_id, required: true
+  method_option :unique_identifier, required: true
   def create_organisation
     run('post', organisations_path, build_organisation_json)
   end
@@ -179,7 +179,8 @@ class SpinApiClient < Thor
 
   def build_organisation_json
     JSON.generate(organisation: { name: options[:name],
-                                  external_id: options[:external_id] })
+                                  unique_identifier:
+                                      options[:unique_identifier] })
   end
 
   def build_project_json

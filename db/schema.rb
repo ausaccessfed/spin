@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203051806) do
+ActiveRecord::Schema.define(version: 20150226003209) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -68,13 +68,13 @@ ActiveRecord::Schema.define(version: 20150203051806) do
   end
 
   create_table "organisations", force: true do |t|
-    t.string   "name",        null: false
-    t.string   "external_id", null: false
+    t.string   "name",              null: false
+    t.string   "unique_identifier", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "organisations", ["external_id"], name: "index_organisations_on_external_id", unique: true, using: :btree
+  add_index "organisations", ["unique_identifier"], name: "index_organisations_on_unique_identifier", unique: true, using: :btree
 
   create_table "permissions", force: true do |t|
     t.integer  "role_id",    null: false

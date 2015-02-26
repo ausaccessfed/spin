@@ -5,9 +5,9 @@ RSpec.describe Organisation, type: :model do
 
   subject { create(:organisation) }
 
-  it { is_expected.to validate_presence_of(:external_id) }
+  it { is_expected.to validate_presence_of(:unique_identifier) }
   it { is_expected.to validate_presence_of(:name) }
-  it { is_expected.to validate_uniqueness_of(:external_id) }
+  it { is_expected.to validate_uniqueness_of(:unique_identifier) }
 
   context 'associated objects' do
     context 'projects' do

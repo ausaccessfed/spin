@@ -30,7 +30,8 @@ RSpec.feature 'Managing the Organisation', type: :feature do
   end
 
   scenario 'shows the organisation description in the list' do
-    expect(page).to have_css('table tr td', text: organisation.external_id)
+    expect(page).to have_css('table tr td',
+                             text: organisation.unique_identifier)
   end
 
   scenario 'shows actions for the organisation' do
@@ -52,7 +53,7 @@ RSpec.feature 'Managing the Organisation', type: :feature do
 
     scenario 'does not shows the organisation description in the list' do
       expect(page).to_not have_css('table tr td',
-                                   text: organisation.external_id)
+                                   text: organisation.unique_identifier)
     end
 
     scenario 'does not shows actions for the organisation' do
@@ -73,9 +74,9 @@ RSpec.feature 'Managing the Organisation', type: :feature do
       expect(page).to have_field('organisation_name', with: organisation.name)
     end
 
-    scenario 'shows populated external_id field' do
-      expect(page).to have_field('organisation_external_id',
-                                 with: organisation.external_id)
+    scenario 'shows populated unique_identifier field' do
+      expect(page).to have_field('organisation_unique_identifier',
+                                 with: organisation.unique_identifier)
     end
 
     scenario 'cancels' do
@@ -121,11 +122,11 @@ RSpec.feature 'Managing the Organisation', type: :feature do
 
     context 'saves' do
       given(:bs) { Faker::Company.bs }
-      given(:external_id) { Faker::Lorem.characters(10) }
+      given(:unique_identifier) { Faker::Lorem.characters(10) }
 
       context 'with invalid data' do
         before do
-          fill_in 'organisation_external_id', with: external_id
+          fill_in 'organisation_unique_identifier', with: unique_identifier
           click_button 'Create'
         end
 
@@ -138,7 +139,7 @@ RSpec.feature 'Managing the Organisation', type: :feature do
       context 'with valid data' do
         before do
           fill_in 'organisation_name', with: bs
-          fill_in 'organisation_external_id', with: external_id
+          fill_in 'organisation_unique_identifier', with: unique_identifier
           click_button 'Create'
         end
 

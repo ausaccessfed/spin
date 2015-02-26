@@ -51,6 +51,6 @@ class OrganisationsController < ApplicationController
 
   def organisation_params
     params.require(:organisation)
-      .permit(:name, :external_id)
+      .permit(:name, :unique_identifier)
   end
 end
