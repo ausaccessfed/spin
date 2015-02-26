@@ -56,8 +56,8 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     expect(page).to contain_rendered_content("#{user.name} #{user.mail} Revoke")
   end
 
-  scenario 'shows Add Subject button' do
-    expect(page).to have_content('Add Subject')
+  scenario 'shows Add User button' do
+    expect(page).to have_content('Add User')
   end
 
   context 'revokes subject' do
@@ -89,7 +89,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
              permission: 'organisations:*')
     end
 
-    before { click_link('Add Subject') }
+    before { click_link('Add User') }
 
     scenario 'shows the subject name in the list' do
       expect(page).to have_css('table tr td', text: another_user.name)

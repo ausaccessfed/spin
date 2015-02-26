@@ -27,7 +27,7 @@
     <%- if permitted?('admin') -%>
       <%= nav_dropdown('Administration') do -%>
         <%- if permitted?('admin:subjects:list') -%>
-          <%= nav_item('Subjects', subjects_path) %>
+          <%= nav_item('Users', subjects_path) %>
         <%- end -%>
         <%- if permitted?('admin:api_subjects:list') -%>
           <%= nav_item('API Accounts', api_subjects_path) %>

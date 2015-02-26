@@ -4,7 +4,7 @@
   <h4>Administration</h4>
   <ul>
     <%- if permitted?('admin:subjects') -%>
-      <li><%= link_to('Subjects', subjects_path) %></li>
+      <li><%= link_to('Users', subjects_path) %></li>
     <%- end -%>
     <%- if permitted?('admin:api_subjects') -%>
       <li><%= link_to('API Accounts', api_subjects_path) %></li>

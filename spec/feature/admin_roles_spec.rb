@@ -104,7 +104,7 @@ RSpec.feature 'Roles Admin', type: :feature do
 
     expect(current_path).to eq("#{base_path}/roles/#{role.id}")
     expect(page).to have_no_css('tr', text: other_subject.name)
-    click_link('Add Subject')
+    click_link('Add User')
 
     expect(current_path).to eq("#{base_path}/roles/#{role.id}/members/new")
 

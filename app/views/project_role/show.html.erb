@@ -38,7 +38,7 @@
   <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
     <%= button_link_to(new_organisation_project_role_member_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
       <%= icon_tag('add') %>
-      Add Subject
+      Add User
     <%- end -%>
   <%- end -%>
 

@@ -12,7 +12,7 @@ RSpec.feature 'Managing the Subjects', type: :feature do
     expect(current_path).to eq('/auth/login')
     click_button 'Login'
 
-    click_link('Subjects', match: :first)
+    click_link('Users', match: :first)
     expect(current_path).to eq('/admin/subjects')
   end
 

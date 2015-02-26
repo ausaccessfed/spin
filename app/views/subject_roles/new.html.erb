@@ -3,11 +3,11 @@
         {'Administration' => dashboard_path},
         {'Roles' => roles_path},
         {@role.name => role_path(@role)},
-        'Add Subject'
+        'Add User'
     )
 %>
 
-<%= page_header("Grant Role '#{@role.name}' to Subject") %>
+<%= page_header("Grant Role '#{@role.name}' to User") %>
 
 <h3 class="ui header"><%= @role.name %></h3>
 
