@@ -26,8 +26,15 @@ Steps:
     After registration, please contact AAF to request that your registration be
     converted to an `auresearch` service to ensure SPIN works correctly.
 
-2.  Extract the SPIN archive to `/opt`. This will create `/opt/spin` with the
-    necessary directory structure beneath.
+2.  Install SPIN.
+
+    If you have a zip archive, extract it to `/opt`. This will create `/opt/spin` with the necessary directory structure beneath.
+
+    Alternatively, you clone from git directly:
+    ```shell
+    git clone https://github.com/ausaccessfed/spin.git /opt/spin/app
+    ```
+    N.B. The destination path of `/opt/spin/app` is required.
 
 3.  Install site-specific assets.
 
