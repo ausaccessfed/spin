@@ -47,7 +47,7 @@ RSpec.describe ProjectRoleController, type: :controller do
 
     it do
       is_expected.to redirect_to(organisation_project_roles_path(
-                                        organisation, project))
+                                   organisation, project))
     end
 
     it { is_expected.to have_assigned(:project_role, project_role) }
@@ -96,7 +96,7 @@ RSpec.describe ProjectRoleController, type: :controller do
       subject { response }
       it do
         is_expected.to redirect_to(organisation_project_roles_path(
-                                          organisation, project))
+                                     organisation, project))
       end
     end
 

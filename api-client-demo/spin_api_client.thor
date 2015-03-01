@@ -151,7 +151,7 @@ class SpinApiClient < Thor
   def connection_options
     {
       ssl_client_cert: OpenSSL::X509::Certificate.new(
-          File.read(API_CERT)),
+        File.read(API_CERT)),
       ssl_client_key: OpenSSL::PKey::RSA.new(File.read(API_KEY)),
       verify_ssl: OpenSSL::SSL::VERIFY_NONE
     }

@@ -17,24 +17,24 @@ RSpec.describe Project, type: :model do
 
       it 'disallows 0 chars' do
         is_expected.to_not allow_value(provider_arn_string(
-                                           '')).for(:provider_arn)
+                                         '')).for(:provider_arn)
       end
 
       it 'allows alpha chars' do
         is_expected.to allow_value(provider_arn_string(
-                                       Faker::Lorem.word))
+                                     Faker::Lorem.word))
           .for(:provider_arn)
       end
 
       it 'allows 128 chars' do
         is_expected.to allow_value(provider_arn_string(
-                                       Faker::Lorem.characters(128)))
+                                     Faker::Lorem.characters(128)))
           .for(:provider_arn)
       end
 
       it 'allows alphanumeric chars' do
         is_expected.to allow_value(provider_arn_string(
-                                       Faker::Lorem.characters(50)))
+                                     Faker::Lorem.characters(50)))
           .for(:provider_arn)
       end
 
@@ -45,13 +45,13 @@ RSpec.describe Project, type: :model do
 
       it 'disallows 129 chars' do
         is_expected.to_not allow_value(provider_arn_string(
-                                           Faker::Lorem.characters(129)))
+                                         Faker::Lorem.characters(129)))
           .for(:provider_arn)
       end
 
       it 'disallows other symbol chars' do
         is_expected.to_not allow_value(provider_arn_string(
-                                           '~!@#$%^&*(')).for(:provider_arn)
+                                         '~!@#$%^&*(')).for(:provider_arn)
       end
     end
 
@@ -62,7 +62,7 @@ RSpec.describe Project, type: :model do
 
       it 'disallows 0 chars' do
         is_expected.to_not allow_value(
-                               provider_arn_string('')).for(:provider_arn)
+          provider_arn_string('')).for(:provider_arn)
       end
 
       it 'disallows alpha chars' do
@@ -77,7 +77,7 @@ RSpec.describe Project, type: :model do
 
       it 'allows numeric chars' do
         is_expected.to allow_value(provider_arn_string(
-                                           Faker::Number.number(10)))
+                                     Faker::Number.number(10)))
           .for(:provider_arn)
       end
     end

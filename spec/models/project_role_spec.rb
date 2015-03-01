@@ -82,7 +82,7 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'allows 64 alpha chars' do
         is_expected.to allow_value(role_arn_string(
-                                       Faker::Lorem.characters(64)))
+                                     Faker::Lorem.characters(64)))
           .for(:role_arn)
       end
 
@@ -98,13 +98,13 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'disallows 65 chars' do
         is_expected.to_not allow_value(role_arn_string(
-                                           Faker::Lorem.characters(65)))
+                                         Faker::Lorem.characters(65)))
           .for(:role_arn)
       end
 
       it 'disallows other symbol chars' do
         is_expected.to_not allow_value(role_arn_string(
-                                           '~!@#$%^&*(')).for(:role_arn)
+                                         '~!@#$%^&*(')).for(:role_arn)
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'disallows alpha chars' do
         is_expected.to_not allow_value(role_arn_string(
-                                           Faker::Lorem.word))
+                                         Faker::Lorem.word))
           .for(:role_arn)
       end
 
@@ -130,7 +130,7 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'allows numeric chars' do
         is_expected.to allow_value(role_arn_string(
-                                           Faker::Number.number(10)))
+                                     Faker::Number.number(10)))
           .for(:role_arn)
       end
     end

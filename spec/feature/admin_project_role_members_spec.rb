@@ -120,8 +120,8 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
 
       scenario 'shows flash' do
         expect(page).to contain_rendered_content(
-                            "Granted #{project_role.name} " \
-                                   "to #{another_user.name}")
+          "Granted #{project_role.name} " \
+                 "to #{another_user.name}")
       end
 
       scenario 'shows the subject name in the list' do
