@@ -31,9 +31,15 @@ RSpec.feature 'After the user has authenticated with idP', type: :feature do
   context 'with exactly 1 project' do
     include_context 'with 1 project'
 
+    before do
+      allow(AWSSessionInstance).to receive(:create!).and_return([])
+      allow_any_instance_of(AWSSessionInstancesController)
+        .to receive(:login_jwt).and_return([])
+    end
+
     scenario 'redirects to aws auth' do
       click_button 'Login'
-      expect(current_path).to eq('/aws_login')
+      expect(current_path).to eq('/idp/profile/SAML2/Unsolicited/SSO')
     end
   end
 
@@ -44,6 +50,12 @@ RSpec.feature 'After the user has authenticated with idP', type: :feature do
 
     scenario 'redirects to projects page' do
       expect(current_path).to eq('/projects')
+    end
+
+    scenario 'shows the projects' do
+      project_roles.map(&:project).map(&:name).each do |project_name|
+        expect(page).to have_text(project_name)
+      end
     end
 
     scenario 'shows active subject' do

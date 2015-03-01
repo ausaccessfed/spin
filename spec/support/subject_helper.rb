@@ -5,21 +5,17 @@ RSpec.shared_examples 'a mocked subject' do
   let(:project_roles) { [] }
 
   before do
-    allow(subject_for_session)
-      .to receive(:permits?)
-      .and_return(false)
-
     allow(Subject)
-      .to receive(:find)
-      .and_return(subject_for_session)
+      .to receive_messages(find: subject_for_session,
+                           find_by_id: subject_for_session)
 
     allow(subject_for_session)
-      .to receive(:roles)
-      .and_return(roles)
-
-    allow(subject_for_session)
-      .to receive(:active_project_roles)
-      .and_return(project_roles)
+      .to receive_messages(permits?: false,
+                           roles: roles,
+                           active_project_roles: project_roles,
+                           functioning?: true,
+                           name: Faker::Name.name,
+                           targeted_id: Faker::Lorem.characters)
   end
 end
 
