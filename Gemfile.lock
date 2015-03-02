@@ -25,14 +25,6 @@ GIT
       rmagick
       sprockets (~> 2.12)
 
-GIT
-  remote: https://github.com/ausaccessfed/valhammer
-  revision: 3ef04b440cee8abc53ab48895222b25e05d7cdbc
-  branch: develop
-  specs:
-    valhammer (0.0.1)
-      activerecord (~> 4.1)
-
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -341,6 +333,8 @@ GEM
       rack
       raindrops (~> 0.7)
     url_safe_base64 (0.2.2)
+    valhammer (0.1.0)
+      activerecord (~> 4.1)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -389,4 +383,4 @@ DEPENDENCIES
   timecop
   uglifier
   unicorn
-  valhammer!
+  valhammer (= 0.1.0)
