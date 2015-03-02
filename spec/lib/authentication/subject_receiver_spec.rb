@@ -21,9 +21,7 @@ module Authentication
     end
 
     context '#subject' do
-      let(:attributes) do
-        attributes_for(:subject)
-      end
+      let(:attributes) { attributes_for(:subject) }
       let(:updated_attributes) do
         attributes.merge(name: Faker::Name.name,
                          mail: Faker::Internet.email)
@@ -119,45 +117,41 @@ module Authentication
     end
 
     context 'after authenticating with idP' do
-      include_context 'a mocked subject'
+      include_context 'projects'
 
-      let(:env) do
-        { 'rack.session' => { 'subject_id' => 1 } }
-      end
+      let!(:user) { create(:subject) }
+      let(:env) { { 'rack.session' => { 'subject_id' => user.id } } }
+
+      subject { receiver.finish(env) }
 
       context 'with no projects' do
-        include_context 'with no projects'
-
         it 'redirects to no projects assigned page' do
-          expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/dashboard' }, []])
+          expect(subject).to eq([302, { 'Location' => '/dashboard' }, []])
         end
       end
 
       context 'with 1 project' do
-        include_context 'with 1 project'
-
+        before { create_subject_project_role_for_active_project(user) }
         it 'redirects to aws auth' do
-          expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/aws_login' }, []])
+          expect(subject).to eq([302, { 'Location' => '/aws_login' }, []])
         end
       end
 
       context 'with more than 1 project' do
-        include_context 'with 3 projects'
+        before do
+          3.times { create_subject_project_role_for_active_project(user) }
+        end
 
         it 'redirects to projects page' do
-          expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/projects' }, []])
+          expect(subject).to eq([302, { 'Location' => '/projects' }, []])
         end
       end
 
-      context 'with admin permissions' do
-        include_context 'with admin permissions'
-
+      context 'with admin permissions and 1 active project' do
+        let!(:user) { create(:subject, :authorized) }
+        before { create_subject_project_role_for_active_project(user) }
         it 'redirects to dashboard page' do
-          expect(receiver.finish(env))
-            .to eq([302, { 'Location' => '/dashboard' }, []])
+          expect(subject).to eq([302, { 'Location' => '/dashboard' }, []])
         end
       end
     end
