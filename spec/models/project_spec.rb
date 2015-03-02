@@ -7,6 +7,9 @@ RSpec.describe Project, type: :model do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:provider_arn) }
 
+  it { is_expected.to validate_length_of(:name).is_at_most(255) }
+  it { is_expected.to validate_length_of(:provider_arn).is_at_most(255) }
+
   context '#provider_arn' do
     context 'saml-provider section' do
       let(:iam) { Faker::Number.number(10) }

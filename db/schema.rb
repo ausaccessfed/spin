@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226003209) do
+ActiveRecord::Schema.define(version: 20150301214139) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20150226003209) do
   end
 
   add_index "project_roles", ["project_id"], name: "index_project_roles_on_project_id", using: :btree
+  add_index "project_roles", ["role_arn"], name: "index_project_roles_on_role_arn", unique: true, using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name",                           null: false

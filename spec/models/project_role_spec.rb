@@ -8,6 +8,9 @@ RSpec.describe ProjectRole, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:role_arn) }
 
+    it { is_expected.to validate_length_of(:name).is_at_most(255) }
+    it { is_expected.to validate_length_of(:role_arn).is_at_most(255) }
+
     context 'instance validations' do
       subject { create :project_role }
       it { is_expected.to validate_uniqueness_of(:role_arn) }

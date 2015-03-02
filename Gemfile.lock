@@ -25,6 +25,14 @@ GIT
       rmagick
       sprockets (~> 2.12)
 
+GIT
+  remote: https://github.com/ausaccessfed/valhammer
+  revision: 3ef04b440cee8abc53ab48895222b25e05d7cdbc
+  branch: develop
+  specs:
+    valhammer (0.0.1)
+      activerecord (~> 4.1)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -381,3 +389,4 @@ DEPENDENCIES
   timecop
   uglifier
   unicorn
+  valhammer!

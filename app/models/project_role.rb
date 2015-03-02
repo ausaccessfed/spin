@@ -8,13 +8,11 @@ class ProjectRole < ActiveRecord::Base
   has_many :subjects, through: :subject_project_roles
   belongs_to :project
 
-  validates :project, :name, presence: true
+  valhammer
 
-  validates :role_arn, presence: true,
-                       uniqueness: true,
-                       format: {
-                         with: ROLE_ARN_REGEX,
-                         message: 'format must be \'arn:aws:iam::' \
+  validates :role_arn, format: {
+    with: ROLE_ARN_REGEX,
+    message: 'format must be \'arn:aws:iam::' \
                                    '(number):role/(string)\'' },
                        role_arn_belongs_to_project: true
 

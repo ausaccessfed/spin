@@ -4,8 +4,9 @@ class APISubjectRole < ActiveRecord::Base
   belongs_to :api_subject
   belongs_to :role
 
-  validates :api_subject, presence: true, uniqueness:
+  valhammer
+
+  validates :api_subject, uniqueness:
                             { scope: :role,
                               message: 'already has this role granted' }
-  validates :role, presence: true
 end
