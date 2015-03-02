@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150301214139) do
+ActiveRecord::Schema.define(version: 20150302043623) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(version: 20150301214139) do
     t.string   "remote_host"
     t.string   "remote_addr",     null: false
     t.string   "http_user_agent"
-    t.integer  "subject_id"
+    t.integer  "subject_id",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
