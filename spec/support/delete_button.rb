@@ -4,6 +4,6 @@ module DeleteButton
   def click_delete_button(text: 'Delete')
     button = find('div.ui.button', text: text)
     button.click
-    click_link('Confirm Delete')
+    click_link("Confirm #{text}")
   end
 end
