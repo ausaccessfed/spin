@@ -10,7 +10,6 @@ class APISubject < ActiveRecord::Base
   valhammer
 
   validates :x509_cn, format: { with: /\A[\w-]+\z/ }
-  validates :enabled, inclusion: { in: [true, false] }
 
   def permissions
     roles.flat_map { |role| role.permissions.map(&:value) }

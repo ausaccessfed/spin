@@ -15,7 +15,6 @@ class Subject < ActiveRecord::Base
   valhammer
 
   validates :targeted_id, :shared_token, presence: true, if: :complete?
-  validates :complete, :enabled, inclusion: { in: [true, false] }
 
   def functioning?
     enabled?

@@ -15,8 +15,6 @@ class Project < ActiveRecord::Base
     message: 'format must be \'arn:aws:iam:' \
                                       ':(number):saml-provider/(string)\'' }
 
-  validates :active, inclusion: { in: [true, false] }
-
   before_validation :strip_provider_arn_whitespace
 
   private
