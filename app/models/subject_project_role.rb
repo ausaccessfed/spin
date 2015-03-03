@@ -4,7 +4,10 @@ class SubjectProjectRole < ActiveRecord::Base
   belongs_to :subject
   belongs_to :project_role
 
-  validates :subject, :project_role, presence: true
+  has_associated_audits
+
+  valhammer
+
   validates :subject, uniqueness: { scope: :project_role,
                                     message: 'already has this role granted' }
 end

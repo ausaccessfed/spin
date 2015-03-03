@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/ausaccessfed/aaf-lipstick
-  revision: ae8ea922984771647378e4a0d03fd0a71a41f00b
+  revision: a50ac0b56a3b8397d2a2e88cc02408293d70c0de
   branch: develop
   specs:
     aaf-lipstick (0.0.1)
@@ -224,6 +224,22 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     redis (3.2.0)
+    redis-actionpack (4.0.0)
+      actionpack (~> 4)
+      redis-rack (~> 1.5.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (4.0.0)
+      activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-rack (1.5.0)
+      rack (~> 1.5)
+      redis-store (~> 1.1.0)
+    redis-rails (4.0.0)
+      redis-actionpack (~> 4)
+      redis-activesupport (~> 4)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.4)
+      redis (>= 2.2)
     ref (1.0.5)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
@@ -317,6 +333,8 @@ GEM
       rack
       raindrops (~> 0.7)
     url_safe_base64 (0.2.2)
+    valhammer (0.1.0)
+      activerecord (~> 4.1)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -352,6 +370,7 @@ DEPENDENCIES
   rails-assets-semantic-ui
   rapid-rack
   redis
+  redis-rails
   rest-client
   rspec-rails (~> 3.1)
   sanitize
@@ -364,3 +383,4 @@ DEPENDENCIES
   timecop
   uglifier
   unicorn
+  valhammer (= 0.1.0)

@@ -9,7 +9,7 @@ module API
 
     def to_map(organisation)
       organisation.attributes.symbolize_keys
-        .slice(:name, :id, :external_id)
+        .slice(:name, :id, :unique_identifier)
     end
 
     context 'post /api/organisations' do
@@ -35,7 +35,7 @@ module API
       let!(:organisation) { create(:organisation) }
       let(:updated_organisation) do
         build(:organisation,
-              external_id: organisation.external_id,
+              unique_identifier: organisation.unique_identifier,
               id: organisation.id)
       end
 
@@ -70,7 +70,8 @@ module API
       end
 
       def to_map(organisation)
-        organisation.attributes.symbolize_keys.slice(:name, :external_id, :id)
+        organisation.attributes.symbolize_keys.slice(:name, :unique_identifier,
+                                                     :id)
       end
 
       let(:json) { JSON.parse(response.body, symbolize_names: true) }

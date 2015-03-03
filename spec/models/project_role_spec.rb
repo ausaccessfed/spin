@@ -8,6 +8,9 @@ RSpec.describe ProjectRole, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:role_arn) }
 
+    it { is_expected.to validate_length_of(:name).is_at_most(255) }
+    it { is_expected.to validate_length_of(:role_arn).is_at_most(255) }
+
     context 'instance validations' do
       subject { create :project_role }
       it { is_expected.to validate_uniqueness_of(:role_arn) }
@@ -82,7 +85,7 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'allows 64 alpha chars' do
         is_expected.to allow_value(role_arn_string(
-                                       Faker::Lorem.characters(64)))
+                                     Faker::Lorem.characters(64)))
           .for(:role_arn)
       end
 
@@ -98,13 +101,13 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'disallows 65 chars' do
         is_expected.to_not allow_value(role_arn_string(
-                                           Faker::Lorem.characters(65)))
+                                         Faker::Lorem.characters(65)))
           .for(:role_arn)
       end
 
       it 'disallows other symbol chars' do
         is_expected.to_not allow_value(role_arn_string(
-                                           '~!@#$%^&*(')).for(:role_arn)
+                                         '~!@#$%^&*(')).for(:role_arn)
       end
     end
 
@@ -119,7 +122,7 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'disallows alpha chars' do
         is_expected.to_not allow_value(role_arn_string(
-                                           Faker::Lorem.word))
+                                         Faker::Lorem.word))
           .for(:role_arn)
       end
 
@@ -130,8 +133,47 @@ RSpec.describe ProjectRole, type: :model do
 
       it 'allows numeric chars' do
         is_expected.to allow_value(role_arn_string(
-                                           Faker::Number.number(10)))
+                                     Faker::Number.number(10)))
           .for(:role_arn)
+      end
+    end
+
+    context 'with whitespace' do
+      let(:role_arn) { 'arn:aws:iam::1:role/a' }
+
+      context 'preceding' do
+        let(:role_arn_preceding_whitespace) { ' ' + role_arn }
+        it 'is allowed' do
+          is_expected.to allow_value(role_arn_preceding_whitespace)
+            .for(:role_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project_role, role_arn: role_arn_preceding_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.role_arn).to eq(role_arn)
+          end
+        end
+      end
+
+      context 'trailing' do
+        let(:role_arn_trailing_whitespace) { role_arn + ' ' }
+
+        it 'is allowed' do
+          is_expected.to allow_value(role_arn_trailing_whitespace)
+            .for(:role_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project_role, role_arn: role_arn_trailing_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.role_arn).to eq(role_arn)
+          end
+        end
       end
     end
   end

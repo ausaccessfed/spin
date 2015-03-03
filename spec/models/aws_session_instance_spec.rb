@@ -14,6 +14,7 @@ RSpec.describe AWSSessionInstance, type: :model do
     it { is_expected.to allow_value(urlsafe_base64(30)).for(:identifier) }
     it { is_expected.not_to allow_value('a' * 39).for(:identifier) }
     it { is_expected.not_to allow_value('!a' * 20).for(:identifier) }
+    it { is_expected.to validate_length_of(:identifier).is_at_most(255) }
   end
 
   context 'after_initialize' do

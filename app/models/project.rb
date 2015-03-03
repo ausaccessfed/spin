@@ -8,14 +8,18 @@ class Project < ActiveRecord::Base
   belongs_to :organisation
   has_many :project_roles, dependent: :destroy
 
-  validates :organisation, :name, presence: true
+  valhammer
 
-  validates :provider_arn, presence: true,
-                           uniqueness: true,
-                           format: {
-                             with: PROVIDER_ARN_REGEX,
-                             message: 'format must be \'arn:aws:iam:' \
+  validates :provider_arn, format: {
+    with: PROVIDER_ARN_REGEX,
+    message: 'format must be \'arn:aws:iam:' \
                                       ':(number):saml-provider/(string)\'' }
 
-  validates :active, inclusion: { in: [true, false] }
+  before_validation :strip_provider_arn_whitespace
+
+  private
+
+  def strip_provider_arn_whitespace
+    self.provider_arn = provider_arn.strip if provider_arn
+  end
 end

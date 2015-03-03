@@ -110,7 +110,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
       end
 
       scenario 'shows flash message' do
-        expect(page).to have_content("Updated Project #{name}")
+        expect(page).to contain_rendered_content("Updated Project #{name}")
       end
 
       scenario 'shows the updated project' do
@@ -186,7 +186,7 @@ RSpec.feature 'Managing the Projects of an Organisation', type: :feature do
         end
 
         scenario 'shows flash message' do
-          expect(page).to have_content("Created Project #{name}")
+          expect(page).to contain_rendered_content("Created Project #{name}")
         end
 
         scenario 'shows the created project' do

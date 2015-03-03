@@ -7,6 +7,7 @@ RSpec.describe Permission, type: :model do
 
   context 'validations' do
     subject { create(:permission) }
+    it { is_expected.to validate_length_of(:value).is_at_most(255) }
 
     it { is_expected.to validate_presence_of(:role) }
     it { is_expected.to validate_presence_of(:value) }

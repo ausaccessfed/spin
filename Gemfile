@@ -17,9 +17,11 @@ gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
 gem 'god', require: false
 gem 'unicorn', require: false # Web container
 gem 'redis'
+gem 'redis-rails'
 gem 'kramdown'
 gem 'audited-activerecord'
 gem 'jbuilder'
+gem 'valhammer', '0.1.0'
 
 group :development, :test do
   gem 'spring',      '1.1.3'

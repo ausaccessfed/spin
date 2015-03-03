@@ -11,7 +11,8 @@ module API
     end
 
     def to_map(organisation)
-      organisation.attributes.symbolize_keys.slice(:name, :id, :external_id)
+      organisation.attributes.symbolize_keys.slice(:name, :id,
+                                                   :unique_identifier)
     end
 
     before { request.env['HTTP_X509_DN'] = "CN=#{api_subject.x509_cn}" }
@@ -63,7 +64,7 @@ module API
       let!(:organisation) { create(:organisation) }
       let(:updated_organisation) do
         build(:organisation,
-              external_id: organisation.external_id,
+              unique_identifier: organisation.unique_identifier,
               id: organisation.id)
       end
 

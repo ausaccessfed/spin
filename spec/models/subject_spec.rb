@@ -16,6 +16,11 @@ RSpec.describe Subject, type: :model do
     it { is_expected.to validate_presence_of(:shared_token) }
     it { is_expected.to validate_uniqueness_of(:shared_token) }
 
+    it { is_expected.to validate_length_of(:name).is_at_most(255) }
+    it { is_expected.to validate_length_of(:mail).is_at_most(255) }
+    it { is_expected.to validate_length_of(:targeted_id).is_at_most(255) }
+    it { is_expected.to validate_length_of(:shared_token).is_at_most(255) }
+
     context 'with a complete subject' do
       subject { build(:subject, complete: true) }
 
@@ -84,14 +89,14 @@ RSpec.describe Subject, type: :model do
     end
 
     context 'with an active project' do
-      before { create_active_project(subject) }
+      before { create_subject_project_role_for_active_project(subject) }
       it 'provides the project' do
         expect(projects.count).to eq(1)
       end
     end
 
     context 'with an inactive project' do
-      before { create_inactive_project(subject) }
+      before { create_subject_project_role_for_inactive_project(subject) }
       it 'does not provide the project' do
         expect(projects.count).to eq(0)
       end
@@ -99,8 +104,8 @@ RSpec.describe Subject, type: :model do
 
     context 'with multiple inactive and active projects' do
       before do
-        5.times { create_active_project(subject) }
-        2.times { create_inactive_project(subject) }
+        5.times { create_subject_project_role_for_active_project(subject) }
+        2.times { create_subject_project_role_for_inactive_project(subject) }
       end
       it 'provides the active project only' do
         expect(projects.count).to eq(5)

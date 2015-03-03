@@ -26,8 +26,15 @@ Steps:
     After registration, please contact AAF to request that your registration be
     converted to an `auresearch` service to ensure SPIN works correctly.
 
-2.  Extract the SPIN archive to `/opt`. This will create `/opt/spin` with the
-    necessary directory structure beneath.
+2.  Install SPIN.
+
+    If you have a zip archive, extract it to `/opt`. This will create `/opt/spin` with the necessary directory structure beneath.
+
+    Alternatively, you clone from git directly:
+    ```shell
+    git clone https://github.com/ausaccessfed/spin.git /opt/spin/app
+    ```
+    N.B. The destination path of `/opt/spin/app` is required.
 
 3.  Install site-specific assets.
 
@@ -126,7 +133,7 @@ download your SPIN IdP's metadata document from:
 https://<<your spin host>>/idp/profile/Metadata/SAML
 ```
 
-1. Under the root account visit the Security Credentials page.
+1. Under the root account visit the "Identity & Access Management" page.
 2. Click 'Identity Providers' in the left navigation menu.
 3. Click 'Create Provider', and create a provider as follows:
     - Provider Type: **SAML**
@@ -206,7 +213,7 @@ sample data:
 s = Subject.first
 r = Role.first
 
-o = Organisation.create!(name: "Test Org", external_id: "ID1" )
+o = Organisation.create!(name: "Test Org", unique_identifier: "ID1" )
 p = Project.create!(name:"Test Proj 1", provider_arn: "arn:aws:iam::1:saml-provider/1", active: true, organisation_id: o.id)
 pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "arn:aws:iam::1:role/1", project_id: p.id)
 spr = SubjectProjectRole.create!(subject_id: s.id, project_role_id: pr.id)
@@ -224,5 +231,5 @@ git archive --prefix=spin/app/ HEAD | gzip -c > spin.tar.gz
 
 ## SPIN API Client
 
-See [Sample SPIN API Client](demo/README.md).
+See [Sample SPIN API Client](api-client-demo/README.md).
 

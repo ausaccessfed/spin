@@ -32,7 +32,7 @@ A full list of available commands can found as follows:
 ~/spin/demo $ thor list
 spin_api_client
 ---------------
-thor spin_api_client:create_organisation --external-id=EXTERNAL_ID --name=NAME                                                                             # POST /organisations
+thor spin_api_client:create_organisation --unique_identifier=UNIQUE_IDENTIFIER --name=NAME                                                                             # POST /organisations
 thor spin_api_client:create_project --name=NAME --organisation-id=ORGANISATION_ID --provider-arn=PROVIDER_ARN                                              # POST /organisations/<organisation_id>/projects
 thor spin_api_client:create_role --name=NAME --organisation-id=ORGANISATION_ID --project-id=PROJECT_ID --role-arn=ROLE_ARN                                 # POST /organisations/<organisation_id>/projects/<project_id>/roles/
 thor spin_api_client:delete_organisation --organisation-id=ORGANISATION_ID                                                                                 # DELETE /organisations/<organisation_id>
@@ -92,12 +92,12 @@ GET https://spin-demo.test.aaf.edu.au/api/organisations
     {
       "id": 1,
       "name": "My Organisation",
-      "external_id": "ExternalID1"
+      "unique_identifier": "UniqueIdentifier1"
     },
     {
       "id": 2,
       "name": "My Second Organisation",
-      "external_id": "ExternalID2"
+      "unique_identifier": "UniqueIdentifier2"
     }
   ]
 }
@@ -105,12 +105,12 @@ GET https://spin-demo.test.aaf.edu.au/api/organisations
 
 ### ```create_organisation```
 ```
-$ thor spin_api_client:create_organisation --name 'My New Organisation' --external_id 'ExternalID3'
+$ thor spin_api_client:create_organisation --name 'My New Organisation' --unique_identifier 'UniqueIdentifier1'
 POST https://spin-demo.test.aaf.edu.au/api/organisations
 {
   "organisation": {
     "name": "My New Organisation",
-    "external_id": "ExternalID3"
+    "unique_identifier": "UniqueIdentifier3"
   }
 }
 -->

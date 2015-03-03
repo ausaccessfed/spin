@@ -1,5 +1,5 @@
 json.organisations @organisations do |organisation|
   json.id organisation.id
   json.name organisation.name
-  json.external_id organisation.external_id
+  json.unique_identifier organisation.unique_identifier
 end

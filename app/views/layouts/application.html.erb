@@ -27,7 +27,7 @@
     <%- if permitted?('admin') -%>
       <%= nav_dropdown('Administration') do -%>
         <%- if permitted?('admin:subjects:list') -%>
-          <%= nav_item('Subjects', subjects_path) %>
+          <%= nav_item('Users', subjects_path) %>
         <%- end -%>
         <%- if permitted?('admin:api_subjects:list') -%>
           <%= nav_item('API Accounts', api_subjects_path) %>
@@ -66,10 +66,8 @@
 
   <p>
     SPIN <strong><%= ApplicationHelper::VERSION %></strong>
-    <br>
-    Developed by Russell Ianniello, Bradley Beddoes and Shaun Mangelsdorf at
-    the <a href="http://www.aaf.edu.au">Australian Access Federation</a> for
-    member nodes of the <a href="https://www.rdsi.edu.au/">Research Data Storage Initiative</a>.
+    <br/>
+    <br/>
   </p>
 <%- end -%>
 </body>
