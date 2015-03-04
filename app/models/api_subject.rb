@@ -6,6 +6,7 @@ class APISubject < ActiveRecord::Base
 
   has_many :api_subject_roles, dependent: :destroy
   has_many :roles, through: :api_subject_roles
+  validates :enabled, inclusion: { in: [true, false] }
 
   valhammer
 

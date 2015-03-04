@@ -21,7 +21,8 @@ gem 'redis-rails'
 gem 'kramdown'
 gem 'audited-activerecord'
 gem 'jbuilder'
-gem 'valhammer', '0.1.0'
+gem 'valhammer', git: 'https://github.com/ausaccessfed/valhammer',
+                 branch: 'develop'
 
 group :development, :test do
   gem 'spring',      '1.1.3'

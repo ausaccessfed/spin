@@ -13,6 +13,13 @@ RSpec.describe Subject, type: :model do
 
     it { is_expected.not_to validate_presence_of(:targeted_id) }
 
+    it { is_expected.to validate_uniqueness_of(:shared_token) }
+
+    it { is_expected.to validate_length_of(:name).is_at_most(255) }
+    it { is_expected.to validate_length_of(:mail).is_at_most(255) }
+    it { is_expected.to validate_length_of(:targeted_id).is_at_most(255) }
+    it { is_expected.to validate_length_of(:shared_token).is_at_most(255) }
+
     context 'with a complete subject' do
       subject { build(:subject, complete: true) }
 
