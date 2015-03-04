@@ -12,9 +12,12 @@ class Subject < ActiveRecord::Base
   has_many :subject_roles, dependent: :destroy
   has_many :roles, through: :subject_roles
 
-  valhammer
+  has_many :invitations, dependent: :destroy
 
+  validates :name, :mail, presence: true
   validates :targeted_id, :shared_token, presence: true, if: :complete?
+  validates :complete, :enabled, inclusion: { in: [true, false] }
+  validates :shared_token, uniqueness: true, allow_nil: true
 
   def functioning?
     enabled?

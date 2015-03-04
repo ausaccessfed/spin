@@ -99,6 +99,7 @@
     mode: 0644
   with_items:
     - logo.png
+    - email_branding.png
     - favicon.png
   notify: Restart spin
 

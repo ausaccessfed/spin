@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150302043623) do
+ActiveRecord::Schema.define(version: 20150304010153) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -66,6 +66,21 @@ ActiveRecord::Schema.define(version: 20150302043623) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "invitations", force: true do |t|
+    t.integer  "subject_id",                 null: false
+    t.string   "identifier",                 null: false
+    t.string   "name",                       null: false
+    t.string   "mail",                       null: false
+    t.boolean  "used",       default: false, null: false
+    t.datetime "expires",                    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invitations", ["identifier"], name: "index_invitations_on_identifier", unique: true, using: :btree
+  add_index "invitations", ["mail"], name: "index_invitations_on_mail", unique: true, using: :btree
+  add_index "invitations", ["subject_id"], name: "index_invitations_on_subject_id", using: :btree
 
   create_table "organisations", force: true do |t|
     t.string   "name",              null: false
@@ -149,7 +164,7 @@ ActiveRecord::Schema.define(version: 20150302043623) do
     t.string   "name",                         null: false
     t.string   "mail",                         null: false
     t.string   "targeted_id"
-    t.string   "shared_token",                 null: false
+    t.string   "shared_token"
     t.boolean  "complete",     default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"

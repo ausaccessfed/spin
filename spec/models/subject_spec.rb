@@ -13,20 +13,20 @@ RSpec.describe Subject, type: :model do
 
     it { is_expected.not_to validate_presence_of(:targeted_id) }
 
-    it { is_expected.to validate_presence_of(:shared_token) }
-    it { is_expected.to validate_uniqueness_of(:shared_token) }
-
-    it { is_expected.to validate_length_of(:name).is_at_most(255) }
-    it { is_expected.to validate_length_of(:mail).is_at_most(255) }
-    it { is_expected.to validate_length_of(:targeted_id).is_at_most(255) }
-    it { is_expected.to validate_length_of(:shared_token).is_at_most(255) }
-
     context 'with a complete subject' do
       subject { build(:subject, complete: true) }
 
       it { is_expected.to validate_presence_of(:targeted_id) }
       it { is_expected.to validate_presence_of(:shared_token) }
       it { is_expected.to validate_uniqueness_of(:shared_token) }
+    end
+
+    context 'shared_token uniqueness' do
+      before { create(:subject, shared_token: nil) }
+      subject { build(:subject, shared_token: nil) }
+      it 'allows many nil shared_tokens' do
+        expect(subject).to be_valid
+      end
     end
   end
 
@@ -71,6 +71,12 @@ RSpec.describe Subject, type: :model do
 
     context 'subject_project_roles' do
       let(:child) { create(:subject_project_role) }
+      subject { child.subject }
+      it_behaves_like 'an association which cascades delete'
+    end
+
+    context 'invitations' do
+      let(:child) { create(:invitation) }
       subject { child.subject }
       it_behaves_like 'an association which cascades delete'
     end
