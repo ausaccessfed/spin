@@ -144,7 +144,8 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           end
 
           it 'is expected to be associated with a project' do
-            expect(subject.subject_project_roles).to eq([SubjectProjectRole.last])
+            expect(subject.subject_project_roles)
+              .to eq([SubjectProjectRole.last])
           end
         end
       end
