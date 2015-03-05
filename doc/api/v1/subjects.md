@@ -137,7 +137,7 @@ The API functions as follows:
 	1. If there is a matching `Subject` record a `400 Bad Request` with detailed error message is provided.
 
 
-### Request (without invitation)
+### Sample Request (without invitation)
 ```
 POST /api/subjects
 Content-Type: application/json
@@ -165,7 +165,7 @@ Location: https://spin-instance.com.au/api/subjects/1
 }
 ```
 
-### Request (with invitation)
+### Sample Request (with invitation)
 ```
 POST /api/subjects
 Content-Type: application/json
