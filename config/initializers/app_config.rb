@@ -11,7 +11,7 @@ Rails.application.configure do
   mail_config = config.spin_service.mail
   Mail.defaults { delivery_method :smtp, mail_config }
 
-  if Rails.env.test?
+  if Rails.env.development? || Rails.env.test?
     config.spin_service.mail = OpenStruct.new(from: 'noreply@example.com')
     config.spin_service.provider_prefix = 'urn:x-aaf:dev:spin:rspec'
     Mail.defaults { delivery_method :test }
