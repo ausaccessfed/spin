@@ -30,4 +30,8 @@ class Subject < ActiveRecord::Base
   def active_project_roles
     project_roles.select { |project_role| project_role.project.active }
   end
+
+  def outstanding_invitations
+    invitations.select { |invitation| !invitation.used? }
+  end
 end

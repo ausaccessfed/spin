@@ -1,5 +1,52 @@
 # Subjects
 
+## Get Subject
+
+The following `Subject` attributes will be returned:
+
+1. id
+2. name
+3. mail
+4. shared_token
+5. complete
+5. created_at
+6. updated_at
+
+In addition if the `Subject` is considered incomplete (there is an outstanding invitation pending) the following is be provided:
+
+1. invitation_url
+2. invitation_created_at
+
+```
+GET /api/subjects/1
+```
+
+### Response
+
+```
+Status: 200 OK
+```
+
+```json
+{
+   "subject": {
+       "id":1,
+       "name":Russell Ianniello,
+       "mail":"russell.ianniello@aaf.edu.au",
+       "shared_token":"W4ohH-6FCupmiBdwRv_w18AToQ"
+       "complete":"true"
+       "created_at":"2015-03-04T23:52:58Z"
+       "updated_at":"2015-03-03T00:01:23Z"
+    },
+    "invitations":[
+        {
+           "invitation_url":"https://example.com/invitations/4GSFFDJH22341",
+           "invitation_created_at":"2015-03-04T23:52:58Z"
+        }
+    ]
+}
+```
+
 ## List Subjects
 
 List all Subjects

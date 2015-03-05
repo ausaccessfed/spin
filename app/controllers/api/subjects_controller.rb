@@ -22,6 +22,13 @@ module API
       invite_subject
     end
 
+    def show
+      check_access!('api:subjects:read')
+      @subject = Subject.find(params[:id])
+    end
+
+    private
+
     def invite_subject
       response_map = {}
       Invitation.transaction do
@@ -32,8 +39,6 @@ module API
       end
       render json: response_map, status: :created
     end
-
-    private
 
     def validate_required_params
       params.require(:name)

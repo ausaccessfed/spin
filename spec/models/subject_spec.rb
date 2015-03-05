@@ -125,4 +125,18 @@ RSpec.describe Subject, type: :model do
       end
     end
   end
+
+  describe '#outstanding_invitations' do
+    let!(:user) { create(:subject) }
+    subject { user.outstanding_invitations }
+    context 'with an outstanding invitiation' do
+      let!(:invitation) { create(:invitation, subject: user) }
+      it { is_expected.to eq([invitation]) }
+    end
+
+    context 'with no outstanding invitiations' do
+      let!(:invitation) { create(:invitation, subject: user, used: true) }
+      it { is_expected.to eq([]) }
+    end
+  end
 end

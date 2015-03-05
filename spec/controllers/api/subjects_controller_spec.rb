@@ -335,5 +335,23 @@ module API
         end
       end
     end
+
+    context 'show :id' do
+      let!(:user) { create(:subject) }
+
+      def run
+        get :show, id: user.id, format: 'json'
+      end
+
+      subject { -> { run } }
+
+      it { is_expected.to have_assigned(:subject, user) }
+
+      context 'the response' do
+        before { run }
+        subject { response }
+        it { is_expected.to have_http_status(:ok) }
+      end
+    end
   end
 end
