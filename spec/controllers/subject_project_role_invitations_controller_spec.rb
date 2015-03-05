@@ -230,7 +230,7 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
             expect(flash[:success]).to eq('Subject has been' \
            " added to Project Role '#{project_role.name}'." \
            ' Activate the account here: ' \
-           "#{request.base_url}/invitations/#{Invitation.last.identifier}.")
+           "#{request.base_url}/invitations/#{Invitation.last.identifier}")
           end
         end
       end

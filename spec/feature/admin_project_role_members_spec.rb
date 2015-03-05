@@ -166,7 +166,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
           expect(page).to contain_rendered_content('Success Subject has been' \
            " added to Project Role '#{project_role.name}'." \
            ' Activate the account here: ' \
-           "http://www.example.com/invitations/#{Invitation.last.identifier}.")
+           "http://www.example.com/invitations/#{Invitation.last.identifier}")
         end
       end
 

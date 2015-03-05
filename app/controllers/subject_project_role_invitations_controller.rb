@@ -72,7 +72,7 @@ class SubjectProjectRoleInvitationsController < ApplicationController
   end
 
   def activation_message(url)
-    "Activate the account here: #{url}." if url
+    "Activate the account here: #{url}" if url
   end
 
   def email_has_been_sent(subject)
