@@ -17,6 +17,8 @@ In addition if the `Subject` is considered incomplete (there is an outstanding i
 1. invitation_url
 2. invitation_created_at
 
+### Request
+
 ```
 GET /api/subjects/1
 ```
@@ -135,13 +137,12 @@ The API functions as follows:
 	1. If there is a matching `Subject` record a `400 Bad Request` with detailed error message is provided.
 
 
-#### Create without invitation
+### Request (without invitation)
 ```
 POST /api/subjects
 Content-Type: application/json
 ```
 
-Request Body:
 ```json
 {
     "name":"Joe Bloggs",
@@ -164,13 +165,12 @@ Location: https://spin-instance.com.au/api/subjects/1
 }
 ```
 
-#### Create with invitation
+### Request (with invitation)
 ```
 POST /api/subjects
 Content-Type: application/json
 ```
 
-Request Body:
 ```json
 {
     "name": "Joe Bloggs",
