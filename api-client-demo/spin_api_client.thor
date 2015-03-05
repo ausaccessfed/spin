@@ -193,9 +193,9 @@ class SpinApiClient < Thor
   end
 
   def build_subject_json
-    hash_body = {name: options[:name], mail: options[:mail],
-                 shared_token: options[:shared_token],
-                 send_invitation: options[:send_invitation]}
+    hash_body = { name: options[:name], mail: options[:mail],
+                  shared_token: options[:shared_token],
+                  send_invitation: options[:send_invitation] }
 
     JSON.generate(hash_body)
   end
