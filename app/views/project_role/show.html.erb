@@ -42,4 +42,11 @@
     <%- end -%>
   <%- end -%>
 
+  <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
+    <%= button_link_to(new_organisation_project_role_invitation_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
+      <%= icon_tag('send') %>
+      Invite by email
+    <%- end -%>
+  <%- end -%>
+
 </div>

@@ -3,6 +3,8 @@ class Invitation < ActiveRecord::Base
 
   belongs_to :subject
 
+  attr_accessor :send_invitation
+
   valhammer
 
   validates :identifier, format: { with: /\A[\w-]+\z/ }

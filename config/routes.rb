@@ -21,6 +21,9 @@ Rails.application.routes.draw do
         resources :roles, controller: 'project_role' do
           resources :members, controller: 'subject_project_roles',
                               only: %i(new create destroy)
+          resources :invitations,
+                    controller: 'subject_project_role_invitations',
+                    only: %i(new create)
         end
       end
     end

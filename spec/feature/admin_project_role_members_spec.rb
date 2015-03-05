@@ -60,6 +60,10 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     expect(page).to have_content('Add User')
   end
 
+  scenario 'shows Invite by email button' do
+    expect(page).to have_content('Invite by email')
+  end
+
   context 'revokes subject' do
     before { click_delete_button(text: 'Revoke') }
 
@@ -80,6 +84,112 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
 
     scenario 'does not show actions for the subject' do
       expect(page).to_not have_content("#{user.name} Revoke")
+    end
+  end
+
+  context 'invite subject' do
+    before { click_link('Invite by email') }
+
+    scenario 'shows title' do
+      expect(page).to have_text('Invite User to Project Role')
+      expect(page).to contain_rendered_content("#{project_role.name}")
+    end
+
+    scenario 'shows the form name field' do
+      expect(page).to have_text('Name')
+    end
+
+    scenario 'shows the form email field' do
+      expect(page).to have_text('Email')
+    end
+
+    scenario 'shows the form send invitation flag' do
+      expect(page).to have_text('Send Invitation')
+    end
+
+    scenario 'shows the form send invitation flag as checked' do
+      expect(find('#invitation_send_invitation').checked?).to be_truthy
+    end
+
+    scenario 'shows invite button' do
+      expect(page).to_not have_button('Invite')
+    end
+
+    scenario 'has invite user path' do
+      expect(current_path).to eq("/admin/organisations/#{organisation.id}/" \
+                                 "projects/#{project.id}/" \
+                                 "roles/#{project_role.id}/invitations/new")
+    end
+
+    context 'saves' do
+      given(:name) { Faker::Name.name }
+      given(:mail) { Faker::Internet.email }
+
+      context 'with missing email' do
+        before do
+          fill_in 'invitation_name', with: name
+          click_button 'Submit'
+        end
+
+        scenario 'shows flash message' do
+          expect(page).to have_content('Error Mail can’t be blank')
+        end
+      end
+
+      context 'with missing name' do
+        before do
+          fill_in 'invitation_mail', with: mail
+          click_button 'Submit'
+        end
+
+        scenario 'shows flash message' do
+          expect(page).to have_content('Error Name can’t be blank')
+        end
+      end
+
+      context 'with no invitation' do
+        before do
+          fill_in 'invitation_mail', with: mail
+          fill_in 'invitation_name', with: name
+          find('#invitation_send_invitation').set(false)
+          click_button 'Submit'
+        end
+
+        scenario 'redirects back to role' do
+          expect(current_path).to eq('/admin/organisations' \
+                                 "/#{organisation.id}/" \
+                                 "projects/#{project.id}/" \
+                                 "roles/#{project_role.id}")
+        end
+
+        scenario 'shows flash message' do
+          expect(page).to contain_rendered_content('Success Subject has been' \
+           " added to Project Role '#{project_role.name}'." \
+           ' Activate the account here: ' \
+           "http://www.example.com/invitations/#{Invitation.last.identifier}.")
+        end
+      end
+
+      context 'with an invitation' do
+        before do
+          fill_in 'invitation_mail', with: mail
+          fill_in 'invitation_name', with: name
+          click_button 'Submit'
+        end
+
+        scenario 'redirects back to role' do
+          expect(current_path).to eq('/admin/organisations' \
+                               "/#{organisation.id}/" \
+                               "projects/#{project.id}/" \
+                               "roles/#{project_role.id}")
+        end
+
+        scenario 'shows flash message' do
+          expect(page).to contain_rendered_content('Success Subject has been' \
+           " added to Project Role '#{project_role.name}'. An email has been " \
+           "sent to #{mail}.")
+        end
+      end
     end
   end
 

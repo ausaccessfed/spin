@@ -131,6 +131,13 @@ module API
 
           it { is_expected.to change(Subject, :count).by(0) }
 
+          context 'the invitiation' do
+            before { run }
+            it 'is not sent' do
+              expect(response).to_not have_sent_email.to(mail)
+            end
+          end
+
           context 'the response' do
             before { run }
             subject { response }
@@ -223,8 +230,11 @@ module API
           it { is_expected.to change(Subject, :count).by(1) }
           it { is_expected.to change(Invitation, :count).by(1) }
 
-          it 'does not email a invitation' do
-            expect(response).to_not have_sent_email.to(mail)
+          context 'the invitiation' do
+            before { run }
+            it 'is not sent' do
+              expect(response).to_not have_sent_email.to(mail)
+            end
           end
 
           context 'the created Subject' do
@@ -273,6 +283,13 @@ module API
           let(:mail) { user.mail }
 
           it { is_expected.to change(Subject, :count).by(0) }
+
+          context 'the invitiation' do
+            before { run }
+            it 'is not sent' do
+              expect(response).to_not have_sent_email.to(mail)
+            end
+          end
 
           context 'the response' do
             before { run }
