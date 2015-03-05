@@ -26,9 +26,43 @@
     <td>Targeted ID</td>
     <td><%= @object.targeted_id %></td>
   </tr>
+  <tr>
+    <td>State</td>
+    <td>
+      <%- if @object.complete? -%>
+        <%= icon_tag('green checkmark') %> Active
+      <%- else -%>
+        <%= icon_tag('yellow warning sign') %> Pending
+      <%- end -%>
+    </td>
+  </tr>
   </tbody>
 </table>
 
+<%- if @object.outstanding_invitations -%>
+
+  <%- @object.outstanding_invitations.each do | invitation | %>
+    <h3>Invitation</h3>
+    <table class="ui definition table">
+      <tbody>
+      <tr>
+        <td>Sent</td>
+        <td>
+          <%= invitation.created_at %>
+          <%= button_link_to('/', class: 'mini icon') do -%>
+            <%= icon_tag('send') %>
+            Resend
+          <%- end -%>
+        </td>
+      </tr>
+      <tr>
+        <td>URL</td>
+        <td><%= link_to("#{root_url}invitations/#{invitation.identifier}", "/invitations/#{invitation.identifier}") %></td>
+      </tr>
+      </tbody>
+    </table>
+  <%- end -%>
+<%- end -%>
 <div class="line-of-buttons">
   <%- if permitted?('admin:subjects:delete') -%>
     <%= delete_button_tag(@object, class: 'large') %>

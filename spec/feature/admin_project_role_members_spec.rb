@@ -1,11 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Managing the members of an AWS Role', type: :feature do
-  given!(:user) do
-    create(:subject, :authorized,
-           permission: 'organisations:*')
-  end
-
+  given!(:user) { create(:subject, :authorized, permission: 'organisations:*') }
   given!(:organisation) { create(:organisation) }
   given!(:orig_attrs) { attributes_for(:project).except(:organisation) }
   given!(:project) do
@@ -112,7 +108,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     end
 
     scenario 'shows invite button' do
-      expect(page).to_not have_button('Invite')
+      expect(page).to have_button('Submit')
     end
 
     scenario 'has invite user path' do
@@ -122,6 +118,10 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
     end
 
     context 'saves' do
+      def last_invitation_url
+        "http://www.example.com/invitations/#{Invitation.last.identifier}"
+      end
+
       given(:name) { Faker::Name.name }
       given(:mail) { Faker::Internet.email }
 
@@ -165,8 +165,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
         scenario 'shows flash message' do
           expect(page).to contain_rendered_content('Success Subject has been' \
            " added to Project Role '#{project_role.name}'." \
-           ' Activate the account here: ' \
-           "http://www.example.com/invitations/#{Invitation.last.identifier}")
+           " Activate the account here: #{last_invitation_url}")
         end
       end
 
@@ -188,6 +187,24 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
           expect(page).to contain_rendered_content('Success Subject has been' \
            " added to Project Role '#{project_role.name}'. An email has been " \
            "sent to #{mail}.")
+        end
+
+        context 'new subject' do
+          given!(:user) { create(:subject, :authorized, permission: '*') }
+          given(:new_subject) { Subject.last }
+          given(:new_invitation) { Subject.last.invitations.first }
+          before { visit "/admin/subjects/#{new_subject.id}" }
+          scenario 'viewing' do
+            expect(Subject.last.invitations.size).to eq(1)
+            expect(current_path).to eq("/admin/subjects/#{new_subject.id}")
+
+            expect(page).to have_content(new_subject.name)
+            expect(page).to have_content(new_subject.mail)
+            expect(page).to have_content('Pending')
+            expect(page).to have_content(new_invitation.created_at)
+            expect(page).to have_content(last_invitation_url)
+            expect(page).to have_link('Resend')
+          end
         end
       end
     end

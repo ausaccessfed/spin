@@ -38,6 +38,7 @@ RSpec.feature 'Managing the Subjects', type: :feature do
     expect(page).to have_content(user.mail)
     expect(page).to have_content(user.shared_token)
     expect(page).to have_content(user.targeted_id)
+    expect(page).to have_content('Active')
   end
 
   scenario 'deleting a subject record' do
