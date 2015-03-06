@@ -34,4 +34,11 @@ class Subject < ActiveRecord::Base
   def outstanding_invitations
     invitations.select { |invitation| !invitation.used? }
   end
+
+  def accept(invitation, attrs)
+    transaction do
+      update_attributes!(attrs.merge(complete: true))
+      invitation.update_attributes!(used: true)
+    end
+  end
 end

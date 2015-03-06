@@ -26,16 +26,22 @@ module Authentication
     # Must return the subject, and the subject must have an `id` method to work
     # with the DefaultReceiver mixin.
     def subject(env, attrs)
-      Rails.logger.info('Find or update Subject using attributes: ' \
-                            "#{attrs.inspect}")
+      session = env['rack.session']
+      return accept_invitation(session, attrs) if session.try(:key?, :invite)
       identifier = attrs.slice(:targeted_id)
-      Rails.logger.info("Using identifier: #{identifier}")
       Subject.transaction do
         Subject.find_or_initialize_by(identifier).tap do |subject|
           subject.update_attributes!(attrs)
           create_session_record(env, subject)
         end
       end
+    end
+
+    def accept_invitation(session, attrs)
+      invitation = Invitation.where(identifier: session[:invite])
+                   .available.first!
+      invitation.subject.accept(invitation, attrs)
+      invitation.subject
     end
 
     def create_session_record(env, subject)

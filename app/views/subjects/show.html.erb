@@ -59,6 +59,19 @@
         <td>URL</td>
         <td><%= link_to("#{root_url}invitations/#{invitation.identifier}", "/invitations/#{invitation.identifier}") %></td>
       </tr>
+      <tr>
+        <td>Used</td>
+        <td><%= yes_no_string invitation.used? %></td>
+      </tr>
+      <tr>
+        <td>Expires</td>
+        <%- time_string = invitation.expires.strftime('%d/%m/%Y') -%>
+        <%- if invitation.expired? -%>
+          <td class="negative"><%= time_string %></td>
+        <%- else -%>
+          <td class="positive"><%= time_string %></td>
+        <%- end -%>
+      </tr>
       </tbody>
     </table>
   <%- end -%>

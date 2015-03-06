@@ -122,8 +122,8 @@ module API
         end
       end
 
-      context 'with name, mail and send_invitation = true' do
-        let(:params) { { name: name, mail: mail, send_invitation: true } }
+      context 'with name, mail and send_invitation = true (default)' do
+        let(:params) { { name: name, mail: mail } }
 
         context 'when a subject with the email already exists' do
           let!(:user) { create(:subject) }

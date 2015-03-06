@@ -114,6 +114,66 @@ module Authentication
           end
         end
       end
+
+      context 'with an invite code' do
+        let!(:invitation) { create(:invitation) }
+        let(:attrs) { attributes_for(:subject) }
+        let(:env) { { 'rack.session' => { invite: invitation.identifier } } }
+
+        it 'does not create a subject' do
+          expect { subject.subject(env, attrs) }.not_to change(Subject, :count)
+        end
+
+        it 'returns the existing subject' do
+          expect(subject.subject(env, attrs)).to eq(invitation.subject)
+        end
+
+        it 'updates the attributes' do
+          expected = attrs.except(:invite, :complete, :audit_comment)
+          expect(subject.subject(env, attrs)).to have_attributes(expected)
+        end
+
+        it 'completes the subject' do
+          expect { subject.subject(env, attrs) }
+            .to change { invitation.subject.reload.complete? }.to true
+        end
+
+        it 'marks the invite as used' do
+          expect { subject.subject(env, attrs) }
+            .to change { invitation.reload.used? }.to true
+        end
+
+        it 'records an audit record' do
+          expect { subject.subject(env, attrs) }
+            .to change(Audited.audit_class, :count).by_at_least(1)
+        end
+
+        context 'when the invitation fails to save' do
+          before do
+            allow_any_instance_of(Invitation).to receive(:update_attributes!)
+              .and_raise('an failure')
+          end
+
+          it 'preserves the subject' do
+            expect { subject.subject(env, attrs) }
+              .to raise_error(/an failure/)
+              .and not_change { invitation.subject.reload.attributes }
+          end
+        end
+
+        context 'when the subject fails to save' do
+          before do
+            allow_any_instance_of(Subject).to receive(:update_attributes!)
+              .and_raise('an failure')
+          end
+
+          it 'preserves the invite' do
+            expect { subject.subject(env, attrs) }
+              .to raise_error(/an failure/)
+              .and not_change { invitation.reload.attributes }
+          end
+        end
+      end
     end
 
     context 'after authenticating with idP' do

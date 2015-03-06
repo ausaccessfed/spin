@@ -6,6 +6,13 @@ Rails.application.routes.draw do
   get 'aws_login', to: 'aws_session_instances#auto', as: :aws_login
   post 'aws_login', to: 'aws_session_instances#login'
 
+  resources :invitations, only: [] do
+    collection do
+      get ':identifier' => 'invitations#show', as: 'show'
+      post ':identifier' => 'invitations#accept', as: 'accept'
+    end
+  end
+
   scope '/admin' do
     resources :subjects, only: %i(index show destroy)
     resources :api_subjects
