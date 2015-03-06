@@ -27,10 +27,11 @@ module Authentication
                          mail: Faker::Internet.email)
       end
 
+      let(:remote_host) { Faker::Internet.url }
+      let(:remote_addr) { Faker::Internet.ip_v4_address }
+      let(:user_agent) { Faker::Lorem.characters }
+
       context 'with mocked http session vars' do
-        let(:remote_host) { Faker::Internet.url }
-        let(:remote_addr) { Faker::Internet.ip_v4_address }
-        let(:user_agent) { Faker::Lorem.characters }
         let(:env) do
           { 'REMOTE_HOST' => remote_host,
             'REMOTE_ADDR' => remote_addr,
@@ -118,7 +119,12 @@ module Authentication
       context 'with an invite code' do
         let!(:invitation) { create(:invitation) }
         let(:attrs) { attributes_for(:subject) }
-        let(:env) { { 'rack.session' => { invite: invitation.identifier } } }
+        let(:env) do
+          { 'rack.session' => { invite: invitation.identifier },
+            'REMOTE_HOST' => remote_host,
+            'REMOTE_ADDR' => remote_addr,
+            'HTTP_USER_AGENT' => user_agent }
+        end
 
         it 'does not create a subject' do
           expect { subject.subject(env, attrs) }.not_to change(Subject, :count)

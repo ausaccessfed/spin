@@ -27,21 +27,24 @@ module Authentication
     # with the DefaultReceiver mixin.
     def subject(env, attrs)
       session = env['rack.session']
-      return accept_invitation(session, attrs) if session.try(:key?, :invite)
+      return use_invitation(session, attrs, env) if session.try(:key?, :invite)
       identifier = attrs.slice(:targeted_id)
       Subject.transaction do
         Subject.find_or_initialize_by(identifier).tap do |subject|
-          subject.update_attributes!(attrs)
+          subject.update_attributes!(attrs.merge(complete: true))
           create_session_record(env, subject)
         end
       end
     end
 
-    def accept_invitation(session, attrs)
-      invitation = Invitation.where(identifier: session[:invite])
-                   .available.first!
-      invitation.subject.accept(invitation, attrs)
-      invitation.subject
+    def use_invitation(session, attrs, env)
+      Invitation.transaction do
+        invitation = Invitation.where(identifier: session[:invite])
+                     .available.first!
+        invitation.subject.accept(invitation, attrs)
+        create_session_record(env, invitation.subject)
+        invitation.subject
+      end
     end
 
     def create_session_record(env, subject)

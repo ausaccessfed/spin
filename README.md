@@ -214,9 +214,6 @@ sample data:
 s = Subject.first
 r = Role.first
 
-s.complete = true
-s.save!
-
 o = Organisation.create!(name: "Test Org", unique_identifier: "ID1" )
 p = Project.create!(name:"Test Proj 1", provider_arn: "arn:aws:iam::1:saml-provider/1", active: true, organisation_id: o.id)
 pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "arn:aws:iam::1:role/1", project_id: p.id)
