@@ -23,9 +23,7 @@ class SubjectProjectRoleInvitationsController < ApplicationController
   def invite_and_associate_with_project
     Invitation.transaction do
       subject = Subject.find_by_mail(invitation_params[:mail])
-      if subject.nil?
-        subject = create_and_invite_subject
-      end
+      subject = create_and_invite_subject if subject.nil?
       associate_subject_with_project_role(subject)
     end
   end
