@@ -58,7 +58,8 @@ module API
       if send_invitation_flag
         deliver(invitation)
       else
-        response_map[:invitation_url] = invitation_url(invitation)
+        response_map[:invitation_url] =
+            accept_invitations_url(identifier: invitation.identifier)
       end
     end
 

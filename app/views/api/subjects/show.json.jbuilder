@@ -9,6 +9,6 @@ json.subject do
 end
 
 json.invitations @subject.outstanding_invitations do |invitation|
-  json.invitation_url "#{request.base_url}/invitations/#{invitation.identifier}"
+  json.invitation_url accept_invitations_url(identifier: invitation.identifier)
   json.invitation_created_at invitation.created_at
 end

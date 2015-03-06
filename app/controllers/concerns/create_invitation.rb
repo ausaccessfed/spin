@@ -34,15 +34,11 @@ module CreateInvitation
     |
     |%{url}
     |
-    |Regards,<br/>
-    |AAF Team
+    |Regards
   EOF
 
-  def email_body(_invitation)
-    format(EMAIL_BODY, url: '')
-  end
-
-  def invitation_url(invitation)
-    "#{request.base_url}/invitations/#{invitation.identifier}"
+  def email_body(invitation)
+    format(EMAIL_BODY,
+           url: accept_invitations_url(identifier: invitation.identifier))
   end
 end

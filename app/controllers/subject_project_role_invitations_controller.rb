@@ -54,7 +54,8 @@ class SubjectProjectRoleInvitationsController < ApplicationController
       deliver(invitation)
       flash[:success] = "#{email_has_been_sent(subject)}"
     else
-      flash[:success] = "#{activation_message(invitation_url(invitation))}"
+      flash[:success] = "#{activation_message(
+        accept_invitations_url(identifier: invitation.identifier))}"
     end
   end
 
