@@ -46,26 +46,41 @@
     <table class="ui definition table">
       <tbody>
       <tr>
-        <td>Sent</td>
+        <td>Email sent<p></p></td>
         <td>
-          <%= invitation.created_at %>
-          <%= button_link_to('/', class: 'mini icon') do -%>
-            <%= icon_tag('send') %>
-            Resend
+          <% if invitation.last_email_sent_at %>
+            <%= invitation.last_email_sent_at.strftime('%a, %e %b %Y %H:%M:%S %z') %>
+          <%- else -%>
+            (not sent)
+          <%- end -%>
+
+          <p></p>
+          <%= form_for(@object, url: resend_invite_subjects_path(@object),
+                       html: {class: 'inline'}) do |f| -%>
+
+            <%= button_tag(name: 'subject[subject_id]',
+                           value: @object.id, class: 'mini icon') do -%>
+              <%= icon_tag('send') %>
+              Resend
+            <%- end -%>
           <%- end -%>
         </td>
       </tr>
       <tr>
         <td>URL</td>
-        <td><%= link_to("#{root_url}invitations/#{invitation.identifier}", "/invitations/#{invitation.identifier}") %></td>
+        <td><%= link_to("#{accept_invitations_url(invitation.identifier)}", "#{accept_invitations_url(invitation.identifier)}") %></td>
       </tr>
       <tr>
         <td>Used</td>
         <td><%= yes_no_string invitation.used? %></td>
       </tr>
       <tr>
+        <td>Created</td>
+        <td> <%= invitation.created_at.strftime('%a, %e %b %Y %H:%M:%S %z') %></td>
+      </tr>
+      <tr>
         <td>Expires</td>
-        <%- time_string = invitation.expires.strftime('%d/%m/%Y') -%>
+        <%- time_string = invitation.expires.strftime('%a, %e %b %Y %H:%M:%S %z') -%>
         <%- if invitation.expired? -%>
           <td class="negative"><%= time_string %></td>
         <%- else -%>

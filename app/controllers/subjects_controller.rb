@@ -1,4 +1,6 @@
 class SubjectsController < ApplicationController
+  include CreateInvitation
+
   def index
     check_access!('admin:subjects:list')
     @objects = Subject.all
@@ -17,5 +19,13 @@ class SubjectsController < ApplicationController
     flash[:success] = "Deleted subject #{@object.name}"
 
     redirect_to(subjects_path)
+  end
+
+  def resend_invite
+    check_access!('admin:subjects:read')
+    subject = Subject.find(params[:id])
+    deliver(subject.invitations.first)
+    flash[:success] = "Sent email to #{subject.mail}"
+    redirect_to(subject_path(subject))
   end
 end

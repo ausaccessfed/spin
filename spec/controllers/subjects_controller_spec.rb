@@ -68,4 +68,43 @@ RSpec.describe SubjectsController, type: :controller do
       end
     end
   end
+
+  context 'patch :resend_invite' do
+    def run
+      patch :resend_invite, id: object.id
+    end
+
+    let(:mail) { Faker::Internet.email }
+    let!(:object) { create(:subject, mail: mail) }
+    let!(:invitation) do
+      create(:invitation, subject: object, mail: mail,
+                          last_email_sent_at: Time.new(2010, 6, 21))
+    end
+    subject { -> { run } }
+
+    context 'the invitiation' do
+      before { run }
+      it 'is sent' do
+        expect(response).to have_sent_email.to(mail)
+      end
+    end
+
+    context 'the invitation' do
+      let!(:original_last_email_sent_at) { invitation.last_email_sent_at }
+      before { run }
+      it 'updates last_email_sent_at' do
+        expect(invitation.reload.last_email_sent_at)
+          .to be > original_last_email_sent_at
+      end
+    end
+
+    context 'the response' do
+      before { run }
+      subject { response }
+      it { is_expected.to redirect_to(subject_path(object.id)) }
+      it 'sets the flash message' do
+        expect(flash[:success]).to eq("Sent email to #{mail}")
+      end
+    end
+  end
 end

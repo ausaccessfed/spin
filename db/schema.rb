@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304010153) do
+ActiveRecord::Schema.define(version: 20150306033356) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -68,14 +68,15 @@ ActiveRecord::Schema.define(version: 20150304010153) do
   end
 
   create_table "invitations", force: true do |t|
-    t.integer  "subject_id",                 null: false
-    t.string   "identifier",                 null: false
-    t.string   "name",                       null: false
-    t.string   "mail",                       null: false
-    t.boolean  "used",       default: false, null: false
-    t.datetime "expires",                    null: false
+    t.integer  "subject_id",                         null: false
+    t.string   "identifier",                         null: false
+    t.string   "name",                               null: false
+    t.string   "mail",                               null: false
+    t.boolean  "used",               default: false, null: false
+    t.datetime "expires",                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "last_email_sent_at"
   end
 
   add_index "invitations", ["identifier"], name: "index_invitations_on_identifier", unique: true, using: :btree

@@ -17,7 +17,7 @@ module CreateInvitation
                  subject: 'Invitation to SPIN',
                  body: email_message(invitation).render,
                  content_type: 'text/html; charset=UTF-8')
-
+    invitation.touch(:last_email_sent_at)
     self
   end
 

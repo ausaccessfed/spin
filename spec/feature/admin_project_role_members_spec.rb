@@ -193,17 +193,37 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
           given!(:user) { create(:subject, :authorized, permission: '*') }
           given(:new_subject) { Subject.last }
           given(:new_invitation) { Subject.last.invitations.first }
+          given(:format) { '%a, %e %b %Y %H:%M:%S %z' }
+
           before { visit "/admin/subjects/#{new_subject.id}" }
           scenario 'viewing' do
             expect(Subject.last.invitations.size).to eq(1)
             expect(current_path).to eq("/admin/subjects/#{new_subject.id}")
 
-            expect(page).to have_content(new_subject.name)
-            expect(page).to have_content(new_subject.mail)
-            expect(page).to have_content('Pending')
-            expect(page).to have_content(new_invitation.created_at)
-            expect(page).to have_content(last_invitation_url)
-            expect(page).to have_link('Resend')
+            expect(page).to have_content("Name #{new_subject.name}")
+            expect(page).to have_content("Email Address #{new_subject.mail}")
+            expect(page).to have_content('State Pending')
+
+            expect(page).to have_content('Email sent' \
+             " #{new_invitation.last_email_sent_at.strftime(format)}")
+
+            expect(page).to have_content("URL #{last_invitation_url}")
+            expect(page).to have_content('Used No')
+            expect(page).to have_content("Created #{new_invitation.created_at
+                    .strftime(format)}")
+
+            expect(page).to have_content("Expires #{new_invitation.expires
+                                    .strftime(format)}")
+
+            expect(page).to have_button('Resend')
+          end
+
+          context 'resend email' do
+            before { click_button 'Resend' }
+            scenario 'shows flash message' do
+              expect(page).to have_content('Success' \
+                " Sent email to #{new_invitation.mail}")
+            end
           end
         end
       end

@@ -14,6 +14,12 @@ Rails.application.routes.draw do
   end
 
   scope '/admin' do
+    resources :subjects, only: [] do
+      collection do
+        patch ':id' => 'subjects#resend_invite', as: 'resend_invite'
+      end
+    end
+
     resources :subjects, only: %i(index show destroy)
     resources :api_subjects
     resources :roles do
