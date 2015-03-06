@@ -55,6 +55,9 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
       it 'sets the flash message' do
         expect(flash[:error]).to eq('Name can\'t be blank')
       end
+      it 'does not have an success flash too' do
+        expect(flash[:success]).to be_nil
+      end
     end
 
     context 'blank mail' do
@@ -62,6 +65,9 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
       before { run }
       it 'sets the flash message' do
         expect(flash[:error]).to eq('Mail can\'t be blank')
+      end
+      it 'does not have an success flash too' do
+        expect(flash[:success]).to be_nil
       end
     end
 
@@ -89,7 +95,11 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           subject { response }
           it 'sets the flash message' do
             expect(flash[:success]).to eq('Subject has been added to ' \
-               "Project Role '#{project_role.name}'.")
+               "Project Role '#{project_role.name}'. ")
+          end
+
+          it 'does not have an error flash too' do
+            expect(flash[:error]).to be_nil
           end
         end
 
@@ -108,6 +118,9 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
             it 'sets the flash message' do
               expect(flash[:error]).to eq('Subject already has this role' \
                ' granted')
+            end
+            it 'does not have an success flash too' do
+              expect(flash[:success]).to be_nil
             end
           end
         end
@@ -132,6 +145,9 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
             expect(flash[:success]).to eq('Subject has been added to' \
                " Project Role '#{project_role.name}'. An email has been sent" \
                " to #{Subject.last.mail}.")
+          end
+          it 'does not have an error flash too' do
+            expect(flash[:error]).to be_nil
           end
         end
 
@@ -174,7 +190,10 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           subject { response }
           it 'sets the flash message' do
             expect(flash[:success]).to eq('Subject has been added to ' \
-               "Project Role '#{project_role.name}'.")
+               "Project Role '#{project_role.name}'. ")
+          end
+          it 'does not have an error flash too' do
+            expect(flash[:error]).to be_nil
           end
         end
 
@@ -193,6 +212,9 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
             it 'sets the flash message' do
               expect(flash[:error])
                 .to eq('Subject already has this role granted')
+            end
+            it 'does not have an success flash too' do
+              expect(flash[:success]).to be_nil
             end
           end
         end
@@ -231,6 +253,9 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
            " added to Project Role '#{project_role.name}'." \
            ' Activate the account here: ' \
            "#{request.base_url}/invitations/#{Invitation.last.identifier}")
+          end
+          it 'does not have an error flash too' do
+            expect(flash[:error]).to be_nil
           end
         end
       end

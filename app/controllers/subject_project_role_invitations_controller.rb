@@ -25,8 +25,6 @@ class SubjectProjectRoleInvitationsController < ApplicationController
       subject = Subject.find_by_mail(invitation_params[:mail])
       if subject.nil?
         subject = create_and_invite_subject
-      else
-        flash[:success] = "#{subject_added}"
       end
       associate_subject_with_project_role(subject)
     end
@@ -45,17 +43,20 @@ class SubjectProjectRoleInvitationsController < ApplicationController
   def associate_subject_with_project_role(subject)
     return unless subject.valid?
     @assoc = @project_role.subject_project_roles.build(subject_id: subject.id)
-    @assoc.save || flash[:error] = "#{error_from_validations(@assoc)}"
+    if @assoc.save
+      flash[:success] = "#{subject_added} #{flash[:success]}"
+    else
+      flash[:error] = "#{error_from_validations(@assoc)}"
+    end
   end
 
   def create_and_send_invitation(subject)
     invitation = create_invitation(subject)
     if send_invitation_flag
       deliver(invitation)
-      flash[:success] = "#{subject_added} #{email_has_been_sent(subject)}"
+      flash[:success] = "#{email_has_been_sent(subject)}"
     else
-      flash[:success] = "#{subject_added} #{activation_message(
-        invitation_url(invitation))}"
+      flash[:success] = "#{activation_message(invitation_url(invitation))}"
     end
   end
 
