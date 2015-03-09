@@ -29,8 +29,8 @@ RSpec.describe Subject, type: :model do
     end
 
     context 'shared_token uniqueness' do
-      before { create(:subject, shared_token: nil) }
-      subject { build(:subject, shared_token: nil) }
+      before { create(:subject, complete: false, shared_token: nil) }
+      subject { build(:subject, complete: false, shared_token: nil) }
       it 'allows many nil shared_tokens' do
         expect(subject).to be_valid
       end
@@ -38,8 +38,8 @@ RSpec.describe Subject, type: :model do
   end
 
   context '#functioning?' do
-    context 'when enabled' do
-      subject { create(:subject, enabled: true) }
+    context 'when enabled and complete' do
+      subject { create(:subject, enabled: true, complete: true) }
       it { is_expected.to be_functioning }
     end
 
@@ -141,7 +141,7 @@ RSpec.describe Subject, type: :model do
   end
 
   describe '#accept' do
-    subject { create(:subject) }
+    subject { create(:subject, complete: false) }
 
     let(:attrs) do
       attributes_for(:subject).slice(:name, :mail, :targeted_id, :shared_token)

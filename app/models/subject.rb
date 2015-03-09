@@ -20,7 +20,7 @@ class Subject < ActiveRecord::Base
   valhammer
 
   def functioning?
-    enabled?
+    enabled? && complete?
   end
 
   def permissions

@@ -117,7 +117,8 @@ module Authentication
       end
 
       context 'with an invite code' do
-        let!(:invitation) { create(:invitation) }
+        let(:invited_user) { create(:subject, complete: false) }
+        let!(:invitation) { create(:invitation, subject: invited_user) }
         let(:attrs) { attributes_for(:subject) }
         let(:env) do
           { 'rack.session' => { invite: invitation.identifier },
