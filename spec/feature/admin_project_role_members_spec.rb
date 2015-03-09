@@ -49,7 +49,9 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
   end
 
   scenario 'shows actions for the subject' do
-    expect(page).to contain_rendered_content("#{user.name} #{user.mail} Revoke")
+    expect(page)
+      .to contain_rendered_content("#{user.name} #{user.mail} Active Revoke" \
+        'Confirm Revoke')
   end
 
   scenario 'shows Add User button' do
@@ -202,7 +204,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
 
             expect(page).to have_content("Name #{new_subject.name}")
             expect(page).to have_content("Email Address #{new_subject.mail}")
-            expect(page).to have_content('State Pending')
+            expect(page).to have_content('State Pending Invitation')
 
             expect(page).to have_content('Email sent' \
              " #{new_invitation.last_email_sent_at.strftime(format)}")
@@ -278,7 +280,8 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
       scenario 'shows that subject is granted' do
         expect(page)
           .to contain_rendered_content("#{another_user.name} " \
-           " #{another_user.mail} Revoke")
+           " #{another_user.mail} Active Revoke" \
+              'Confirm Revoke')
       end
     end
   end
