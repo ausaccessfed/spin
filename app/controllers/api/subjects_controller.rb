@@ -16,20 +16,6 @@ module API
 
     def create
       check_access!('api:subjects:create')
-      validate_required_params
-      validate_subject_is_new
-      validate_invitation_is_new
-      invite_subject
-    end
-
-    def show
-      check_access!('api:subjects:read')
-      @subject = Subject.find(params[:id])
-    end
-
-    private
-
-    def invite_subject
       response_map = {}
       Invitation.transaction do
         subject = Subject.create!(subject_attrs)
@@ -40,10 +26,12 @@ module API
       render json: response_map, status: :created
     end
 
-    def validate_required_params
-      params.require(:name)
-      params.require(:mail)
+    def show
+      check_access!('api:subjects:read')
+      @subject = Subject.find(params[:id])
     end
+
+    private
 
     def subject_attrs
       permitted_params.except(:send_invitation)
@@ -63,29 +51,11 @@ module API
       end
     end
 
-    def validate_invitation_is_new
-      mail_hash = permitted_params.slice(:mail)
-      fail(BadRequest, invitation_exists) if Invitation.exists?(mail_hash)
-    end
-
-    def validate_subject_is_new
-      if permitted_params[:shared_token]
-        shared_token_mail_hash = permitted_params.slice(:shared_token, :mail)
-        if Subject.exists?(shared_token_mail_hash)
-          fail(BadRequest, subject_with_shared_token_exists)
-        end
-      end
-      mail_hash = permitted_params.slice(:mail)
-      fail(BadRequest, subject_with_mail_exists) if Subject.exists?(mail_hash)
-    end
-
     def send_invitation_flag
-      if permitted_params.key? :send_invitation
-        send_inv = permitted_params[:send_invitation]
-        return send_inv if bool? send_inv
-        fail(BadRequest, invalid_invitation_flag)
-      end
-      true
+      return true unless permitted_params.key?(:send_invitation)
+      send_inv = permitted_params[:send_invitation]
+      return send_inv if bool? send_inv
+      fail(BadRequest, invalid_invitation_flag)
     end
 
     def bool?(value)
@@ -96,21 +66,8 @@ module API
       "#{request.base_url}/api/subjects/#{subject.id}"
     end
 
-    def invitation_exists
-      'Invitation with email \'' + permitted_params[:mail] + '\' already exists'
-    end
-
     def invalid_invitation_flag
       'send_invitation param must be boolean (true, false)'
-    end
-
-    def subject_with_mail_exists
-      'Subject with email \'' + permitted_params[:mail] + '\' already exists'
-    end
-
-    def subject_with_shared_token_exists
-      'Subject with shared_token \'' + permitted_params[:shared_token] +
-        '\' already exists'
     end
   end
 end

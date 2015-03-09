@@ -74,9 +74,8 @@ module API
           context 'body' do
             subject { response.body }
             it 'describes the error' do
-              is_expected.to eq("{\"message\":\"The request parameters could" \
-              " not be successfully processed.\",\"error\":\"param is" \
-              " missing or the value is empty: name\"}")
+              is_expected.to eq("{\"error\":\"Validation failed:" \
+               " Name can't be blank\"}")
             end
           end
         end
@@ -92,9 +91,8 @@ module API
           context 'body' do
             subject { response.body }
             it 'describes the error' do
-              is_expected.to eq("{\"message\":\"The request parameters could" \
-               " not be successfully processed.\",\"error\":\"param is" \
-               " missing or the value is empty: mail\"}")
+              is_expected.to eq("{\"error\":\"Validation failed: " \
+                "Mail can't be blank\"}")
             end
           end
         end
@@ -113,7 +111,7 @@ module API
           it { is_expected.to have_http_status(:bad_request) }
           context 'body' do
             subject { response.body }
-            it 'decribes the error' do
+            it 'describes the error' do
               is_expected.to eq("{\"message\":\"The request parameters could" \
               " not be successfully processed.\",\"error\":\"" \
               "send_invitation param must be boolean (true, false)\"}")
@@ -144,10 +142,9 @@ module API
             it { is_expected.to have_http_status(:bad_request) }
             context 'body' do
               subject { response.body }
-              it 'decribes the error' do
-                is_expected.to eq("{\"message\":\"The request parameters" \
-                 " could not be successfully processed.\",\"error\":\"" \
-                 "Subject with email '#{mail}' already exists\"}")
+              it 'describes the error' do
+                is_expected.to eq("{\"error\":\"Validation failed:" \
+                  " Mail has already been taken\"}")
               end
             end
           end
@@ -212,9 +209,8 @@ module API
             context 'body' do
               subject { response.body }
               it 'describes the error'do
-                is_expected.to eq("{\"message\":\"The request parameters " \
-                "could not be successfully processed.\",\"error\":\"" \
-                "Invitation with email '#{mail}' already exists\"}")
+                is_expected.to eq("{\"error\":\"Validation failed: " \
+                 "Mail has already been taken\"}")
               end
             end
           end
@@ -298,9 +294,8 @@ module API
             context 'body' do
               subject { response.body }
               it 'describes the error' do
-                is_expected.to eq("{\"message\":\"The request parameters" \
-                " could not be successfully processed.\",\"error\":\"Subject " \
-                "with shared_token '#{shared_token}' already exists\"}")
+                is_expected.to eq("{\"error\":\"Validation failed: Mail has" \
+                " already been taken, Shared token has already been taken\"}")
               end
             end
           end
