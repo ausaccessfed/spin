@@ -4,6 +4,7 @@ config/consent.md
 config/welcome.md
 config/support.md
 config/new_invitation_body.txt
+app/assets/images/email_branding.png
 
 log
 coverage
