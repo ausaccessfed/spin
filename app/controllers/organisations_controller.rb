@@ -1,7 +1,19 @@
 class OrganisationsController < ApplicationController
   def index
     check_access!('organisations:list')
-    @organisations = Organisation.all
+    @filterrific = initialize_filterrific(
+        Organisation,
+        params[:filterrific]
+    ) or return
+
+    @organisations = @filterrific.find.page(params[:page])
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
+  rescue ActiveRecord::RecordNotFound
+    redirect_to(reset_filterrific_url(format: :html))
   end
 
   def new

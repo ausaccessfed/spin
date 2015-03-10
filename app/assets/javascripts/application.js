@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require semantic-ui
 //= require aaf-layout
+//= require filterrific/filterrific-jquery
 
 jQuery(function($) {
     $('.popup').popup({ inline: true, position: 'right center' });
