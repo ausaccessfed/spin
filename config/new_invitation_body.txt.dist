@@ -1,6 +1,6 @@
 Please visit the following link to get started:
 
-%{url}
+<%{url}>
 
 Regards,
 %{environment_string}
