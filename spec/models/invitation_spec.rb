@@ -26,6 +26,21 @@ RSpec.describe Invitation, type: :model do
     it { is_expected.not_to allow_value("abc\ndef").for(:identifier) }
   end
 
+  describe '#project_name' do
+    let(:project_name) { Faker::Name.name }
+    let(:project) { create(:project, name: project_name) }
+    let(:project_role) { create(:project_role, project: project) }
+    let(:subject_project_role) do
+      create(:subject_project_role, project_role: project_role)
+    end
+    let(:invitation) do
+      create(:invitation, subject: subject_project_role.subject)
+    end
+    subject { invitation.project_name }
+
+    it { is_expected.to eq(project_name) }
+  end
+
   context 'default values' do
     subject { create(:invitation) }
     it 'sets used to default value' do
