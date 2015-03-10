@@ -90,7 +90,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
 
     scenario 'shows title' do
       expect(page).to have_text('Invite User to Project Role')
-      expect(page).to contain_rendered_content("#{project_role.name}")
+      expect(page).to have_text("#{project_role.name}")
     end
 
     scenario 'shows the form name field' do
