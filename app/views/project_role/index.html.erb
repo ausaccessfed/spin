@@ -8,7 +8,7 @@
 
 <%= page_header("Project Roles for '#{@project.name}'") %>
 
-<table class="ui basic compact table">
+<table class="ui basic striped table">
   <thead>
     <tr>
       <th>Name</th>
@@ -21,7 +21,7 @@
       <tr>
         <td><%= project_role.name %></td>
         <td><%= project_role.role_arn %></td>
-        <td>
+        <td class="right aligned">
           <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:read") -%>
             <%= button_link_to(organisation_project_role_path(@organisation, @project, project_role), class: 'tiny icon') do -%>
               <%= icon_tag('users') %>

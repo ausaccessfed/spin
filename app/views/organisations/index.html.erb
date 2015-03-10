@@ -6,7 +6,7 @@
 
 <%= page_header('Organisations') %>
 
-<table class="ui basic compact table">
+<table class="ui basic striped table">
   <thead>
   <tr>
     <th>Name</th>
@@ -19,7 +19,7 @@
     <tr>
       <td><%= organisation.name %></td>
       <td><%= organisation.unique_identifier %></td>
-      <td>
+      <td class="right aligned">
         <%- if permitted?("organisations:#{organisation.id}:projects:list") -%>
           <%= button_link_to([organisation, :projects], class: 'tiny icon') do -%>
             <%= icon_tag('folder outline icon') %>
