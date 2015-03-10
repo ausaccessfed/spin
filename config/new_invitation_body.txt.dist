@@ -1,0 +1,6 @@
+Please visit the following link to get started:
+
+%{url}
+
+Regards,
+%{environment_string}

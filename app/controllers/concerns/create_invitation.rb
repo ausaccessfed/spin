@@ -1,4 +1,7 @@
 module CreateInvitation
+  NEW_INVITATION_BODY_FILE = 'config/new_invitation_body.txt'
+  NEW_INVITATION_EMAIL_BODY = Rails.root.join(NEW_INVITATION_BODY_FILE).read
+
   delegate :image_url, to: :view_context
 
   def create_invitation(subject)
@@ -14,7 +17,7 @@ module CreateInvitation
   def deliver(invitation)
     Mail.deliver(to: invitation.mail,
                  from: Rails.application.config.spin_service.mail[:from],
-                 subject: 'Invitation to SPIN',
+                 subject: new_invitation_message,
                  body: email_message(invitation).render,
                  content_type: 'text/html; charset=UTF-8')
     invitation.touch(:last_email_sent_at)
@@ -22,23 +25,18 @@ module CreateInvitation
   end
 
   def email_message(invitation)
-    Lipstick::EmailMessage.new(title: 'SPIN',
+    Lipstick::EmailMessage.new(title: new_invitation_message,
                                image_url: image_url('email_branding.png'),
                                content: email_body(invitation))
   end
 
-  EMAIL_BODY = <<-EOF.gsub(/^\s+\|/, '')
-    |You have been invited to SPIN.
-    |
-    |Please visit the following link to accept the invite and get started:
-    |
-    |%{url}
-    |
-    |Regards
-  EOF
+  def new_invitation_message
+    "Invitation to #{SpinEnvironment.environment_string}"
+  end
 
   def email_body(invitation)
-    format(EMAIL_BODY,
-           url: accept_invitations_url(identifier: invitation.identifier))
+    format(NEW_INVITATION_EMAIL_BODY,
+           url: accept_invitations_url(identifier: invitation.identifier),
+           environment_string: SpinEnvironment.environment_string)
   end
 end

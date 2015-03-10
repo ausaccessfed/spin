@@ -88,6 +88,7 @@
     - consent.md
     - welcome.md
     - support.md
+    - new_invitation_body.txt
   notify: Restart spin
 
 - name: 'Install site branding'

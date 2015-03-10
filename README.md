@@ -44,6 +44,7 @@ Steps:
     - `/opt/spin/app/setup/assets/app/support.md`
     - `/opt/spin/app/setup/assets/app/consent.md`
     - `/opt/spin/app/setup/assets/app/welcome.md`
+    - `/opt/spin/app/setup/assets/app/new_invitation_body.txt`
     - `/opt/spin/app/setup/assets/app/logo.png`
     - `/opt/spin/app/setup/assets/app/email_branding.png`
     - `/opt/spin/app/setup/assets/app/favicon.png`
