@@ -45,7 +45,11 @@
   <div class="ui relaxed vertical list">
     <%- if permitted?('organisations') -%>
       <div class="item">
-        <i class="bordered big building icon"></i>
+        <div class="ui middle aligned image">
+          <%= link_to(organisations_path) do %>
+            <i class="bordered big building icon"></i>
+          <% end %>
+        </div>
         <div class="content">
           <div class="ui header"><%= link_to('Organisations', organisations_path) %></div>
           Operate AWS projects
@@ -54,7 +58,11 @@
     <%- end -%>
     <%- if permitted?('admin:subjects') -%>
       <div class="item">
-        <i class="bordered big user icon"></i>
+        <div class="ui middle aligned image">
+          <%= link_to(subjects_path) do %>
+            <i class="bordered big user icon"></i>
+          <% end %>
+        </div>
         <div class="content">
           <div class="ui header"><%= link_to('Users', subjects_path) %></div>
           Are provided with access to AWS projects
@@ -63,7 +71,11 @@
     <%- end -%>
     <%- if permitted?('admin:api_subjects') -%>
       <div class="item">
-        <i class="bordered big cloud icon"></i>
+        <div class="ui middle aligned image">
+          <%= link_to(api_subjects_path) do %>
+            <i class="bordered big cloud icon"></i>
+          <% end %>
+        </div>
         <div class="content">
           <div class="ui header"><%= link_to('API Accounts', api_subjects_path) %></div>
           Allow remote systems to access the RESTful API
@@ -72,7 +84,11 @@
     <%- end -%>
     <%- if permitted?('admin:roles') -%>
       <div class="item">
-        <i class="bordered big unlock alternate icon"></i>
+        <div class="ui middle aligned image">
+          <%= link_to(roles_path) do %>
+            <i class="bordered big alternate unlock icon"></i>
+          <% end %>
+        </div>
         <div class="content">
           <div class="ui header"><%= link_to('Roles', roles_path) %></div>
           Grant access to internal functionality
