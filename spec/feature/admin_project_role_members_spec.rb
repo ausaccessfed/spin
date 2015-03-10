@@ -165,7 +165,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
         end
 
         scenario 'shows flash message' do
-          expect(page).to contain_rendered_content('Success Subject has been' \
+          expect(page).to contain_rendered_content('Success User has been' \
            " added to Project Role '#{project_role.name}'." \
            " Activate the account here: #{last_invitation_url}")
         end
@@ -186,7 +186,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
         end
 
         scenario 'shows flash message' do
-          expect(page).to contain_rendered_content('Success Subject has been' \
+          expect(page).to contain_rendered_content('Success User has been' \
            " added to Project Role '#{project_role.name}'. An email has been " \
            "sent to #{mail}.")
         end

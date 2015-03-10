@@ -55,6 +55,10 @@ RSpec.describe SubjectsController, type: :controller do
       before { run }
       subject { response }
       it { is_expected.to redirect_to(subjects_path) }
+      it 'sets the flash message' do
+        expect(flash[:success])
+          .to eq("Deleted user #{object.name}")
+      end
     end
 
     context 'as a non-admin' do

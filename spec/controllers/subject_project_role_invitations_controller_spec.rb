@@ -94,7 +94,7 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           before { run }
           subject { response }
           it 'sets the flash message' do
-            expect(flash[:success]).to eq('Subject has been added to ' \
+            expect(flash[:success]).to eq('User has been added to ' \
                "Project Role '#{project_role.name}'. ")
           end
 
@@ -142,7 +142,7 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           before { run }
           subject { response }
           it 'sets the flash message' do
-            expect(flash[:success]).to eq('Subject has been added to' \
+            expect(flash[:success]).to eq('User has been added to' \
                " Project Role '#{project_role.name}'. An email has been sent" \
                " to #{Subject.last.mail}.")
           end
@@ -189,7 +189,7 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           before { run }
           subject { response }
           it 'sets the flash message' do
-            expect(flash[:success]).to eq('Subject has been added to ' \
+            expect(flash[:success]).to eq('User has been added to ' \
                "Project Role '#{project_role.name}'. ")
           end
           it 'does not have an error flash too' do
@@ -249,7 +249,7 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
           before { run }
           subject { response }
           it 'sets the flash message' do
-            expect(flash[:success]).to eq('Subject has been' \
+            expect(flash[:success]).to eq('User has been' \
            " added to Project Role '#{project_role.name}'." \
            ' Activate the account here: ' \
            "#{request.base_url}/invitations/#{Invitation.last.identifier}")

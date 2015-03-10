@@ -80,7 +80,7 @@ class SubjectProjectRoleInvitationsController < ApplicationController
   end
 
   def subject_added
-    "Subject has been added to Project Role '#{@project_role.name}'."
+    "User has been added to Project Role '#{@project_role.name}'."
   end
 
   def send_invitation_flag

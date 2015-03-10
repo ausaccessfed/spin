@@ -16,7 +16,7 @@ class SubjectsController < ApplicationController
     @object = Subject.find(params[:id])
     @object.destroy!
 
-    flash[:success] = "Deleted subject #{@object.name}"
+    flash[:success] = "Deleted user #{@object.name}"
 
     redirect_to(subjects_path)
   end
