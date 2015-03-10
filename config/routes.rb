@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   get 'aws_login', to: 'aws_session_instances#auto', as: :aws_login
   post 'aws_login', to: 'aws_session_instances#login'
+  get 'invitation_complete', to: 'invitations#complete'
 
   resources :invitations, only: [] do
     collection do

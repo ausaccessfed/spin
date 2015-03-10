@@ -16,4 +16,9 @@ class InvitationsController < ApplicationController
     session[:invite] = params[:identifier]
     redirect_to('/auth/login')
   end
+
+  def complete
+    public_action
+    render('complete')
+  end
 end

@@ -27,7 +27,7 @@ module Authentication
     # with the DefaultReceiver mixin.
     def subject(env, attrs)
       session = env['rack.session']
-      return use_invitation(session, attrs, env) if session.try(:key?, :invite)
+      return use_invitation(session, attrs, env) if invited_user?(session)
       identifier = attrs.slice(:targeted_id)
       Subject.transaction do
         Subject.find_or_initialize_by(identifier).tap do |subject|
@@ -35,6 +35,10 @@ module Authentication
           create_session_record(env, subject)
         end
       end
+    end
+
+    def invited_user?(session)
+      session.try(:key?, :invite)
     end
 
     def use_invitation(session, attrs, env)
@@ -55,9 +59,11 @@ module Authentication
     end
 
     def finish(env)
-      return unless env['rack.session']
+      session = env['rack.session']
+      return unless session
       subject = Subject.find(env['rack.session']['subject_id'])
       return redirect_to('/dashboard') if subject.roles.any?
+      return redirect_to('/invitation_complete') if invited_user?(session)
       redirect_subject(subject)
     end
 

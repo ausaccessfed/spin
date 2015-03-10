@@ -20,7 +20,7 @@ RSpec.feature 'Visiting the invitation page', type: :feature do
     expect(current_path).to eq('/auth/login')
     click_button 'Login'
 
-    expect(current_path).to eq('/idp/profile/SAML2/Unsolicited/SSO')
+    expect(current_path).to eq('/invitation_complete')
   end
 
   context 'with a used invitation' do
