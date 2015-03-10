@@ -1,43 +1,131 @@
-<%= page_header('Welcome to SPIN') %>
+<%= page_header('Current Overview') %>
 
 <%- if permitted?('admin') -%>
-  <h4>Administration</h4>
-  <ul>
+  <div class="ui three column grid">
+    <div class="column">
+      <div class="ui center aligned segment">
+        <div class="ui large statistic">
+          <div class="value">
+            <%= @organisation_count =%>
+          </div>
+          <div class="label">
+            Organisations
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="ui center aligned segment">
+        <div class="ui large statistic">
+          <div class="value">
+            <%= @project_count =%>
+          </div>
+          <div class="label">
+            Projects
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="ui center aligned segment">
+        <div class="ui large statistic">
+          <div class="value">
+            <%= @subject_count =%>
+          </div>
+          <div class="label">
+            Users
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<h2>Administration</h2>
+  <p>Your granted access rights allow you to administer the following components</p>
+  <div class="ui relaxed vertical list">
+    <%- if permitted?('organisations') -%>
+      <div class="item">
+        <div class="ui middle aligned image">
+          <%= link_to(organisations_path) do %>
+            <i class="bordered big building icon"></i>
+          <% end %>
+        </div>
+        <div class="content">
+          <div class="ui header"><%= link_to('Organisations', organisations_path) %></div>
+          Operate AWS projects
+        </div>
+      </div>
+    <%- end -%>
     <%- if permitted?('admin:subjects') -%>
-      <li><%= link_to('Users', subjects_path) %></li>
+      <div class="item">
+        <div class="ui middle aligned image">
+          <%= link_to(subjects_path) do %>
+            <i class="bordered big user icon"></i>
+          <% end %>
+        </div>
+        <div class="content">
+          <div class="ui header"><%= link_to('Users', subjects_path) %></div>
+          Are provided with access to AWS projects
+        </div>
+      </div>
     <%- end -%>
     <%- if permitted?('admin:api_subjects') -%>
-      <li><%= link_to('API Accounts', api_subjects_path) %></li>
+      <div class="item">
+        <div class="ui middle aligned image">
+          <%= link_to(api_subjects_path) do %>
+            <i class="bordered big cloud icon"></i>
+          <% end %>
+        </div>
+        <div class="content">
+          <div class="ui header"><%= link_to('API Accounts', api_subjects_path) %></div>
+          Allow remote systems to access the RESTful API
+        </div>
+      </div>
     <%- end -%>
     <%- if permitted?('admin:roles') -%>
-      <li> <%= link_to('Roles', roles_path) %></li>
+      <div class="item">
+        <div class="ui middle aligned image">
+          <%= link_to(roles_path) do %>
+            <i class="bordered big alternate unlock icon"></i>
+          <% end %>
+        </div>
+        <div class="content">
+          <div class="ui header"><%= link_to('Roles', roles_path) %></div>
+          Grant access to internal functionality
+        </div>
+      </div>
     <%- end -%>
-  </ul>
+  </div>
 
 <%- end -%>
 
-<%- if permitted?('organisations') -%>
-  <h4>AWS Management</h4>
-  <ul>
-    <li><%= link_to('Organisations', organisations_path) %></li>
-  </ul>
-<%- end -%>
-<br/>
 
+
+<h2>AWS access</h2>
 <%- case @subject.active_project_roles.count -%>
 <%- when 0 -%>
   <%- if !permitted?('admin') -%>
-    <%= error_message('You must have a project assigned to continue') do -%>
+    <%= error_message('Unfortunately you must have a project assigned to continue to the AWS administrative console') do -%>
     <%- end -%>
     <%= raw support_html %>
+  <%- else -%>
+    <p>Your account does not have access to any AWS projects.</p>
   <%- end -%>
 <%- when 1 -%>
-  <p>Please
-    <%= link_to(' click here', aws_login_path) %>
-    to continue to AWS.</p>
+    <p>
+      Your account has access to the AWS project,
+      <strong><%= @subject.active_project_roles.first.project.name =%></strong>.
+    </p>
+    <p>
+      <%= link_to('Continue to the AWS administrative console', aws_login_path) %>
+      for this project.
+    </p>
 <%- else -%>
-  <p>Please
-    <%= link_to(' select your project', projects_path) -%>
-    to continue to AWS.</p>
+    <p>
+      Your account has access to multiple AWS projects.
+    </p>
+    <p>
+      Please <%= link_to('select the project you would like to work with', projects_path) -%> to continue to the AWS administrative console.
+    </p>
   </p>
 <%- end -%>

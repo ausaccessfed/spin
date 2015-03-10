@@ -9,24 +9,22 @@
 
 <%= page_header("Permissions for #{@role.name}") %>
 
-<table class="ui very basic compact table">
+<table class="ui basic striped table">
   <thead>
   <tr>
     <th>Permission String</th>
-    <th>Actions</th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
   <%- @permissions.each do |permission| -%>
     <tr>
       <td><code><%= permission.value %></code></td>
-      <td><%= delete_button_tag(url_for([@role, permission])) %></td>
+      <td class="right aligned"><%= delete_button_tag(url_for([@role, permission])) %></td>
     </tr>
   <%- end -%>
   </tbody>
 </table>
-
-<div class="ui section divider"></div>
 
 <h3 class="ui header">Add New Permission</h3>
 
