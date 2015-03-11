@@ -23,14 +23,14 @@
     <tr>
       <td><%= assoc.subject.name %></td>
       <td><%= mail_to(assoc.subject.mail) %></td>
-      <td class="right aligned">
+      <td>
         <%- if assoc.subject.complete? -%>
           <%= icon_tag('green checkmark') %> Active
         <%- else -%>
           <%= icon_tag('yellow warning sign') %> Pending Invitation
         <%- end -%>
       </td>
-      <td>
+      <td class="right aligned">
         <%- if permitted?('admin:subjects:read') -%>
           <%= button_link_to(assoc.subject, class: 'tiny icon') do -%>
             <%= icon_tag('content') %>
