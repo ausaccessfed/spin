@@ -127,31 +127,37 @@ module Authentication
             'HTTP_USER_AGENT' => user_agent }
         end
 
+        def run
+          receiver.subject(env, attrs)
+        end
+
+        subject { run }
+
         it 'does not create a subject' do
-          expect { subject.subject(env, attrs) }.not_to change(Subject, :count)
+          expect { subject }.not_to change(Subject, :count)
         end
 
         it 'returns the existing subject' do
-          expect(subject.subject(env, attrs)).to eq(invitation.subject)
+          expect(subject).to eq(invitation.subject)
         end
 
         it 'updates the attributes' do
           expected = attrs.except(:invite, :complete, :audit_comment)
-          expect(subject.subject(env, attrs)).to have_attributes(expected)
+          expect(subject).to have_attributes(expected)
         end
 
         it 'completes the subject' do
-          expect { subject.subject(env, attrs) }
+          expect { subject }
             .to change { invitation.subject.reload.complete? }.to true
         end
 
         it 'marks the invite as used' do
-          expect { subject.subject(env, attrs) }
+          expect { subject }
             .to change { invitation.reload.used? }.to true
         end
 
         it 'records an audit record' do
-          expect { subject.subject(env, attrs) }
+          expect { subject }
             .to change(Audited.audit_class, :count).by_at_least(1)
         end
 
@@ -162,7 +168,7 @@ module Authentication
           end
 
           it 'preserves the subject' do
-            expect { subject.subject(env, attrs) }
+            expect { subject }
               .to raise_error(/an failure/)
               .and not_change { invitation.subject.reload.attributes }
           end
@@ -175,9 +181,66 @@ module Authentication
           end
 
           it 'preserves the invite' do
-            expect { subject.subject(env, attrs) }
+            expect { subject }
               .to raise_error(/an failure/)
               .and not_change { invitation.reload.attributes }
+          end
+        end
+
+        context 'when the subject already exists' do
+          include_context 'projects'
+
+          let(:completed_user) { create(:subject, mail: 'bbeddoes@uq.edu.au') }
+          let(:invited_user) do
+            create(:subject,
+                   mail: 'bradleybeddoes@gmail',
+                   complete: false)
+          end
+          let(:attrs) do
+            { targeted_id: completed_user.targeted_id,
+              shared_token: completed_user.shared_token,
+              name: completed_user.name,
+              mail: completed_user.mail }
+          end
+
+          let!(:subject_project_role_for_invited_user) do
+            create_subject_project_role_for_active_project(invited_user)
+          end
+
+          before { run }
+
+          context 'invited subject record' do
+            subject { invited_user }
+            it 'is deleted' do
+              expect(Subject.exists?(subject)).to be_falsey
+            end
+          end
+
+          context 'subject project role for invited user' do
+            subject { subject_project_role_for_invited_user }
+            it 'is deleted' do
+              expect(SubjectProjectRole.exists?(subject)).to be_falsey
+            end
+          end
+
+          context 'the completed user' do
+            subject { completed_user }
+            it 'exists' do
+              expect(Subject.exists?(subject)).to be_truthy
+            end
+
+            context 'the new subject_project_roles' do
+              let(:lookup_map) do
+                { subject_id: completed_user.id,
+                  project_role_id: subject_project_role_for_invited_user
+                    .project_role.id }
+              end
+
+              subject { SubjectProjectRole.find_by(lookup_map) }
+              it 'is not nil' do
+                expect(subject).to_not be_nil
+              end
+            end
           end
         end
       end

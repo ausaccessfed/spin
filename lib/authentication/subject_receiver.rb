@@ -45,10 +45,46 @@ module Authentication
       Invitation.transaction do
         invitation = Invitation.where(identifier: session[:invite])
                      .available.first!
-        invitation.subject.accept(invitation, attrs)
-        create_session_record(env, invitation.subject)
-        invitation.subject
+        subject = find_subject_for_session(attrs, invitation)
+        subject.accept(invitation, attrs)
+        create_session_record(env, subject)
+        subject
       end
+    end
+
+    def find_subject_for_session(attrs, invitation)
+      subject = Subject.find_by(attrs.slice(:targeted_id, :shared_token))
+      if subject
+        merge_existing_subject(invitation, subject)
+      else
+        subject = invitation.subject
+      end
+      subject
+    end
+
+    def merge_existing_subject(invitation, subject)
+      copy_project_roles(invitation, subject)
+      original_subject = invitation.subject
+      invitation.update_attributes!(subject_id: subject.id,
+                                    audit_comment: merge_comment(invitation,
+                                                                 subject))
+      original_subject.audit_comment = merge_comment(invitation, subject)
+      original_subject.destroy!
+    end
+
+    def copy_project_roles(invitation, subject)
+      invitation.subject.project_roles.each do |project_role|
+        subject_project_role_map = { subject_id: subject.id,
+                                     project_role_id: project_role.id }
+        next unless SubjectProjectRole.find_by(subject_project_role_map).nil?
+        SubjectProjectRole.create!(subject_project_role_map.merge(
+                                     audit_comment: merge_comment(invitation,
+                                                                  subject)))
+      end
+    end
+
+    def merge_comment(invitation, subject)
+      "Merging from Subject #{invitation.subject.id} to #{subject.id}"
     end
 
     def create_session_record(env, subject)
