@@ -21,6 +21,9 @@ RSpec.feature 'Visiting the invitation page', type: :feature do
     click_button 'Login'
 
     expect(current_path).to eq('/invitation_complete')
+    expect(page).to have_content('Your account has access to the AWS project,' \
+      " #{invitation.project_name}. Continue to the AWS administrative " \
+       ' console for this project.')
   end
 
   context 'with a used invitation' do
