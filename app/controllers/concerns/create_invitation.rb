@@ -1,5 +1,5 @@
 module CreateInvitation
-  NEW_INVITATION_BODY_FILE = 'config/new_invitation_body.txt'
+  NEW_INVITATION_BODY_FILE = 'config/new_invitation_body.md'
   NEW_INVITATION_EMAIL_BODY = Rails.root.join(NEW_INVITATION_BODY_FILE).read
 
   delegate :image_url, to: :view_context
@@ -25,9 +25,11 @@ module CreateInvitation
   end
 
   def email_message(invitation)
+    erb = File.read('./app/views/layouts/email_template.html.erb')
     Lipstick::EmailMessage.new(title: new_invitation_message,
                                image_url: image_url('email_branding.png'),
-                               content: email_body(invitation))
+                               content: email_body(invitation),
+                               template: erb)
   end
 
   def new_invitation_message
