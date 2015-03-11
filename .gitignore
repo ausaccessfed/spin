@@ -3,7 +3,7 @@ config/spin_service.yml
 config/consent.md
 config/welcome.md
 config/support.md
-config/new_invitation_body.txt
+config/new_invitation_body.md
 app/assets/images/email_branding.png
 
 log
