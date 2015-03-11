@@ -65,10 +65,10 @@ module Authentication
     def merge_existing_subject(invitation, subject)
       copy_project_roles(invitation, subject)
       original_subject = invitation.subject
+      original_subject.audit_comment = merge_comment(invitation, subject)
       invitation.update_attributes!(subject_id: subject.id,
                                     audit_comment: merge_comment(invitation,
                                                                  subject))
-      original_subject.audit_comment = merge_comment(invitation, subject)
       original_subject.destroy!
     end
 

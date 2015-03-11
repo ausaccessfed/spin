@@ -214,6 +214,15 @@ module Authentication
             it 'is deleted' do
               expect(Subject.exists?(subject)).to be_falsey
             end
+
+            it 'has a merge audit message' do
+              messages = []
+              subject.audits.each do |audit|
+                messages << audit.comment if audit.comment
+              end
+              expect(messages).to include('Merging from Subject'\
+                         " #{invited_user.id} to #{completed_user.id}")
+            end
           end
 
           context 'subject project role for invited user' do
@@ -229,6 +238,22 @@ module Authentication
               expect(Subject.exists?(subject)).to be_truthy
             end
 
+            context 'invitations' do
+              subject { completed_user.invitations }
+              it 'are now associated' do
+                expect(subject).to eq([invitation])
+              end
+
+              it 'has a merge audit message' do
+                messages = []
+                subject.last.audits.each do |audit|
+                  messages << audit.comment if audit.comment
+                end
+                expect(messages).to include('Merging from Subject'\
+                         " #{invited_user.id} to #{completed_user.id}")
+              end
+            end
+
             context 'the new subject_project_roles' do
               let(:lookup_map) do
                 { subject_id: completed_user.id,
@@ -239,6 +264,15 @@ module Authentication
               subject { SubjectProjectRole.find_by(lookup_map) }
               it 'is not nil' do
                 expect(subject).to_not be_nil
+              end
+
+              it 'has a merge audit message' do
+                messages = []
+                subject.audits.each do |audit|
+                  messages << audit.comment if audit.comment
+                end
+                expect(messages).to include('Merging from Subject'\
+                         " #{invited_user.id} to #{completed_user.id}")
               end
             end
           end
