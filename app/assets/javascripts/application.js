@@ -15,7 +15,6 @@
 //= require semantic-ui
 //= require smart_listing
 //= require aaf-layout
-//= require_tree .
 
 jQuery(function($) {
     $('.popup').popup({ inline: true, position: 'right center' });

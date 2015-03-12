@@ -42,7 +42,7 @@
     <p>
       A total of
       <%= content_tag(:strong, smart_listing.count, class: "strong") %>
-      organisations are available.
+      organisations match the current filter.
     </p>
   </div>
   <div class="right aligned eleven wide column">
@@ -51,10 +51,10 @@
 </div>
 
 <%- if permitted?('organisations:create') -%>
-  <div class="line-of-buttons">
-    <%= button_link_to(new_organisation_path, class: 'large green icon') do -%>
-      <%= icon_tag('add') %>
-      New Organisation
-    <%- end -%>
-  </div>
+  <div class="ui hidden divider"></div>
+
+  <%= button_link_to(new_organisation_path, class: 'large green icon') do -%>
+    <%= icon_tag('add') %>
+    New Organisation
+  <%- end -%>
 <%- end -%>

@@ -1,7 +1,12 @@
 class OrganisationsController < ApplicationController
   def index
     check_access!('organisations:list')
-    @organisations = smart_listing_create(:organisations, Organisation.all,
+
+    org_scope = Organisation.all
+    org_scope = org_scope.filter(params[:filter]) if params[:filter].present?
+
+    @filter = params[:filter]
+    @organisations = smart_listing_create(:organisations, org_scope,
                                           partial: 'organisations/listing',
                                           default_sort: { name: 'asc' })
   end
