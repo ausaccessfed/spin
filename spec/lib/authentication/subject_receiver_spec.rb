@@ -116,7 +116,7 @@ module Authentication
         end
       end
 
-      context 'with an invite code' do
+      context 'with an invitation' do
         let(:invited_user) { create(:subject, complete: false) }
         let!(:invitation) { create(:invitation, subject: invited_user) }
         let(:attrs) { attributes_for(:subject) }
@@ -194,7 +194,9 @@ module Authentication
           let(:invited_user) do
             create(:subject,
                    mail: 'bradleybeddoes@gmail',
-                   complete: false)
+                   complete: false,
+                   shared_token: nil,
+                   targeted_id: nil)
           end
           let(:attrs) do
             { targeted_id: completed_user.targeted_id,
