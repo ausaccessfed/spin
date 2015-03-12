@@ -2,8 +2,10 @@
 <%- case @subject.active_project_roles.count -%>
 <%- when 0 -%>
   <%- if !permitted?('admin') -%>
-    <%= error_message('Unfortunately you must have a project assigned to continue to the AWS administrative console.') do -%>
-      If you have an invitation email, you <strong>must</strong> follow the links to get access to a project.
+    <%= error_message('No Project Assigned') do -%>
+      <p>You must have a project assigned to continue to the AWS administrative console.</p>
+
+      <p>If you have received an invitation email, please follow the invitation link to get access to a project.</p>
     <%- end -%>
     <%= raw support_html %>
   <%- else -%>
