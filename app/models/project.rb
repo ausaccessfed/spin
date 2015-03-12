@@ -17,6 +17,19 @@ class Project < ActiveRecord::Base
 
   before_validation :strip_provider_arn_whitespace
 
+  def self.filter(query)
+    t = Project.arel_table
+
+    query.to_s.downcase.split(/\s+/).map { |s| prepare_query(s) }
+      .reduce(Project) do |a, e|
+        a.where(t[:name].matches(e))
+      end
+  end
+
+  def self.prepare_query(query)
+    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
+  end
+
   private
 
   def strip_provider_arn_whitespace

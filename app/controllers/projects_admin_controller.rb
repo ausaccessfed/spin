@@ -3,7 +3,14 @@ class ProjectsAdminController < ApplicationController
 
   def index
     check_access!("#{access_prefix}:list")
-    @projects = @organisation.projects.all
+
+    proj_scope = @organisation.projects.all
+    proj_scope = proj_scope.filter(params[:filter]) if params[:filter].present?
+
+    @filter = params[:filter]
+    @projects = smart_listing_create(:projects_admin, proj_scope,
+                                      partial: 'projects_admin/listing',
+                                      default_sort: { name: 'asc' })
   end
 
   def new
