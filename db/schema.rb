@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306033356) do
+ActiveRecord::Schema.define(version: 20150312005223) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -172,7 +172,6 @@ ActiveRecord::Schema.define(version: 20150306033356) do
     t.boolean  "enabled",      default: true,  null: false
   end
 
-  add_index "subjects", ["mail"], name: "index_subjects_on_mail", unique: true, using: :btree
   add_index "subjects", ["shared_token"], name: "index_subjects_on_shared_token", unique: true, using: :btree
   add_index "subjects", ["targeted_id"], name: "index_subjects_on_targeted_id", using: :btree
 

@@ -14,6 +14,7 @@ class Subject < ActiveRecord::Base
 
   has_many :invitations, dependent: :destroy
 
+  validates :mail, uniqueness: { unless: :complete? }
   validates :targeted_id, :shared_token, presence: true, if: :complete?
   validates :complete, :enabled, inclusion: { in: [true, false] }
 
