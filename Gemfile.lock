@@ -216,7 +216,7 @@ GEM
       railties (= 4.1.8)
       sprockets-rails (~> 2.0)
     rails-assets-jquery (1.11.2)
-    rails-assets-semantic-ui (1.8.1)
+    rails-assets-semantic-ui (1.11.4)
       rails-assets-jquery (>= 1.8)
     rails-observers (0.1.2)
       activemodel (~> 4.0)
@@ -382,7 +382,7 @@ DEPENDENCIES
   pry-rails
   rails (= 4.1.8)
   rails-assets-jquery (~> 1.11)
-  rails-assets-semantic-ui
+  rails-assets-semantic-ui (~> 1.11)
   rapid-rack
   redis
   redis-rails
