@@ -1,25 +1,4 @@
-
-<div class="ui grid">
-  <div class="ten wide column">
-    <%= page_header('Organisations') %>
-  </div>
-  <div class="six wide middle right aligned column">
-    <div class="ui form">
-      <%= form_tag(organisations_path, method: :get) do |f| %>
-            <div class="ui action input">
-              <input autocomplete="off" id="filter" name="filter"
-                     placeholder="Filter on Name or Unique Identifier"
-                     type="text" value="<%= @filter %>">
-
-                <button class="tiny ui labeled button" name="button">
-                  <i class="filter icon"></i>
-                  Update Filter
-                </button>
-            </div>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= create_list_header('Organisations', organisations_path, 'Filter on Name or Unique Identifier') %>
 
 <div class="ui hidden divider"></div>
 
