@@ -18,6 +18,19 @@ class ProjectRole < ActiveRecord::Base
 
   before_validation :strip_role_arn_whitespace
 
+  def self.filter(query)
+    t = ProjectRole.arel_table
+
+    query.to_s.downcase.split(/\s+/).map { |s| prepare_query(s) }
+      .reduce(ProjectRole) do |a, e|
+        a.where(t[:name].matches(e))
+      end
+  end
+
+  def self.prepare_query(query)
+    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
+  end
+
   private
 
   def strip_role_arn_whitespace

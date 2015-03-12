@@ -6,7 +6,17 @@ class ProjectRoleController < ApplicationController
 
   def index
     check_access!("#{access_prefix}:list")
-    @project_roles = @project.project_roles.all
+
+    project_roles_scope = @project.project_roles.all
+
+    if params[:filter].present?
+      project_roles_scope = project_roles_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    @project_roles = smart_listing_create(:project_role, project_roles_scope,
+                                          partial: 'project_role/listing',
+                                          default_sort: { name: 'asc' })
   end
 
   def new

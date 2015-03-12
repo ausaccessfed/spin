@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <%- @projects.each do |project| -%>
+      <%- smart_listing.collection.each do |project| -%>
         <tr>
           <td><%= project.name %></td>
           <td><%= project.provider_arn %></td>
