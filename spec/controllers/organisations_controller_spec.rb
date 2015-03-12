@@ -163,7 +163,6 @@ RSpec.describe OrganisationsController, type: :controller do
     before { get :index }
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('organisations/index') }
-    it { is_expected.to have_assigned(:organisations, Organisation.all) }
 
     context 'with no user' do
       let(:user) {}

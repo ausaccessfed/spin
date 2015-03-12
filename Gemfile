@@ -23,6 +23,8 @@ gem 'audited-activerecord'
 gem 'jbuilder'
 gem 'valhammer', '0.1.1'
 
+gem "smart_listing"
+
 group :development, :test do
   gem 'spring',      '1.1.3'
 
