@@ -117,7 +117,9 @@ module Authentication
       end
 
       context 'with an invitation' do
-        let(:invited_user) { create(:subject, complete: false) }
+        let(:invited_user) do
+          create(:subject, complete: false, shared_token: nil, targeted_id: nil)
+        end
         let!(:invitation) { create(:invitation, subject: invited_user) }
         let(:attrs) { attributes_for(:subject) }
         let(:env) do
@@ -184,6 +186,42 @@ module Authentication
             expect { subject }
               .to raise_error(/an failure/)
               .and not_change { invitation.reload.attributes }
+          end
+        end
+
+        context 'that has already been accepted' do
+          let(:accepted_user) { create(:subject, complete: true) }
+          let!(:invitation) do
+            create(:invitation, subject: accepted_user, used: true)
+          end
+          let(:new_name) { Faker::Name.name }
+          let(:attrs) do
+            { targeted_id: accepted_user.targeted_id,
+              shared_token: accepted_user.shared_token,
+              name: new_name,
+              mail: accepted_user.mail }
+          end
+
+          subject { -> { run } }
+
+          it 'does not create a subject' do
+            expect(subject).not_to change(Subject, :count)
+          end
+
+          it 'does not modify invitations' do
+            expect(subject).not_to change(Invitation, :count)
+          end
+
+          context 'the result' do
+            subject { run }
+            it 'is the existing subject' do
+              expect(subject).to eq(accepted_user)
+            end
+
+            it 'has attributes updated' do
+              expected = attrs.except(:invite, :complete, :audit_comment)
+              expect(subject).to have_attributes(expected)
+            end
           end
         end
 

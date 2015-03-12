@@ -38,6 +38,13 @@ module Authentication
     end
 
     def invited_user?(session)
+      return false unless invite_key?(session)
+      identifier = session[:invite]
+      invitation = Invitation.find_by_identifier(identifier)
+      invitation && !invitation.used?
+    end
+
+    def invite_key?(session)
       session.try(:key?, :invite)
     end
 
@@ -99,7 +106,7 @@ module Authentication
       return unless session
       subject = Subject.find(env['rack.session']['subject_id'])
       return redirect_to('/dashboard') if subject.roles.any?
-      return redirect_to('/invitation_complete') if invited_user?(session)
+      return redirect_to('/invitation_complete') if invite_key?(session)
       redirect_subject(subject)
     end
 
