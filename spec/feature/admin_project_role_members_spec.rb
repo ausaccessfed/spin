@@ -50,7 +50,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
 
   scenario 'shows actions for the subject' do
     expect(page)
-      .to contain_rendered_content("#{user.name} #{user.mail} Active Revoke" \
+      .to contain_rendered_content("#{user.name} #{user.mail} Revoke" \
         'Confirm Revoke')
   end
 
@@ -280,7 +280,7 @@ RSpec.feature 'Managing the members of an AWS Role', type: :feature do
       scenario 'shows that subject is granted' do
         expect(page)
           .to contain_rendered_content("#{another_user.name} " \
-           " #{another_user.mail} Active Revoke" \
+           " #{another_user.mail} Revoke" \
               'Confirm Revoke')
       end
     end
