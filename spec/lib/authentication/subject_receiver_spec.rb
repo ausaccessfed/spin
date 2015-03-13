@@ -249,61 +249,11 @@ module Authentication
 
           before { run }
 
-          context 'invited subject record' do
-            subject { invited_user }
-            it 'is deleted' do
-              expect(Subject.exists?(subject)).to be_falsey
-            end
-
-            it 'has a merge audit message' do
-              messages = []
-              subject.audits.each do |audit|
-                messages << audit.comment if audit.comment
-              end
-              expect(messages).to include('Merging from Subject'\
-                         " #{invited_user.id} to #{completed_user.id}")
-            end
-          end
-
-          context 'subject project role for invited user' do
-            subject { subject_project_role_for_invited_user }
-            it 'is deleted' do
-              expect(SubjectProjectRole.exists?(subject)).to be_falsey
-            end
-          end
-
-          context 'the completed user' do
-            subject { completed_user }
-            it 'exists' do
-              expect(Subject.exists?(subject)).to be_truthy
-            end
-
-            context 'invitations' do
-              subject { completed_user.invitations }
-              it 'are now associated' do
-                expect(subject).to eq([invitation])
-              end
-
-              it 'has a merge audit message' do
-                messages = []
-                subject.last.audits.each do |audit|
-                  messages << audit.comment if audit.comment
-                end
-                expect(messages).to include('Merging from Subject'\
-                         " #{invited_user.id} to #{completed_user.id}")
-              end
-            end
-
-            context 'the new subject_project_roles' do
-              let(:lookup_map) do
-                { subject_id: completed_user.id,
-                  project_role_id: subject_project_role_for_invited_user
-                    .project_role.id }
-              end
-
-              subject { SubjectProjectRole.find_by(lookup_map) }
-              it 'is not nil' do
-                expect(subject).to_not be_nil
+          shared_examples 'a merge operation' do
+            context 'invited subject record' do
+              subject { invited_user }
+              it 'is deleted' do
+                expect(Subject.exists?(subject)).to be_falsey
               end
 
               it 'has a merge audit message' do
@@ -312,9 +262,93 @@ module Authentication
                   messages << audit.comment if audit.comment
                 end
                 expect(messages).to include('Merging from Subject'\
-                         " #{invited_user.id} to #{completed_user.id}")
+                           " #{invited_user.id} to #{completed_user.id}")
               end
             end
+
+            context 'subject project role for invited user' do
+              subject { subject_project_role_for_invited_user }
+              it 'is deleted' do
+                expect(SubjectProjectRole.exists?(subject)).to be_falsey
+              end
+            end
+
+            context 'the completed user' do
+              subject { completed_user }
+              it 'exists' do
+                expect(Subject.exists?(subject)).to be_truthy
+              end
+
+              context 'invitations' do
+                subject { completed_user.invitations }
+                it 'are now associated' do
+                  expect(subject).to eq([invitation])
+                end
+
+                it 'has a merge audit message' do
+                  messages = []
+                  subject.last.audits.each do |audit|
+                    messages << audit.comment if audit.comment
+                  end
+                  expect(messages).to include('Merging from Subject'\
+                           " #{invited_user.id} to #{completed_user.id}")
+                end
+              end
+
+              context 'the new subject_project_roles' do
+                let(:lookup_map) do
+                  { subject_id: completed_user.id,
+                    project_role_id: subject_project_role_for_invited_user
+                      .project_role.id }
+                end
+
+                subject { SubjectProjectRole.find_by(lookup_map) }
+                it 'is not nil' do
+                  expect(subject).to_not be_nil
+                end
+
+                it 'has a merge audit message' do
+                  messages = []
+                  subject.audits.each do |audit|
+                    messages << audit.comment if audit.comment
+                  end
+                  expect(messages).to include('Merging from Subject'\
+                           " #{invited_user.id} to #{completed_user.id}")
+                end
+              end
+            end
+          end
+
+          it_behaves_like 'a merge operation'
+
+          context 'with no shared_token' do
+            let(:completed_user) do
+              create(:subject, complete: false, shared_token: nil)
+            end
+
+            let(:attrs) do
+              { targeted_id: completed_user.targeted_id,
+                shared_token: attributes_for(:subject)[:shared_token],
+                name: completed_user.name,
+                mail: completed_user.mail }
+            end
+
+            it_behaves_like 'a merge operation'
+          end
+
+          context 'with no targeted_id' do
+            let(:completed_user) do
+              create(:subject, complete: false, targeted_id: nil)
+            end
+
+            let(:attrs) do
+              { targeted_id: attributes_for(:subject)[:targeted_id],
+                shared_token: completed_user.shared_token,
+                name: completed_user.name,
+                mail: completed_user.mail }
+            end
+
+            it_behaves_like 'a merge operation'
           end
         end
       end

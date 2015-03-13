@@ -166,4 +166,34 @@ RSpec.describe Subject, type: :model do
       expect { run }.to change { subject.reload.complete? }.to be_truthy
     end
   end
+
+  describe '::find_by_federated_id' do
+    let!(:user) { create(:subject) }
+
+    it 'finds by targeted_id' do
+      obj = Subject.find_by_federated_id(targeted_id: user.targeted_id,
+                                         shared_token: 'garbage')
+
+      expect(obj).to eq(user)
+    end
+
+    it 'finds by shared_token' do
+      obj = Subject.find_by_federated_id(shared_token: user.shared_token,
+                                         targeted_id: 'garbage')
+
+      expect(obj).to eq(user)
+    end
+
+    it 'returns nil for missing object' do
+      obj = Subject.find_by_federated_id(shared_token: 'garbage',
+                                         targeted_id: 'garbage')
+
+      expect(obj).to be_nil
+    end
+
+    it 'raises an error for missing parameter' do
+      expect { Subject.find_by_federated_id(shared_token: 'x') }.to raise_error
+      expect { Subject.find_by_federated_id(targeted_id: 'x') }.to raise_error
+    end
+  end
 end

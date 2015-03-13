@@ -60,7 +60,8 @@ module Authentication
     end
 
     def find_subject_for_session(attrs, invitation)
-      subject = Subject.find_by(attrs.slice(:targeted_id, :shared_token))
+      subject = Subject.find_by_federated_id(attrs)
+
       if subject
         merge_existing_subject(invitation, subject)
       else

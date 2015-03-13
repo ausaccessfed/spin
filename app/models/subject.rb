@@ -20,6 +20,16 @@ class Subject < ActiveRecord::Base
 
   valhammer
 
+  def self.find_by_federated_id(attrs)
+    if attrs[:shared_token] && attrs[:targeted_id]
+      where(arel_table[:shared_token].eq(attrs[:shared_token])
+        .or(arel_table[:targeted_id].eq(attrs[:targeted_id])))
+        .first
+    else
+      fail('Refusing to find by nil value')
+    end
+  end
+
   def functioning?
     enabled? && complete?
   end
