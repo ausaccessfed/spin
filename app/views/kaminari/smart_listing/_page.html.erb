@@ -8,5 +8,5 @@
     remote:        data-remote
 -%>
 <%= link_to(page, url,
-            opts = { remote: remote, rel: page.next? ? 'next' : page.prev? ? 'prev' : nil,
+            opts = { rel: page.next? ? 'next' : page.prev? ? 'prev' : nil,
                      class: "item #{'active' if page.current?}" }) %>
