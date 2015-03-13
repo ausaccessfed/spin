@@ -26,16 +26,73 @@ module Authentication
     # Must return the subject, and the subject must have an `id` method to work
     # with the DefaultReceiver mixin.
     def subject(env, attrs)
-      Rails.logger.info('Find or update Subject using attributes: ' \
-                            "#{attrs.inspect}")
+      session = env['rack.session']
+      return use_invitation(session, attrs, env) if invited_user?(session)
       identifier = attrs.slice(:targeted_id)
-      Rails.logger.info("Using identifier: #{identifier}")
       Subject.transaction do
         Subject.find_or_initialize_by(identifier).tap do |subject|
-          subject.update_attributes!(attrs)
+          subject.update_attributes!(attrs.merge(complete: true))
           create_session_record(env, subject)
         end
       end
+    end
+
+    def invited_user?(session)
+      return false unless invite_key?(session)
+      identifier = session[:invite]
+      invitation = Invitation.find_by_identifier(identifier)
+      invitation && !invitation.used?
+    end
+
+    def invite_key?(session)
+      session.try(:key?, :invite)
+    end
+
+    def use_invitation(session, attrs, env)
+      Invitation.transaction do
+        invitation = Invitation.where(identifier: session[:invite])
+                     .available.first!
+        subject = find_subject_for_session(attrs, invitation)
+        subject.accept(invitation, attrs)
+        create_session_record(env, subject)
+        subject
+      end
+    end
+
+    def find_subject_for_session(attrs, invitation)
+      subject = Subject.find_by_federated_id(attrs)
+
+      if subject
+        merge_existing_subject(invitation, subject)
+      else
+        subject = invitation.subject
+      end
+      subject
+    end
+
+    def merge_existing_subject(invitation, subject)
+      copy_project_roles(invitation, subject)
+      original_subject = invitation.subject
+      original_subject.audit_comment = merge_comment(invitation, subject)
+      invitation.update_attributes!(subject_id: subject.id,
+                                    audit_comment: merge_comment(invitation,
+                                                                 subject))
+      original_subject.destroy!
+    end
+
+    def copy_project_roles(invitation, subject)
+      invitation.subject.project_roles.each do |project_role|
+        subject_project_role_map = { subject_id: subject.id,
+                                     project_role_id: project_role.id }
+        next unless SubjectProjectRole.find_by(subject_project_role_map).nil?
+        SubjectProjectRole.create!(subject_project_role_map.merge(
+                                     audit_comment: merge_comment(invitation,
+                                                                  subject)))
+      end
+    end
+
+    def merge_comment(invitation, subject)
+      "Merging from Subject #{invitation.subject.id} to #{subject.id}"
     end
 
     def create_session_record(env, subject)
@@ -46,9 +103,11 @@ module Authentication
     end
 
     def finish(env)
-      return unless env['rack.session']
+      session = env['rack.session']
+      return unless session
       subject = Subject.find(env['rack.session']['subject_id'])
       return redirect_to('/dashboard') if subject.roles.any?
+      return redirect_to('/invitation_complete') if invite_key?(session)
       redirect_subject(subject)
     end
 

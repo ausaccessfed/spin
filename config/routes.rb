@@ -5,8 +5,22 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   get 'aws_login', to: 'aws_session_instances#auto', as: :aws_login
   post 'aws_login', to: 'aws_session_instances#login'
+  get 'invitation_complete', to: 'invitations#complete'
+
+  resources :invitations, only: [] do
+    collection do
+      get ':identifier' => 'invitations#show', as: 'show'
+      post ':identifier' => 'invitations#accept', as: 'accept'
+    end
+  end
 
   scope '/admin' do
+    resources :subjects, only: [] do
+      collection do
+        patch ':id' => 'subjects#resend_invite', as: 'resend_invite'
+      end
+    end
+
     resources :subjects, only: %i(index show destroy)
     resources :api_subjects
     resources :roles do
@@ -21,6 +35,9 @@ Rails.application.routes.draw do
         resources :roles, controller: 'project_role' do
           resources :members, controller: 'subject_project_roles',
                               only: %i(new create destroy)
+          resources :invitations,
+                    controller: 'subject_project_role_invitations',
+                    only: %i(new create)
         end
       end
     end
@@ -28,7 +45,7 @@ Rails.application.routes.draw do
 
   v1 = APIConstraints.new(version: 1, default: true)
   namespace :api, defaults: { format: 'json' } do
-    resources 'subjects', only: %i(index destroy), constraints: v1
+    resources 'subjects', only: %i(index destroy create show), constraints: v1
     resources 'organisations', except: '%i(new show)', constraints: v1 do
       resources 'projects', except: '%i(new show)', constraints: v1 do
         resources 'roles', except: %i(new show), controller: 'project_roles',

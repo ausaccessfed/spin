@@ -1,0 +1,17 @@
+<div class="ui welcome message">
+  <h1>Welcome to <%= SpinEnvironment.environment_string %></h1>
+
+  <p>
+    You have been invited to the <strong><%= @invitation.project_name %></strong> project.
+  </p>
+
+  <p>
+    Unfortunately your invitation expired <%= time_ago_in_words(@invitation.expires) %>
+    ago and can no longer be used.
+  </p>
+  <p>
+    Please contact support to have a new invitation created for you:
+
+    <%= raw support_html %>
+  </p>
+</div>

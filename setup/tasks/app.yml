@@ -88,6 +88,7 @@
     - consent.md
     - welcome.md
     - support.md
+    - new_invitation_body.md
   notify: Restart spin
 
 - name: 'Install site branding'
@@ -99,6 +100,7 @@
     mode: 0644
   with_items:
     - logo.png
+    - email_branding.png
     - favicon.png
   notify: Restart spin
 

@@ -1,0 +1,50 @@
+<%=
+    breadcrumbs(
+        {'Organisations' => organisations_path},
+        {'Projects' => organisation_projects_path(@organisation)},
+        {'Project Roles' => organisation_project_roles_path(@organisation, @project)},
+        {@project_role.name => organisation_project_role_path(@organisation, @project, @project_role)},
+        'Invite User'
+    )
+%>
+
+<%= page_header("Invite User to Project Role '#{@project_role.name}'") %>
+
+<%= form_for(@invitation, url: organisation_project_role_invitations_path(@organisation, @project, @project_role), html: {id: 'invitation-form'}) do |f| -%>
+
+  <%= field_block do -%>
+    <%= f.label :name do -%>
+      Name
+      <%= field_help_text('The full name of the User') %>
+    <%- end -%>
+    <%= f.text_field :name %>
+  <%- end -%>
+
+  <%= field_block do -%>
+    <%= f.label :mail do -%>
+      Email
+      <%= field_help_text('The email of the User') %>
+    <%- end -%>
+    <%= f.text_field :mail %>
+  <%- end -%>
+
+  <%= field_block do -%>
+    <%= f.label :send_invitation do -%>
+      Send Invitation
+      <%= field_help_text('The invitation should be sent via email, otherwise an activation URL will be provided.') %>
+    <%- end -%>
+    <%= f.check_box :send_invitation, {:checked=>true}  %>
+  <%- end -%>
+
+  <%= error_messages_tag %>
+
+  <div class="line-of-buttons">
+    <%= submit_tag("Submit", class: 'small ui green button') %>
+  </div>
+
+<%- end -%>
+
+<%= validate_form('#invitation-form', :invitation) do -%>
+  <%= validate_field(:name, empty: 'Please enter a name for this invitation') %>
+  <%= validate_field(:mail, empty: 'Please enter an email for this invitation') %>
+<%- end -%>

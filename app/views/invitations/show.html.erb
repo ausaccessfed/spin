@@ -1,0 +1,20 @@
+<div class="ui welcome message">
+  <h1>Welcome to <%= SpinEnvironment.environment_string %></h1>
+
+  <p>
+    You have been invited to the <strong><%= @invitation.project_name %></strong> project.
+  </p>
+
+  <p>
+  After clicking the <em>Accept Invitation</em> button below you will be asked to log in via the Australian Access Federation to prove your identity.
+  </p>
+
+  <div class="line-of-buttons">
+    <%= form_tag(method: :post) do -%>
+      <%= button_tag(type: 'submit', class: 'green icon') do -%>
+        <%= icon_tag('checkmark') %>
+        Accept Invitation
+      <%- end -%>
+    <%- end -%>
+  </div>
+</div>

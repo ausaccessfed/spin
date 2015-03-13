@@ -29,3 +29,7 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Exclude:
     - db/migrate/*.rb
+
+Metrics/LineLength:
+ Exclude:
+    - db/schema.rb

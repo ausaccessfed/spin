@@ -26,9 +26,71 @@
     <td>Targeted ID</td>
     <td><%= @object.targeted_id %></td>
   </tr>
+  <tr>
+    <td>State</td>
+    <td>
+      <%- if @object.complete? -%>
+        <%= icon_tag('green checkmark') %> Active
+      <%- else -%>
+        <%= icon_tag('yellow warning sign') %> Pending Invitation
+      <%- end -%>
+    </td>
+  </tr>
   </tbody>
 </table>
 
+<%- if @object.outstanding_invitations -%>
+
+  <%- @object.outstanding_invitations.each do | invitation | %>
+    <h3>Invitation</h3>
+    <table class="ui definition table">
+      <tbody>
+      <tr>
+        <td>Email sent<p></p></td>
+        <td>
+          <% if invitation.last_email_sent_at %>
+            <%= invitation.last_email_sent_at.strftime('%a, %e %b %Y %H:%M:%S %z') %>
+          <%- else -%>
+            (not sent)
+          <%- end -%>
+
+          <p></p>
+          <%= form_for(@object, url: resend_invite_subjects_path(@object),
+                       html: {class: 'inline'}) do |f| -%>
+
+            <%= button_tag(name: 'subject[subject_id]',
+                           value: @object.id, class: 'mini icon') do -%>
+              <%= icon_tag('send') %>
+              Resend
+            <%- end -%>
+          <%- end -%>
+        </td>
+      </tr>
+      <tr>
+        <td>URL</td>
+        <td><%= link_to("#{accept_invitations_url(invitation.identifier)}", "#{accept_invitations_url(invitation.identifier)}") %></td>
+      </tr>
+      <tr>
+        <td>Used</td>
+        <td><%= yes_no_string invitation.used? %></td>
+      </tr>
+      <tr>
+        <td>Created</td>
+        <td> <%= invitation.created_at.strftime('%a, %e %b %Y %H:%M:%S %z') %></td>
+      </tr>
+      <tr>
+        <td>Expires</td>
+        <%- time_string = invitation.expires.strftime('%a, %e %b %Y %H:%M:%S %z') -%>
+        <%- if invitation.expired? -%>
+          <td class="negative"><%= time_string %></td>
+        <%- else -%>
+          <td class="positive"><%= time_string %></td>
+        <%- end -%>
+      </tr>
+      </tbody>
+    </table>
+  <%- end -%>
+<%- end -%>
 <div class="line-of-buttons">
   <%- if permitted?('admin:subjects:delete') -%>
     <%= delete_button_tag(@object, class: 'large') %>

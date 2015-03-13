@@ -20,6 +20,15 @@ class SpinApiClient < Thor
     run('delete', subject_path)
   end
 
+  desc 'create_subject', 'POST /subjects'
+  method_option :name, required: true
+  method_option :mail, required: true
+  method_option :shared_token, required: true
+  method_option :send_invitation, required: true
+  def create_subject
+    run('post', subjects_path, build_subject_json)
+  end
+
   desc 'get_organisations', 'GET /organisations'
   def get_organisations
     run('get', organisations_path)
@@ -181,6 +190,14 @@ class SpinApiClient < Thor
     JSON.generate(organisation: { name: options[:name],
                                   unique_identifier:
                                       options[:unique_identifier] })
+  end
+
+  def build_subject_json
+    hash_body = { name: options[:name], mail: options[:mail],
+                  shared_token: options[:shared_token],
+                  send_invitation: options[:send_invitation] }
+
+    JSON.generate(hash_body)
   end
 
   def build_project_json

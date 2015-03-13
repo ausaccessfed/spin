@@ -35,6 +35,7 @@ spin_api_client
 thor spin_api_client:create_organisation --unique_identifier=UNIQUE_IDENTIFIER --name=NAME                                                                             # POST /organisations
 thor spin_api_client:create_project --name=NAME --organisation-id=ORGANISATION_ID --provider-arn=PROVIDER_ARN                                              # POST /organisations/<organisation_id>/projects
 thor spin_api_client:create_role --name=NAME --organisation-id=ORGANISATION_ID --project-id=PROJECT_ID --role-arn=ROLE_ARN                                 # POST /organisations/<organisation_id>/projects/<project_id>/roles/
+thor spin_api_client:create_subject --mail=MAIL --name=NAME --send-invitation=SEND_INVITATION --shared-token=SHARED_TOKEN                                  # POST /subjects
 thor spin_api_client:delete_organisation --organisation-id=ORGANISATION_ID                                                                                 # DELETE /organisations/<organisation_id>
 thor spin_api_client:delete_project --organisation-id=ORGANISATION_ID --project-id=PROJECT_ID                                                              # DELETE /organisations/<organisation_id>/projects/<project_id>
 thor spin_api_client:delete_role --organisation-id=ORGANISATION_ID --project-id=PROJECT_ID --role-id=ROLE_ID                                               # DELETE /organisations/<organisation_id>/projects/<project_id>/roles/<role_id>

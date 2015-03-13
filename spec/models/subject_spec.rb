@@ -13,7 +13,6 @@ RSpec.describe Subject, type: :model do
 
     it { is_expected.not_to validate_presence_of(:targeted_id) }
 
-    it { is_expected.to validate_presence_of(:shared_token) }
     it { is_expected.to validate_uniqueness_of(:shared_token) }
 
     it { is_expected.to validate_length_of(:name).is_at_most(255) }
@@ -28,11 +27,19 @@ RSpec.describe Subject, type: :model do
       it { is_expected.to validate_presence_of(:shared_token) }
       it { is_expected.to validate_uniqueness_of(:shared_token) }
     end
+
+    context 'shared_token uniqueness' do
+      before { create(:subject, complete: false, shared_token: nil) }
+      subject { build(:subject, complete: false, shared_token: nil) }
+      it 'allows many nil shared_tokens' do
+        expect(subject).to be_valid
+      end
+    end
   end
 
   context '#functioning?' do
-    context 'when enabled' do
-      subject { create(:subject, enabled: true) }
+    context 'when enabled and complete' do
+      subject { create(:subject, enabled: true, complete: true) }
       it { is_expected.to be_functioning }
     end
 
@@ -74,6 +81,12 @@ RSpec.describe Subject, type: :model do
       subject { child.subject }
       it_behaves_like 'an association which cascades delete'
     end
+
+    context 'invitations' do
+      let(:child) { create(:invitation) }
+      subject { child.subject }
+      it_behaves_like 'an association which cascades delete'
+    end
   end
 
   describe '#active_project_roles' do
@@ -110,6 +123,77 @@ RSpec.describe Subject, type: :model do
       it 'provides the active project only' do
         expect(projects.count).to eq(5)
       end
+    end
+  end
+
+  describe '#outstanding_invitations' do
+    let!(:user) { create(:subject) }
+    subject { user.outstanding_invitations }
+    context 'with an outstanding invitiation' do
+      let!(:invitation) { create(:invitation, subject: user) }
+      it { is_expected.to eq([invitation]) }
+    end
+
+    context 'with no outstanding invitiations' do
+      let!(:invitation) { create(:invitation, subject: user, used: true) }
+      it { is_expected.to eq([]) }
+    end
+  end
+
+  describe '#accept' do
+    subject { create(:subject, complete: false) }
+
+    let(:attrs) do
+      attributes_for(:subject).slice(:name, :mail, :targeted_id, :shared_token)
+    end
+
+    let(:invitation) { create(:invitation, subject: subject) }
+
+    def run
+      subject.accept(invitation, attrs)
+    end
+
+    it 'updates the attributes' do
+      run
+      expect(subject.reload).to have_attributes(attrs)
+    end
+
+    it 'marks the invitation as used' do
+      expect { run }.to change { invitation.reload.used? }.to be_truthy
+    end
+
+    it 'marks the subject as complete' do
+      expect { run }.to change { subject.reload.complete? }.to be_truthy
+    end
+  end
+
+  describe '::find_by_federated_id' do
+    let!(:user) { create(:subject) }
+
+    it 'finds by targeted_id' do
+      obj = Subject.find_by_federated_id(targeted_id: user.targeted_id,
+                                         shared_token: 'garbage')
+
+      expect(obj).to eq(user)
+    end
+
+    it 'finds by shared_token' do
+      obj = Subject.find_by_federated_id(shared_token: user.shared_token,
+                                         targeted_id: 'garbage')
+
+      expect(obj).to eq(user)
+    end
+
+    it 'returns nil for missing object' do
+      obj = Subject.find_by_federated_id(shared_token: 'garbage',
+                                         targeted_id: 'garbage')
+
+      expect(obj).to be_nil
+    end
+
+    it 'raises an error for missing parameter' do
+      expect { Subject.find_by_federated_id(shared_token: 'x') }.to raise_error
+      expect { Subject.find_by_federated_id(targeted_id: 'x') }.to raise_error
     end
   end
 end
