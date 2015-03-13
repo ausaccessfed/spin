@@ -126,6 +126,26 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
         end
       end
 
+      context 'when an invite with the email already exists' do
+        let!(:invitation) { create(:invitation, mail: mail) }
+
+        context 'the response' do
+          before { run }
+          subject { response }
+          it 'sets the flash message' do
+            expect(flash[:error]).to eq('The'\
+                " user '#{invitation.name}' has already received an invite. "\
+                "If you can't find that user in the system, they may have a "\
+                'different email address associated with their SPIN'\
+                ' account.')
+          end
+
+          it 'does not have an success flash too' do
+            expect(flash[:success]).to be_nil
+          end
+        end
+      end
+
       context 'when no subjects with the email are present' do
         it { is_expected.to change(Subject, :count).by(1) }
         it { is_expected.to change(Invitation, :count).by(1) }

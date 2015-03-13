@@ -42,6 +42,10 @@ module API
     end
 
     def invite(subject, response_map)
+      if invitation_exists?(subject[:mail])
+        fail(BadRequest, invitation_exists_error(subject[:mail]))
+      end
+
       invitation = create_invitation(subject)
       if send_invitation_flag
         deliver(invitation)
