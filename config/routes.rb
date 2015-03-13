@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   end
 
   scope '/admin' do
+    get 'projects', to: 'projects_admin#list', as: :projects_list
+
     resources :subjects, only: [] do
       collection do
         patch ':id' => 'subjects#resend_invite', as: 'resend_invite'

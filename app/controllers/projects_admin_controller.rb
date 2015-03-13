@@ -1,5 +1,5 @@
 class ProjectsAdminController < ApplicationController
-  before_action { @organisation = Organisation.find(params[:organisation_id]) }
+  before_action :require_organisation, except: [:list]
 
   def index
     check_access!("#{access_prefix}:list")
@@ -10,6 +10,18 @@ class ProjectsAdminController < ApplicationController
     @filter = params[:filter]
     @projects = smart_listing_create(:projects_admin, proj_scope,
                                      partial: 'projects_admin/listing',
+                                     default_sort: { name: 'asc' })
+  end
+
+  def list
+    check_access!("projects:list")
+
+    proj_scope = Project.all
+    proj_scope = proj_scope.filter(params[:filter]) if params[:filter].present?
+
+    @filter = params[:filter]
+    @projects = smart_listing_create(:projects_list, proj_scope,
+                                     partial: 'projects_admin/list_all',
                                      default_sort: { name: 'asc' })
   end
 
@@ -62,6 +74,10 @@ class ProjectsAdminController < ApplicationController
   end
 
   private
+
+  def require_organisation
+    @organisation = Organisation.find(params[:organisation_id])
+  end
 
   def project_params
     params.require(:project).permit(:name, :provider_arn, :active)

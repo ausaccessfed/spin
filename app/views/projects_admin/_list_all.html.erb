@@ -1,0 +1,69 @@
+<%- if smart_listing.collection.present? -%>
+  <table class="ui basic striped table">
+    <thead>
+      <tr>
+        <th><%= smart_listing.sortable "Name", :name %></th>
+        <th>Provider ARN</th>
+        <th>Organisation</th>
+        <th><%= smart_listing.sortable "Active", :active %></th>
+        <th/>
+      </tr>
+    </thead>
+    <tbody>
+      <%- smart_listing.collection.each do |project| -%>
+        <tr>
+          <td><%= project.name %></td>
+          <td><%= project.provider_arn %></td>
+          <td><%= project.organisation.name %></td>
+          <td>
+            <%- if project.active? -%>
+              <%= icon_tag('green checkmark') %> Yes
+            <%- else -%>
+              <%= icon_tag('yellow warning sign') %> No
+            <%- end -%>
+          </td>
+          <td class="right aligned">
+            <%- if permitted?("organisations:#{project.organisation.id}:projects:#{project.id}:roles:list") -%>
+                <%= button_link_to(organisation_project_roles_path(project.organisation, project), class: 'tiny icon') do -%>
+                    <%= icon_tag('lock icon') %>
+                    Project Roles
+                <%- end -%>
+            <%- end -%>
+
+          <%- if permitted?("organisations:#{project.organisation.id}:projects:update") -%>
+            <%= button_link_to([:edit, project.organisation, project], class: 'tiny icon') do -%>
+              <%= icon_tag('edit') %>
+              Edit
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?("organisations:#{project.organisation.id}:projects:delete") -%>
+            <%= delete_button_tag([project.organisation, project]) %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+
+  <div class="ui grid">
+    <div class="five wide column">
+      <p>
+        A total of
+        <%= content_tag(:strong, smart_listing.count, class: "strong") %>
+        projects match the current filter.
+      </p>
+    </div>
+    <div class="right aligned eleven wide column">
+      <%= smart_listing.paginate %>
+    </div>
+  </div>
+
+<%- else -%>
+  <div class="ui message">
+    <div class="header">
+      No Projects found
+    </div>
+    <p>The current filter did not match any registered projects.</p>
+  </div>
+<%- end -%>
