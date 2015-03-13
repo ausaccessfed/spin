@@ -31,7 +31,7 @@ end
 group :development, :test do
   gem 'spring',      '1.1.3'
 
-  gem 'rspec-rails', '~> 3.1' # Testing framework
+  gem 'rspec-rails', '~> 3.1.0' # Testing framework
   gem 'factory_girl_rails' # Fixtures replacement
   gem 'faker' # Library for generating fake data
   gem 'timecop'
