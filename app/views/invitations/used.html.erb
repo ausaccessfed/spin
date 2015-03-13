@@ -8,9 +8,15 @@
     below.
   </p>
 
+  <div class="line-of-buttons">
+    <%= button_link_to(dashboard_path, class: 'blue icon') do -%>
+      <%= icon_tag('angle double right') %>
+      View Dashboard
+    <%- end -%>
+  </div>
+  <br/>
   <p>
     If you did not accept your invitation, please contact support for assistance:
     <%= raw support_html %>
-
   </p>
 </div>

@@ -32,6 +32,7 @@ RSpec.feature 'Visiting the invitation page', type: :feature do
     scenario 'attempting to accept the invitation' do
       visit "/invitations/#{invitation.identifier}"
       expect(page).to have_content('already been accepted')
+      expect(page).to have_link('View Dashboard')
     end
   end
 
