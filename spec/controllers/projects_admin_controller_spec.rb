@@ -42,6 +42,31 @@ RSpec.describe ProjectsAdminController, type: :controller do
       end
     end
 
+    context 'get :list' do
+      let!(:project) { create(:project, organisation: organisation) }
+      before { get :list }
+
+      let(:user) do
+        create(:subject, :authorized,
+               permission: 'projects:list')
+      end
+
+      it { is_expected.to have_http_status(:ok) }
+      it { is_expected.to render_template('projects_admin/list') }
+      it { is_expected.to have_assigned(:projects, include(project)) }
+
+      context 'as a non-admin' do
+        let(:user) { create(:subject) }
+        it { is_expected.to have_http_status(:forbidden) }
+      end
+
+      context 'with no user' do
+        let(:user) { nil }
+        before { get :index, organisation_id: organisation.id }
+        it { is_expected.to redirect_to('/auth/login') }
+      end
+    end
+
     context 'get :edit' do
       before { get :edit, organisation_id: organisation.id, id: project.id }
 
