@@ -20,7 +20,8 @@ gem 'audited-activerecord'
 gem 'jbuilder'
 gem 'valhammer', '0.1.1'
 
-gem "smart_listing"
+gem 'coffee-rails'
+gem 'smart_listing'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-semantic-ui', '~> 1.11'

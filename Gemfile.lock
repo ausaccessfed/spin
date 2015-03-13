@@ -364,6 +364,7 @@ DEPENDENCIES
   brakeman (~> 2.6)
   capybara
   capybara-webkit
+  coffee-rails
   factory_girl_rails
   faker
   god
