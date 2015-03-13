@@ -1,4 +1,4 @@
-This is an example welcome page for SPIN.
+This is the example welcome page.
 
 Please edit and place in config/welcome.md
 

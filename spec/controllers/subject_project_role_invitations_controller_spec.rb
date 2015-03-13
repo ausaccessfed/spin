@@ -136,7 +136,7 @@ RSpec.describe SubjectProjectRoleInvitationsController, type: :controller do
             expect(flash[:error]).to eq('The'\
                 " user '#{invitation.name}' has already received an invite. "\
                 "If you can't find that user in the system, they may have a "\
-                'different email address associated with their SPIN'\
+                'different email address associated with their'\
                 ' account.')
           end
 

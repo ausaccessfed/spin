@@ -12,7 +12,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= aaf_header(title: 'SPIN', environment: SpinEnvironment.environment_string) do -%>
+<%= aaf_header(title: SpinEnvironment.service_name, environment: SpinEnvironment.environment_string) do -%>
   <%= nav_bar do -%>
     <%- if @subject -%>
       <%= nav_item('Dashboard', dashboard_path) %>
@@ -68,7 +68,7 @@
   <%- end -%>
 
   <p>
-    SPIN <strong><%= ApplicationHelper::VERSION %></strong>
+    <strong><%= ApplicationHelper::VERSION %></strong>
     <br/>
     <br/>
   </p>
