@@ -7,19 +7,7 @@ class SubjectProjectRolesController < ApplicationController
 
   def new
     check_access!("#{access_prefix}:grant")
-
-    subjects_scope = Subject.all
-
-    if params[:filter].present?
-      subjects_scope = subjects_scope.filter(params[:filter])
-    end
-
-    @filter = params[:filter]
-    @subjects =
-      smart_listing_create(:subject_project_role, subjects_scope,
-                           partial: 'subject_project_roles/listing',
-                           default_sort: { name: 'asc' })
-
+    @subjects = scope_subjects
     @assoc = @project_role.subject_project_roles.new
   end
 
@@ -71,5 +59,18 @@ class SubjectProjectRolesController < ApplicationController
 
   def access_prefix
     "organisations:#{@organisation.id}:projects:#{@project.id}:roles"
+  end
+
+  def scope_subjects
+    subjects_scope = Subject.all
+
+    if params[:filter].present?
+      subjects_scope = subjects_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    smart_listing_create(:subject_project_role, subjects_scope,
+                         partial: 'subject_project_roles/listing',
+                         default_sort: { name: 'asc' })
   end
 end

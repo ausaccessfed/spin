@@ -9,8 +9,8 @@ class ProjectsAdminController < ApplicationController
 
     @filter = params[:filter]
     @projects = smart_listing_create(:projects_admin, proj_scope,
-                                      partial: 'projects_admin/listing',
-                                      default_sort: { name: 'asc' })
+                                     partial: 'projects_admin/listing',
+                                     default_sort: { name: 'asc' })
   end
 
   def new
