@@ -107,7 +107,10 @@ module Authentication
       return unless session
       subject = Subject.find(env['rack.session']['subject_id'])
       return redirect_to('/dashboard') if subject.roles.any?
-      return redirect_to('/invitation_complete') if invite_key?(session)
+      if invite_key?(session)
+        session.delete(:invite)
+        return redirect_to('/invitation_complete')
+      end
       redirect_subject(subject)
     end
 
