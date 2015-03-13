@@ -14,7 +14,7 @@ RSpec.describe SubjectsController, type: :controller do
 
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('subjects/index') }
-    it { is_expected.to have_assigned(:objects, include(object)) }
+    it { is_expected.to have_assigned(:subjects, include(object)) }
 
     context 'as a non-admin' do
       let(:user) { create(:subject) }

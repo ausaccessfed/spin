@@ -3,7 +3,17 @@ class SubjectsController < ApplicationController
 
   def index
     check_access!('admin:subjects:list')
-    @objects = Subject.all
+    subjects_scope = Subject.all
+
+    if params[:filter].present?
+      subjects_scope = subjects_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    @subjects =
+      smart_listing_create(:subject, subjects_scope,
+                           partial: 'subjects/listing',
+                           default_sort: { name: 'asc' })
   end
 
   def show

@@ -5,51 +5,8 @@
     )
 %>
 
-<%= page_header('Users') %>
+<%= create_list_header("Users", subjects_path, 'Filter on Name') %>
 
-<table class="ui basic striped table">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Email Address</th>
-    <th>State</th>
-    <th>Functioning</th>
-    <th/>
-  </tr>
-  </thead>
+<div class="ui hidden divider"></div>
 
-  <tbody>
-  <%- @objects.each do |object| -%>
-    <tr>
-      <td><%= object.name %></td>
-      <td><%= mail_to(object.mail) %></td>
-      <td>
-        <%- if object.complete? -%>
-          <%= icon_tag('green checkmark') %> Active
-        <%- else -%>
-          <%= icon_tag('yellow warning sign') %> Pending Invitation
-        <%- end -%>
-      </td>
-      <td>
-        <%- if object.functioning? -%>
-          <%= icon_tag('green checkmark') %> Yes
-        <%- else -%>
-          <%= icon_tag('yellow warning sign') %> No
-        <%- end -%>
-      </td>
-      <td class="right aligned">
-        <%- if permitted?('admin:subjects:read') -%>
-          <%= button_link_to(object, class: 'tiny icon') do -%>
-            <%= icon_tag('content') %>
-            View
-          <%- end -%>
-        <%- end -%>
-
-        <%- if permitted?('admin:subjects:delete') -%>
-          <%= delete_button_tag(object) %>
-        <%- end -%>
-      </td>
-    </tr>
-  <%- end -%>
-  </tbody>
-</table>
+<%= smart_listing_render(:subject) %>
