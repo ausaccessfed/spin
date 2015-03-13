@@ -45,6 +45,5 @@
 <%- end -%>
 
 <%= validate_form('#invitation-form', :invitation) do -%>
-  <%= validate_field(:name, empty: 'Please enter a name for this invitation') %>
-  <%= validate_field(:mail, empty: 'Please enter an email for this invitation') %>
+  <%= auto_validate(@invitation, :name, :mail) %>
 <%- end -%>

@@ -33,6 +33,5 @@
 <%- end -%>
 
 <%= validate_form('#organisation-form', :organisation) do -%>
-  <%= validate_field(:name, empty: 'Please enter a name for this Organisation') %>
-  <%= validate_field(:unique_identifier, empty: 'Please enter a Unique Identifier for this Organisation') %>
+  <%= auto_validate(@organisation, :name, :unique_identifier) %>
 <%- end -%>

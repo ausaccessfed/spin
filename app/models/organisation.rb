@@ -1,4 +1,5 @@
 class Organisation < ActiveRecord::Base
+  include Lipstick::AutoValidation
   include Filterable
 
   audited

@@ -55,7 +55,7 @@
                 </p>)
 -%>
 <%= validate_form('#project-form', :project) do -%>
-  <%= validate_field(:name, empty: 'Please provide the project\'s name') %>
+  <%= auto_validate(@project, :name, :provider_arn) %>
   <%= validate_field(:provider_arn, provider_arn: message) %>
 <%- end -%>
 
