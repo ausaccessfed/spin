@@ -1,0 +1,62 @@
+<%- if smart_listing.collection.present? -%>
+  <table class="ui basic striped table">
+    <thead>
+    <tr>
+      <th><%= smart_listing.sortable "Name", :name %></th>
+      <th>Email</th>
+      <th/>
+    </tr>
+    </thead>
+    <tbody>
+    <%- smart_listing.collection.each do |subject| -%>
+      <tr>
+        <td><%= subject.name %></td>
+        <td><%= subject.mail %></td>
+        <td class="right aligned">
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
+            <%- if SubjectProjectRole.exists?(project_role_id: @project_role.id,
+                                              subject_id: subject.id) -%>
+
+              <%= button_tag(name: 'subject_project_roles[subject_id]',
+                             value: subject.id, class: 'tiny grey icon disabled') do -%>
+                <%= icon_tag('checkmark') %>
+                Granted
+              <%- end -%>
+            <%- else -%>
+              <%= form_for(@assoc, url: organisation_project_role_members_path(@organisation, @project, @project_role),
+                           html: {class: 'inline'}) do |f| -%>
+
+                <%= button_tag(name: 'subject_project_roles[subject_id]',
+                               value: subject.id, class: 'tiny green icon') do -%>
+                  <%= icon_tag('checkmark') %>
+                  Grant
+                <%- end -%>
+              <%- end -%>
+            <%- end -%>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+
+  <div class="ui grid">
+    <div class="five wide column">
+      <p>
+        A total of
+        <%= content_tag(:strong, smart_listing.count, class: "strong") %>
+        users match the current filter.
+      </p>
+    </div>
+    <div class="right aligned eleven wide column">
+      <%= smart_listing.paginate %>
+    </div>
+  </div>
+<%- else -%>
+  <div class="ui message">
+    <div class="header">
+      No Users found
+    </div>
+    <p>The current filter did not match any users.</p>
+  </div>
+<%- end -%>

@@ -30,6 +30,19 @@ class Subject < ActiveRecord::Base
     end
   end
 
+  def self.filter(query)
+    t = Subject.arel_table
+
+    query.to_s.downcase.split(/\s+/).map { |s| prepare_query(s) }
+      .reduce(Subject) do |a, e|
+        a.where(t[:name].matches(e))
+      end
+  end
+
+  def self.prepare_query(query)
+    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
+  end
+
   def functioning?
     enabled? && complete?
   end

@@ -57,6 +57,18 @@ class ProjectRoleController < ApplicationController
   def show
     check_access!("#{access_prefix}:read")
     @project_role = @project.project_roles.find(params[:id])
+
+    subjects_scope = @project_role.subjects
+
+    if params[:filter].present?
+      subjects_scope = subjects_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    @subjects =
+      smart_listing_create(:project_role_show, subjects_scope,
+                           partial: 'project_role/subject_listing',
+                           default_sort: { name: 'asc' })
   end
 
   def destroy

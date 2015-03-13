@@ -7,7 +7,19 @@ class SubjectProjectRolesController < ApplicationController
 
   def new
     check_access!("#{access_prefix}:grant")
-    @subjects = Subject.all
+
+    subjects_scope = Subject.all
+
+    if params[:filter].present?
+      subjects_scope = subjects_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    @subjects =
+      smart_listing_create(:subject_project_role, subjects_scope,
+                           partial: 'subject_project_roles/listing',
+                           default_sort: { name: 'asc' })
+
     @assoc = @project_role.subject_project_roles.new
   end
 
@@ -26,10 +38,10 @@ class SubjectProjectRolesController < ApplicationController
 
   def destroy
     check_access!("#{access_prefix}:revoke")
-    @assoc = @project_role.subject_project_roles.find(params[:id])
-    @assoc.destroy!
+    subject = Subject.find(params[:id])
+    @project_role.subjects.delete(subject)
 
-    flash[:success] = deletion_message(@assoc)
+    flash[:success] = deletion_message(subject)
 
     redirect_to(organisation_project_role_path(@organisation, @project,
                                                @project_role))
@@ -53,8 +65,8 @@ class SubjectProjectRolesController < ApplicationController
     "Granted #{@project_role.name} to #{assoc.subject.name}"
   end
 
-  def deletion_message(assoc)
-    "Revoked #{@project_role.name} from #{assoc.subject.name}"
+  def deletion_message(subject)
+    "Revoked #{@project_role.name} from #{subject.name}"
   end
 
   def access_prefix

@@ -1,0 +1,65 @@
+<%- if smart_listing.collection.present? -%>
+  <table class="ui basic striped table">
+    <thead>
+    <tr>
+      <th><%= smart_listing.sortable "Name", :name %></th>
+      <th>Email Address</th>
+      <th>Functioning</th>
+      <th/>
+    </tr>
+    </thead>
+    <tbody>
+    <%- smart_listing.collection.each do |subject| -%>
+      <tr>
+        <td><%= subject.name %></td>
+        <td><%= mail_to(subject.mail) %></td>
+        <td>
+          <%- if subject.functioning? -%>
+            <%= icon_tag('green checkmark') %>
+          <%- else -%>
+            <%= icon_tag('yellow warning sign') %>
+          <%- end -%>
+        </td>
+        <td class="right aligned">
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:revoke") -%>
+            <%= delete_button_tag(organisation_project_role_member_path(@organisation, @project, @project_role, subject),
+                                  text: 'Revoke') %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+
+  <div class="ui grid">
+    <div class="five wide column">
+      <p>
+        A total of
+        <%= content_tag(:strong, smart_listing.count, class: "strong") %>
+        users match the current filter.
+      </p>
+    </div>
+    <div class="right aligned eleven wide column">
+      <%= smart_listing.paginate %>
+    </div>
+  </div>
+
+<%- else -%>
+  <div class="ui message">
+    <div class="header">
+      No Users found
+    </div>
+    <p>The current filter did not match any users for this role.</p>
+  </div>
+<%- end -%>
+
+<%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
+  <%= button_link_to(new_organisation_project_role_member_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
+    <%= icon_tag('add') %>
+    Add User
+  <%- end -%>
+  <%= button_link_to(new_organisation_project_role_invitation_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
+    <%= icon_tag('send') %>
+    Invite by email
+  <%- end -%>
+<%- end -%>
