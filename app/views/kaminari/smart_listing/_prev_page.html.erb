@@ -7,7 +7,7 @@
     remote:        data-remote
 -%>
 <% unless current_page.first? %>
-  <%= link_to(url, rel: 'next', remote: remote, class: 'item') do %>
+  <%= link_to(url, rel: 'next', class: 'item') do %>
     <i class="angle left icon"></i>
   <% end %>
 <% end %>
