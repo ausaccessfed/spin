@@ -381,8 +381,8 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   rails (= 4.1.8)
-  rails-assets-jquery (~> 1.11)
-  rails-assets-semantic-ui (~> 1.11)
+  rails-assets-jquery (~> 1.11)!
+  rails-assets-semantic-ui (~> 1.11)!
   rapid-rack
   redis
   redis-rails

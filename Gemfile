@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 gem 'rails', '4.1.8'
 gem 'sass-rails', '~> 4.0.3'
@@ -9,8 +8,6 @@ gem 'therubyracer', require: false
 gem 'mysql2' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession',  '1.0.0'
-gem 'rails-assets-semantic-ui', '~> 1.11'
-gem 'rails-assets-jquery', '~> 1.11' # JQuery
 gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
                     branch: 'develop'
 
@@ -24,6 +21,11 @@ gem 'jbuilder'
 gem 'valhammer', '0.1.1'
 
 gem "smart_listing"
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-semantic-ui', '~> 1.11'
+  gem 'rails-assets-jquery', '~> 1.11' # JQuery
+end
 
 group :development, :test do
   gem 'spring',      '1.1.3'
