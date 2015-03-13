@@ -14,7 +14,7 @@ class ProjectsAdminController < ApplicationController
   end
 
   def list
-    check_access!("projects:list")
+    check_access!('projects:list')
 
     proj_scope = Project.all
     proj_scope = proj_scope.filter(params[:filter]) if params[:filter].present?
