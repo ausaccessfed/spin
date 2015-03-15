@@ -8,8 +8,7 @@ gem 'therubyracer', require: false
 gem 'mysql2' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession',  '1.0.0'
-gem 'aaf-lipstick', git: 'https://github.com/ausaccessfed/aaf-lipstick',
-                    branch: 'develop'
+gem 'aaf-lipstick', '1.1.0'
 
 gem 'god', require: false
 gem 'unicorn', require: false # Web container
