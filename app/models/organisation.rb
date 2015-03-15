@@ -1,4 +1,6 @@
 class Organisation < ActiveRecord::Base
+  include Filterable
+
   audited
   has_many :projects, dependent: :destroy
   valhammer
@@ -10,9 +12,5 @@ class Organisation < ActiveRecord::Base
       .reduce(Organisation) do |a, e|
         a.where(t[:name].matches(e).or(t[:unique_identifier].matches(e)))
       end
-  end
-
-  def self.prepare_query(query)
-    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
   end
 end

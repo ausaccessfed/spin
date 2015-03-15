@@ -2,6 +2,8 @@ class Project < ActiveRecord::Base
   PROVIDER_ARN_REGEX =
       /\Aarn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}\z/
 
+  include Filterable
+
   audited associated_with: :organisation
   has_associated_audits
 
@@ -24,10 +26,6 @@ class Project < ActiveRecord::Base
       .reduce(Project) do |a, e|
         a.where(t[:name].matches(e))
       end
-  end
-
-  def self.prepare_query(query)
-    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
   end
 
   private

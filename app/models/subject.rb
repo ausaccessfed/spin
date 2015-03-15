@@ -1,5 +1,6 @@
 class Subject < ActiveRecord::Base
   include Accession::Principal
+  include Filterable
 
   audited
   has_associated_audits
@@ -37,10 +38,6 @@ class Subject < ActiveRecord::Base
       .reduce(Subject) do |a, e|
         a.where(t[:name].matches(e))
       end
-  end
-
-  def self.prepare_query(query)
-    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
   end
 
   def functioning?

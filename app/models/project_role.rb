@@ -1,6 +1,8 @@
 class ProjectRole < ActiveRecord::Base
   ROLE_ARN_REGEX = /\Aarn:aws:iam::\d+:role\/[A-Za-z0-9\+\=\,\.\@\-\_]{1,64}\z/
 
+  include Filterable
+
   audited associated_with: :project
   has_associated_audits
 
@@ -25,10 +27,6 @@ class ProjectRole < ActiveRecord::Base
       .reduce(ProjectRole) do |a, e|
         a.where(t[:name].matches(e))
       end
-  end
-
-  def self.prepare_query(query)
-    (query.gsub('*', '%') + '%').gsub(/%+/, '%')
   end
 
   private
