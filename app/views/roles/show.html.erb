@@ -8,7 +8,8 @@
 
 <%= page_header("Members for #{@role.name}") %>
 
-<table class="ui basic compact table">
+<h3>Users</h3>
+<table class="ui basic striped table">
   <thead>
   <tr>
     <th>Member</th>
@@ -21,7 +22,7 @@
     <tr>
       <td><%= assoc.subject.name %></td>
       <td><%= mail_to(assoc.subject.mail) %></td>
-      <td>
+      <td class="right aligned">
         <%- if permitted?("admin:roles:revoke") -%>
           <%= delete_button_tag(role_member_path(@role, assoc),
                                 text: 'Revoke') %>
@@ -29,11 +30,24 @@
       </td>
     </tr>
   <%- end -%>
+  </tbody>
+</table>
+
+<h3>API Accounts</h3>
+<table class="ui basic striped table">
+  <thead>
+  <tr>
+    <th>CN</th>
+    <th>Email Address</th>
+    <th/>
+  </tr>
+  </thead>
+  <tbody>
   <%- @role.api_subject_roles.each do |assoc| -%>
     <tr>
       <td><%= assoc.api_subject.x509_cn %></td>
       <td><%= mail_to(assoc.api_subject.contact_mail) %></td>
-      <td>
+      <td class="right aligned">
         <%- if permitted?("admin:roles:revoke") -%>
           <%= delete_button_tag(role_api_member_path(@role, assoc),
                                 text: 'Revoke') %>
@@ -48,7 +62,7 @@
   <%- if permitted?("admin:roles:grant") -%>
     <%= button_link_to(new_role_member_path(@role), class: 'large green icon') do -%>
       <%= icon_tag('add') %>
-      Add Subject
+      Add User
     <%- end -%>
   <%- end -%>
 

@@ -3,6 +3,8 @@ AllCops:
   RunRailsCops: true
   Exclude:
     - db/schema.rb
+  Include:
+    - '**/*.thor'
 
 Documentation:
   Enabled: false
@@ -11,9 +13,14 @@ Style/FileName:
   Exclude:
     - bin/*
 
+Style/AccessorMethodName:
+  Exclude:
+   - api-client-demo/spin_api_client.thor
+
 Metrics/ClassLength:
   Exclude:
     - bin/api-ca
+    - api-client-demo/spin_api_client.thor
 
 Metrics/MethodLength:
   Exclude:
@@ -22,3 +29,7 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Exclude:
     - db/migrate/*.rb
+
+Metrics/LineLength:
+ Exclude:
+    - db/schema.rb

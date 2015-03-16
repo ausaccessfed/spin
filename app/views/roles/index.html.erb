@@ -7,7 +7,7 @@
 
 <%= page_header('Roles') %>
 
-<table class="ui basic compact table">
+<table class="ui basic striped table">
   <thead>
   <tr>
     <th>Name</th>
@@ -18,7 +18,7 @@
   <%- @roles.each do |role| -%>
     <tr>
       <td><%= role.name %></td>
-      <td>
+      <td class="right aligned">
         <%- if permitted?('admin:roles:read') -%>
           <%= button_link_to(role, class: 'tiny icon') do -%>
             <%= icon_tag('users') %>

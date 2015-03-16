@@ -7,6 +7,9 @@ RSpec.describe Project, type: :model do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:provider_arn) }
 
+  it { is_expected.to validate_length_of(:name).is_at_most(255) }
+  it { is_expected.to validate_length_of(:provider_arn).is_at_most(255) }
+
   context '#provider_arn' do
     context 'saml-provider section' do
       let(:iam) { Faker::Number.number(10) }
@@ -17,24 +20,24 @@ RSpec.describe Project, type: :model do
 
       it 'disallows 0 chars' do
         is_expected.to_not allow_value(provider_arn_string(
-                                           '')).for(:provider_arn)
+                                         '')).for(:provider_arn)
       end
 
       it 'allows alpha chars' do
         is_expected.to allow_value(provider_arn_string(
-                                       Faker::Lorem.word))
+                                     Faker::Lorem.word))
           .for(:provider_arn)
       end
 
       it 'allows 128 chars' do
         is_expected.to allow_value(provider_arn_string(
-                                       Faker::Lorem.characters(128)))
+                                     Faker::Lorem.characters(128)))
           .for(:provider_arn)
       end
 
       it 'allows alphanumeric chars' do
         is_expected.to allow_value(provider_arn_string(
-                                       Faker::Lorem.characters(50)))
+                                     Faker::Lorem.characters(50)))
           .for(:provider_arn)
       end
 
@@ -45,13 +48,13 @@ RSpec.describe Project, type: :model do
 
       it 'disallows 129 chars' do
         is_expected.to_not allow_value(provider_arn_string(
-                                           Faker::Lorem.characters(129)))
+                                         Faker::Lorem.characters(129)))
           .for(:provider_arn)
       end
 
       it 'disallows other symbol chars' do
         is_expected.to_not allow_value(provider_arn_string(
-                                           '~!@#$%^&*(')).for(:provider_arn)
+                                         '~!@#$%^&*(')).for(:provider_arn)
       end
     end
 
@@ -62,7 +65,7 @@ RSpec.describe Project, type: :model do
 
       it 'disallows 0 chars' do
         is_expected.to_not allow_value(
-                               provider_arn_string('')).for(:provider_arn)
+          provider_arn_string('')).for(:provider_arn)
       end
 
       it 'disallows alpha chars' do
@@ -77,9 +80,92 @@ RSpec.describe Project, type: :model do
 
       it 'allows numeric chars' do
         is_expected.to allow_value(provider_arn_string(
-                                           Faker::Number.number(10)))
+                                     Faker::Number.number(10)))
           .for(:provider_arn)
       end
+    end
+
+    context 'with whitespace' do
+      let(:provider_arn) { 'arn:aws:iam::1:saml-provider/1' }
+
+      context 'preceding' do
+        let(:provider_arn_preceding_whitespace) { ' ' + provider_arn }
+        it 'is allowed' do
+          is_expected.to allow_value(provider_arn_preceding_whitespace)
+            .for(:provider_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project,
+                   provider_arn: provider_arn_preceding_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.provider_arn).to eq(provider_arn)
+          end
+        end
+      end
+
+      context 'trailing' do
+        let(:provider_arn_trailing_whitespace) { provider_arn + ' ' }
+
+        it 'is allowed' do
+          is_expected.to allow_value(provider_arn_trailing_whitespace)
+            .for(:provider_arn)
+        end
+
+        context 'when persisting' do
+          subject do
+            create(:project,
+                   provider_arn: provider_arn_trailing_whitespace)
+          end
+          it 'trims the whitespace' do
+            expect(subject.provider_arn).to eq(provider_arn)
+          end
+        end
+      end
+    end
+  end
+
+  context '::filter' do
+    let(:project) { create(:project, name: 'Test Project') }
+    subject { Project.filter(search) }
+
+    shared_context 'a match' do
+      it 'includes the project' do
+        expect(subject).to include(project)
+      end
+    end
+
+    shared_context 'a nonmatch' do
+      it 'excludes the project' do
+        expect(subject).not_to include(project)
+      end
+    end
+
+    context 'prefix' do
+      let(:search) { 'Test' }
+      include_context 'a match'
+    end
+
+    context 'substring' do
+      let(:search) { 'Proj' }
+      include_context 'a match'
+    end
+
+    context 'multiword match' do
+      let(:search) { 'Project Test' }
+      include_context 'a match'
+    end
+
+    context 'nonmatch' do
+      let(:search) { 'Flarghn' }
+      include_context 'a nonmatch'
+    end
+
+    context 'nonmatch' do
+      let(:search) { 'Test Flarghn' }
+      include_context 'a nonmatch'
     end
   end
 

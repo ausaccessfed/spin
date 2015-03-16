@@ -8,6 +8,10 @@ RSpec.describe APISubject, type: :model do
 
   context 'validations' do
     subject { build(:api_subject) }
+    it { is_expected.to validate_length_of(:x509_cn).is_at_most(255) }
+    it { is_expected.to validate_length_of(:description).is_at_most(255) }
+    it { is_expected.to validate_length_of(:contact_name).is_at_most(255) }
+    it { is_expected.to validate_length_of(:contact_mail).is_at_most(255) }
 
     it { is_expected.to validate_presence_of(:x509_cn) }
     it { is_expected.to validate_uniqueness_of(:x509_cn) }

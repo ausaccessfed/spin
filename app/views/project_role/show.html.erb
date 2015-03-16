@@ -7,39 +7,10 @@
 
     )
 %>
-<%= page_header("Members for '#{@project_role.name}'") %>
 
-<table class="ui basic compact table">
-  <thead>
-  <tr>
-    <th>Member</th>
-    <th>Email Address</th>
-    <th/>
-  </tr>
-  </thead>
-  <tbody>
-  <%- @project_role.subject_project_roles.each do |assoc| -%>
-    <tr>
-      <td><%= assoc.subject.name %></td>
-      <td><%= mail_to(assoc.subject.mail) %></td>
-      <td>
-        <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:revoke") -%>
-          <%= delete_button_tag(organisation_project_role_member_path(@organisation, @project, @project_role, assoc),
-                                text: 'Revoke') %>
-        <%- end -%>
-      </td>
-    </tr>
-  <%- end -%>
-  </tbody>
-</table>
+<%= create_list_header("Users for role #{@project_role.name}",
+                       organisation_project_role_path(@organisation, @project, @project_role), 'Filter on Name') %>
 
-<div class="line-of-buttons">
+<div class="ui hidden divider"></div>
 
-  <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
-    <%= button_link_to(new_organisation_project_role_member_path(@organisation, @project, @project_role), class: 'large green icon') do -%>
-      <%= icon_tag('add') %>
-      Add Subject
-    <%- end -%>
-  <%- end -%>
-
-</div>
+<%= smart_listing_render(:project_role_show) %>

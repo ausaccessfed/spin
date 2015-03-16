@@ -1,3 +1,8 @@
 ---
 environment_string: 'Development'
+service_name: 'SPIN'
 login_jwt_secret: 'A long secret used to sign the internal JWT cookie'
+mail:
+  from: noreply@example.com
+  port: 1025
+  host: localhost

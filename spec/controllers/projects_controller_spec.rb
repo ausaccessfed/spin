@@ -27,8 +27,8 @@ RSpec.describe ProjectsController, type: :controller do
         include_context 'projects'
 
         before do
-          2.times { create_active_project(subject) }
-          5.times { create_inactive_project(subject) }
+          2.times { create_subject_project_role_for_active_project(subject) }
+          5.times { create_subject_project_role_for_inactive_project(subject) }
         end
 
         before do

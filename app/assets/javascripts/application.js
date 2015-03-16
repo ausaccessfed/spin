@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require semantic-ui
+//= require smart_listing
 //= require aaf-layout
 
 jQuery(function($) {
@@ -25,10 +26,12 @@ jQuery(function($) {
     };
 
     $.fn.form.settings.rules['provider_arn'] = function(value) {
-        return value.match(/^arn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}$/);
+        trimmed_value = $.trim(value)
+        return trimmed_value.match(/^arn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}$/);
     };
 
     $.fn.form.settings.rules['role_arn'] = function(value) {
-        return value.match(/^arn:aws:iam::\d+:role\/[A-Za-z0-9\+\=\,\.\@\-\_]{1,64}$/);
+        trimmed_value = $.trim(value)
+        return trimmed_value.match(/^arn:aws:iam::\d+:role\/[A-Za-z0-9\+\=\,\.\@\-\_]{1,64}$/);
     };
 });

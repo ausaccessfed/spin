@@ -21,6 +21,7 @@ module API
 
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :invalid_record
+    rescue_from ActionController::ParameterMissing, with: :bad_request
 
     protected
 

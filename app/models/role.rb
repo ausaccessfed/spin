@@ -1,4 +1,6 @@
 class Role < ActiveRecord::Base
+  include Lipstick::AutoValidation
+
   audited
 
   has_many :permissions, dependent: :destroy
@@ -8,5 +10,5 @@ class Role < ActiveRecord::Base
   has_many :subjects, through: :subject_roles
   has_many :api_subjects, through: :api_subject_roles
 
-  validates :name, presence: true
+  valhammer
 end

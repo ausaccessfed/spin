@@ -19,5 +19,5 @@
   </div>
 <%- end -%>
 <%= validate_form('#role-form', :role) do -%>
-  <%= validate_field(:name, empty: 'Please provide a role name') %>
+  <%= auto_validate(@role, :name) %>
 <%- end -%>

@@ -20,12 +20,12 @@ Status: 200 OK
         {
             "id": 1,
             "name": "Organisation 1",
-            "external_id": "ORG1"
+            "unique_identifier": "UniqueIdentifier1"
         },
         {
             "id": 2,
             "name": "Organisation 2",
-            "external_id": "ORG2"
+            "unique_identifier": "UniqueIdentifier2"
         }
     ]
 }
@@ -55,7 +55,7 @@ Request Body:
 {
    "organisation":{
       "name":"Org 1",
-      "external_id":"ExtID1"
+      "unique_identifier":"UniqueIdentifier1"
    }
 }
 ```
@@ -77,7 +77,7 @@ Request Body:
 {
    "organisation":{
       "name":"Org 1 - UPDATE",
-      "external_id":"ExtID1 - UPDATE"
+      "unique_identifier":"UniqueIdentifier1 - UPDATE"
    }
 }
 ```

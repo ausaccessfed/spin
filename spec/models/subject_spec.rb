@@ -13,8 +13,12 @@ RSpec.describe Subject, type: :model do
 
     it { is_expected.not_to validate_presence_of(:targeted_id) }
 
-    it { is_expected.to validate_presence_of(:shared_token) }
     it { is_expected.to validate_uniqueness_of(:shared_token) }
+
+    it { is_expected.to validate_length_of(:name).is_at_most(255) }
+    it { is_expected.to validate_length_of(:mail).is_at_most(255) }
+    it { is_expected.to validate_length_of(:targeted_id).is_at_most(255) }
+    it { is_expected.to validate_length_of(:shared_token).is_at_most(255) }
 
     context 'with a complete subject' do
       subject { build(:subject, complete: true) }
@@ -23,11 +27,19 @@ RSpec.describe Subject, type: :model do
       it { is_expected.to validate_presence_of(:shared_token) }
       it { is_expected.to validate_uniqueness_of(:shared_token) }
     end
+
+    context 'shared_token uniqueness' do
+      before { create(:subject, complete: false, shared_token: nil) }
+      subject { build(:subject, complete: false, shared_token: nil) }
+      it 'allows many nil shared_tokens' do
+        expect(subject).to be_valid
+      end
+    end
   end
 
   context '#functioning?' do
-    context 'when enabled' do
-      subject { create(:subject, enabled: true) }
+    context 'when enabled and complete' do
+      subject { create(:subject, enabled: true, complete: true) }
       it { is_expected.to be_functioning }
     end
 
@@ -69,6 +81,12 @@ RSpec.describe Subject, type: :model do
       subject { child.subject }
       it_behaves_like 'an association which cascades delete'
     end
+
+    context 'invitations' do
+      let(:child) { create(:invitation) }
+      subject { child.subject }
+      it_behaves_like 'an association which cascades delete'
+    end
   end
 
   describe '#active_project_roles' do
@@ -84,14 +102,14 @@ RSpec.describe Subject, type: :model do
     end
 
     context 'with an active project' do
-      before { create_active_project(subject) }
+      before { create_subject_project_role_for_active_project(subject) }
       it 'provides the project' do
         expect(projects.count).to eq(1)
       end
     end
 
     context 'with an inactive project' do
-      before { create_inactive_project(subject) }
+      before { create_subject_project_role_for_inactive_project(subject) }
       it 'does not provide the project' do
         expect(projects.count).to eq(0)
       end
@@ -99,12 +117,128 @@ RSpec.describe Subject, type: :model do
 
     context 'with multiple inactive and active projects' do
       before do
-        5.times { create_active_project(subject) }
-        2.times { create_inactive_project(subject) }
+        5.times { create_subject_project_role_for_active_project(subject) }
+        2.times { create_subject_project_role_for_inactive_project(subject) }
       end
       it 'provides the active project only' do
         expect(projects.count).to eq(5)
       end
+    end
+  end
+
+  describe '#outstanding_invitations' do
+    let!(:user) { create(:subject) }
+    subject { user.outstanding_invitations }
+    context 'with an outstanding invitiation' do
+      let!(:invitation) { create(:invitation, subject: user) }
+      it { is_expected.to eq([invitation]) }
+    end
+
+    context 'with no outstanding invitiations' do
+      let!(:invitation) { create(:invitation, subject: user, used: true) }
+      it { is_expected.to eq([]) }
+    end
+  end
+
+  describe '#accept' do
+    subject { create(:subject, complete: false) }
+
+    let(:attrs) do
+      attributes_for(:subject).slice(:name, :mail, :targeted_id, :shared_token)
+    end
+
+    let(:invitation) { create(:invitation, subject: subject) }
+
+    def run
+      subject.accept(invitation, attrs)
+    end
+
+    it 'updates the attributes' do
+      run
+      expect(subject.reload).to have_attributes(attrs)
+    end
+
+    it 'marks the invitation as used' do
+      expect { run }.to change { invitation.reload.used? }.to be_truthy
+    end
+
+    it 'marks the subject as complete' do
+      expect { run }.to change { subject.reload.complete? }.to be_truthy
+    end
+  end
+
+  describe '::find_by_federated_id' do
+    let!(:user) { create(:subject) }
+
+    it 'finds by targeted_id' do
+      obj = Subject.find_by_federated_id(targeted_id: user.targeted_id,
+                                         shared_token: 'garbage')
+
+      expect(obj).to eq(user)
+    end
+
+    it 'finds by shared_token' do
+      obj = Subject.find_by_federated_id(shared_token: user.shared_token,
+                                         targeted_id: 'garbage')
+
+      expect(obj).to eq(user)
+    end
+
+    it 'returns nil for missing object' do
+      obj = Subject.find_by_federated_id(shared_token: 'garbage',
+                                         targeted_id: 'garbage')
+
+      expect(obj).to be_nil
+    end
+
+    it 'raises an error for missing parameter' do
+      expect { Subject.find_by_federated_id(shared_token: 'x') }.to raise_error
+      expect { Subject.find_by_federated_id(targeted_id: 'x') }.to raise_error
+    end
+  end
+
+  context '::filter' do
+    let(:user) do
+      create(:subject, name: 'Test User')
+    end
+
+    subject { Subject.filter(search) }
+
+    shared_context 'a match' do
+      it 'includes the subject' do
+        expect(subject).to include(user)
+      end
+    end
+
+    shared_context 'a nonmatch' do
+      it 'excludes the subject' do
+        expect(subject).not_to include(user)
+      end
+    end
+
+    context 'prefix' do
+      let(:search) { 'Test' }
+      include_context 'a match'
+    end
+
+    context 'substring' do
+      let(:search) { 'User' }
+      include_context 'a match'
+    end
+
+    context 'multi word' do
+      let(:search) { 'User Test' }
+      include_context 'a match'
+    end
+
+    context 'nonmatching multi word' do
+      let(:search) { 'User Flarghn' }
+      include_context 'a nonmatch'
+    end
+
+    context 'nonmatch' do
+      let(:search) { 'Flarghn' }
+      include_context 'a nonmatch'
     end
   end
 end

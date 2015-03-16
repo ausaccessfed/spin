@@ -1,7 +1,17 @@
 class Organisation < ActiveRecord::Base
+  include Lipstick::AutoValidation
+  include Filterable
+
   audited
   has_many :projects, dependent: :destroy
+  valhammer
 
-  validates :name, :external_id, presence: true
-  validates :external_id, uniqueness: true
+  def self.filter(query)
+    t = Organisation.arel_table
+
+    query.to_s.downcase.split(/\s+/).map { |s| prepare_query(s) }
+      .reduce(Organisation) do |a, e|
+        a.where(t[:name].matches(e).or(t[:unique_identifier].matches(e)))
+      end
+  end
 end

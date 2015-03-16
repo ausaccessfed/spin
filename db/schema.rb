@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203051806) do
+ActiveRecord::Schema.define(version: 20150312005223) do
 
   create_table "api_subject_roles", force: true do |t|
     t.integer  "api_subject_id", null: false
@@ -67,14 +67,30 @@ ActiveRecord::Schema.define(version: 20150203051806) do
     t.datetime "updated_at"
   end
 
+  create_table "invitations", force: true do |t|
+    t.integer  "subject_id",                         null: false
+    t.string   "identifier",                         null: false
+    t.string   "name",                               null: false
+    t.string   "mail",                               null: false
+    t.boolean  "used",               default: false, null: false
+    t.datetime "expires",                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "last_email_sent_at"
+  end
+
+  add_index "invitations", ["identifier"], name: "index_invitations_on_identifier", unique: true, using: :btree
+  add_index "invitations", ["mail"], name: "index_invitations_on_mail", unique: true, using: :btree
+  add_index "invitations", ["subject_id"], name: "index_invitations_on_subject_id", using: :btree
+
   create_table "organisations", force: true do |t|
-    t.string   "name",        null: false
-    t.string   "external_id", null: false
+    t.string   "name",              null: false
+    t.string   "unique_identifier", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "organisations", ["external_id"], name: "index_organisations_on_external_id", unique: true, using: :btree
+  add_index "organisations", ["unique_identifier"], name: "index_organisations_on_unique_identifier", unique: true, using: :btree
 
   create_table "permissions", force: true do |t|
     t.integer  "role_id",    null: false
@@ -95,6 +111,7 @@ ActiveRecord::Schema.define(version: 20150203051806) do
   end
 
   add_index "project_roles", ["project_id"], name: "index_project_roles_on_project_id", using: :btree
+  add_index "project_roles", ["role_arn"], name: "index_project_roles_on_role_arn", unique: true, using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name",                           null: false
@@ -137,7 +154,7 @@ ActiveRecord::Schema.define(version: 20150203051806) do
     t.string   "remote_host"
     t.string   "remote_addr",     null: false
     t.string   "http_user_agent"
-    t.integer  "subject_id"
+    t.integer  "subject_id",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -148,14 +165,13 @@ ActiveRecord::Schema.define(version: 20150203051806) do
     t.string   "name",                         null: false
     t.string   "mail",                         null: false
     t.string   "targeted_id"
-    t.string   "shared_token",                 null: false
+    t.string   "shared_token"
     t.boolean  "complete",     default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "enabled",      default: true,  null: false
   end
 
-  add_index "subjects", ["mail"], name: "index_subjects_on_mail", unique: true, using: :btree
   add_index "subjects", ["shared_token"], name: "index_subjects_on_shared_token", unique: true, using: :btree
   add_index "subjects", ["targeted_id"], name: "index_subjects_on_targeted_id", using: :btree
 

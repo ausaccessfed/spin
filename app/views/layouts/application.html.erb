@@ -12,7 +12,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= aaf_header(title: 'SPIN', environment: environment_string) do -%>
+<%= aaf_header(title: SpinEnvironment.service_name, environment: SpinEnvironment.environment_string) do -%>
   <%= nav_bar do -%>
     <%- if @subject -%>
       <%= nav_item('Dashboard', dashboard_path) %>
@@ -23,11 +23,14 @@
     <%- if permitted?('organisations:list') -%>
       <%= nav_item('Organisations', organisations_path) %>
     <%- end -%>
+    <%- if permitted?('projects:list') -%>
+      <%= nav_item('AWS Projects', projects_list_path) %>
+    <%- end -%>
 
     <%- if permitted?('admin') -%>
       <%= nav_dropdown('Administration') do -%>
         <%- if permitted?('admin:subjects:list') -%>
-          <%= nav_item('Subjects', subjects_path) %>
+          <%= nav_item('Users', subjects_path) %>
         <%- end -%>
         <%- if permitted?('admin:api_subjects:list') -%>
           <%= nav_item('API Accounts', api_subjects_path) %>
@@ -40,7 +43,7 @@
 
     <%= nav_items_right do -%>
       <%- if @subject -%>
-        <%= nav_item('Log out', '/auth/logout') %>
+        <%= nav_item('Logout', '/auth/logout') %>
       <%- end -%>
     <%- end -%>
 
@@ -65,11 +68,9 @@
   <%- end -%>
 
   <p>
-    SPIN <strong><%= ApplicationHelper::VERSION %></strong>
-    <br>
-    Developed by Russell Ianniello, Bradley Beddoes and Shaun Mangelsdorf at
-    the <a href="http://www.aaf.edu.au">Australian Access Federation</a> for
-    member nodes of the <a href="https://www.rdsi.edu.au/">Research Data Storage Initiative</a>.
+    <strong><%= ApplicationHelper::VERSION %></strong>
+    <br/>
+    <br/>
   </p>
 <%- end -%>
 </body>

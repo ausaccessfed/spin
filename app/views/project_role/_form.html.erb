@@ -54,6 +54,6 @@
 -%>
 
 <%= validate_form('#project_role-form', :project_role) do -%>
-  <%= validate_field(:name, empty: 'Please provide a descriptive role name') %>
+  <%= auto_validate(@project_role, :name, :role_arn) %>
   <%= validate_field(:role_arn, role_arn: message) %>
 <%- end -%>

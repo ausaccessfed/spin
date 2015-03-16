@@ -1,0 +1,68 @@
+<%- if smart_listing.collection.present? -%>
+  <table class="ui basic striped table">
+    <thead>
+      <tr>
+        <th><%= smart_listing.sortable "Name", :name %></th>
+        <th>Role ARN</th>
+        <th/>
+      </tr>
+    </thead>
+    <tbody>
+      <%- smart_listing.collection.each do |project_role| -%>
+        <tr>
+          <td><%= project_role.name %></td>
+          <td><%= project_role.role_arn %></td>
+          <td class="right aligned">
+            <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:read") -%>
+              <%= button_link_to(organisation_project_role_path(@organisation, @project, project_role), class: 'tiny icon') do -%>
+                <%= icon_tag('users') %>
+                    Members
+              <%- end -%>
+            <%- end -%>
+
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:update") -%>
+            <%= button_link_to(edit_organisation_project_role_path(@organisation, @project, project_role), class: 'tiny icon') do -%>
+              <%= icon_tag('edit') %>
+              Edit
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:delete") -%>
+            <%= delete_button_tag(organisation_project_role_path(@organisation, @project, project_role)) %>
+          <%- end -%>
+        </td>
+      </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+
+  <div class="ui grid">
+    <div class="five wide column">
+      <p>
+        A total of
+        <%= content_tag(:strong, smart_listing.count, class: "strong") %>
+        roles match the current filter.
+      </p>
+    </div>
+    <div class="right aligned eleven wide column">
+      <%= smart_listing.paginate %>
+    </div>
+  </div>
+
+<%- else -%>
+  <div class="ui message">
+    <div class="header">
+      No Roles found
+    </div>
+    <p>The current filter did not match any roles for this project.</p>
+  </div>
+<%- end -%>
+
+<%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:create") -%>
+  <div class="ui hidden divider"></div>
+
+  <%= button_link_to(new_organisation_project_role_path, class: 'large green icon') do -%>
+    <%= icon_tag('add') %>
+    New Project Role
+  <%- end -%>
+<%- end -%>

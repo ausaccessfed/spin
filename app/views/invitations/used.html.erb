@@ -1,0 +1,22 @@
+<div class="ui welcome message">
+  <h1>Welcome to <%= SpinEnvironment.service_name %></h1>
+
+  <p>
+    Your invitation has <strong>already been accepted</strong>, so you no longer
+    require the invitation link from the original email. If you arrived here
+    from a bookmark, you should update your bookmark after clicking the button
+    below.
+  </p>
+
+  <div class="line-of-buttons">
+    <%= button_link_to(dashboard_path, class: 'blue icon') do -%>
+      <%= icon_tag('angle double right') %>
+      View Dashboard
+    <%- end -%>
+  </div>
+  <br/>
+  <p>
+    If you did not accept your invitation, please contact support for assistance:
+    <%= raw support_html %>
+  </p>
+</div>

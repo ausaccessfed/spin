@@ -2,8 +2,9 @@ class AWSSessionInstance < ActiveRecord::Base
   belongs_to :subject
   belongs_to :project_role
 
-  validates :subject, :project_role, presence: true
-  validates :identifier, presence: true, format: /\A[\w-]{40}\z/
+  valhammer
+
+  validates :identifier, format: /\A[\w-]{40}\z/
 
   after_initialize :generate_identifier
 

@@ -1,6 +1,10 @@
 class Project < ActiveRecord::Base
+  include Lipstick::AutoValidation
+
   PROVIDER_ARN_REGEX =
       /\Aarn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}\z/
+
+  include Filterable
 
   audited associated_with: :organisation
   has_associated_audits
@@ -8,14 +12,27 @@ class Project < ActiveRecord::Base
   belongs_to :organisation
   has_many :project_roles, dependent: :destroy
 
-  validates :organisation, :name, presence: true
+  valhammer
 
-  validates :provider_arn, presence: true,
-                           uniqueness: true,
-                           format: {
-                             with: PROVIDER_ARN_REGEX,
-                             message: 'format must be \'arn:aws:iam:' \
+  validates :provider_arn, format: {
+    with: PROVIDER_ARN_REGEX,
+    message: 'format must be \'arn:aws:iam:' \
                                       ':(number):saml-provider/(string)\'' }
 
-  validates :active, inclusion: { in: [true, false] }
+  before_validation :strip_provider_arn_whitespace
+
+  def self.filter(query)
+    t = Project.arel_table
+
+    query.to_s.downcase.split(/\s+/).map { |s| prepare_query(s) }
+      .reduce(Project) do |a, e|
+        a.where(t[:name].matches(e))
+      end
+  end
+
+  private
+
+  def strip_provider_arn_whitespace
+    self.provider_arn = provider_arn.strip if provider_arn
+  end
 end

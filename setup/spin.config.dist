@@ -3,8 +3,16 @@
 service_hostname: spin.example.org
 service_ip: 172.16.17.18
 
+# Freeform string for the service name. Shown in the application banner.
+service_name: 'SPIN'
+
 # Freeform string to describe the environment. Shown in the application banner.
 environment_string: 'My Node'
+
+# Mail delivery settings. Currently requires unauthenticated mail delivery
+# via localhost port 25
+mail:
+  from: noreply@example.com
 
 # After performing Rapid Connect registration, please contact support@aaf.edu.au
 # to request that your service be converted to an "auresearch" service before

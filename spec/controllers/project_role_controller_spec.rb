@@ -18,9 +18,10 @@ RSpec.describe ProjectRoleController, type: :controller do
   subject { response }
 
   context 'get :show' do
+    let(:params) { {} }
     before do
-      get :show, organisation_id: organisation.id, project_id: project.id,
-                 id: project_role.id
+      get :show, params.merge(organisation_id: organisation.id,
+                              project_id: project.id, id: project_role.id)
     end
 
     it { is_expected.to have_http_status(:ok) }
@@ -36,6 +37,23 @@ RSpec.describe ProjectRoleController, type: :controller do
       let(:user) {}
       it { is_expected.to have_http_status(:redirect) }
     end
+
+    context 'with a search term' do
+      let(:object) { create(:subject, name: 'Test User') }
+      let!(:subject_project_role) do
+        SubjectProjectRole.create(subject: object, project_role: project_role)
+      end
+
+      context 'matching' do
+        let(:params) { { filter: 'Test User' } }
+        it { is_expected.to have_assigned(:subjects, include(object)) }
+      end
+
+      context 'nonmatching' do
+        let(:params) { { filter: 'Not a Match' } }
+        it { is_expected.not_to have_assigned(:subjects, include(object)) }
+      end
+    end
   end
 
   context 'patch :update' do
@@ -47,7 +65,7 @@ RSpec.describe ProjectRoleController, type: :controller do
 
     it do
       is_expected.to redirect_to(organisation_project_roles_path(
-                                        organisation, project))
+                                   organisation, project))
     end
 
     it { is_expected.to have_assigned(:project_role, project_role) }
@@ -96,7 +114,7 @@ RSpec.describe ProjectRoleController, type: :controller do
       subject { response }
       it do
         is_expected.to redirect_to(organisation_project_roles_path(
-                                          organisation, project))
+                                     organisation, project))
       end
     end
 
@@ -206,9 +224,11 @@ RSpec.describe ProjectRoleController, type: :controller do
   end
 
   context 'get :index' do
+    let(:params) { {} }
+
     before do
-      get :index, organisation_id: organisation.id,
-                  project_id: project.id
+      get :index, params.merge(organisation_id: organisation.id,
+                               project_id: project.id)
     end
 
     it { is_expected.to have_http_status(:ok) }
@@ -223,6 +243,24 @@ RSpec.describe ProjectRoleController, type: :controller do
     context 'as a non admin' do
       let(:user) { create(:subject) }
       it { is_expected.to have_http_status(:forbidden) }
+    end
+
+    context 'with a search term' do
+      let(:project_role) do
+        create(:project_role, project: project, name: 'Test Project Role')
+      end
+
+      subject { assigns[:project_roles] }
+
+      context 'matching' do
+        let(:params) { { filter: 'Test Project Role' } }
+        it { is_expected.to include(project_role) }
+      end
+
+      context 'nonmatching' do
+        let(:params) { { filter: 'Not a Match' } }
+        it { is_expected.not_to include(project_role) }
+      end
     end
   end
 end

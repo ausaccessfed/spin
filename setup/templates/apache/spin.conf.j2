@@ -40,7 +40,10 @@ Listen {{ service_ip }}:8443
   SSLCertificateKeyFile   /opt/spin/keypairs/server.key
 
   SSLCACertificateFile    /opt/spin/keypairs/client-ca.crt
-  SSLVerifyClient         optional
+
+  <Location /api>
+    SSLVerifyClient       optional
+  </Location>
 
   RequestHeader set X509_DN "%{SSL_CLIENT_S_DN}s"
 

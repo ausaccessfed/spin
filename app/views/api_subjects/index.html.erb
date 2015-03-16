@@ -7,7 +7,7 @@
 
 <%= page_header('API Accounts') %>
 
-<table class="ui basic compact table">
+<table class="ui basic striped table">
   <thead>
   <tr>
     <th>X.509 CN</th>
@@ -28,7 +28,7 @@
           <%= icon_tag('yellow warning sign') %> No
         <%- end -%>
       </td>
-      <td>
+      <td class="right aligned">
         <%- if permitted?('admin:api_subjects:read') -%>
           <%= button_link_to(api_subject, class: 'tiny icon') do -%>
             <%= icon_tag('content') %>

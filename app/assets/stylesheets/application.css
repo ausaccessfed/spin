@@ -15,3 +15,13 @@
  *= require aaf-layout
  *= require_tree .
  */
+
+.sortable {
+  color: #333;
+}
+
+.sortable:hover {
+  color: #333;
+  text-decoration: none;
+  cursor:row-resize;
+}

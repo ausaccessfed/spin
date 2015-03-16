@@ -9,7 +9,7 @@ module API
 
     def to_map(organisation)
       organisation.attributes.symbolize_keys
-        .slice(:name, :id, :external_id)
+        .slice(:name, :id, :unique_identifier)
     end
 
     context 'post /api/organisations' do
@@ -35,7 +35,7 @@ module API
       let!(:organisation) { create(:organisation) }
       let(:updated_organisation) do
         build(:organisation,
-              external_id: organisation.external_id,
+              unique_identifier: organisation.unique_identifier,
               id: organisation.id)
       end
 
@@ -47,13 +47,7 @@ module API
       subject { -> { run } }
 
       it { is_expected.to change(Organisation, :count).by(0) }
-
-      context 'the updated organisation' do
-        it 'has the attributes' do
-          expect(to_map(organisation.reload))
-            .to eq(to_map(updated_organisation))
-        end
-      end
+      it { is_expected.to change { organisation.reload.name } }
 
       context 'the response' do
         before { run }
@@ -70,7 +64,8 @@ module API
       end
 
       def to_map(organisation)
-        organisation.attributes.symbolize_keys.slice(:name, :external_id, :id)
+        organisation.attributes.symbolize_keys.slice(:name, :unique_identifier,
+                                                     :id)
       end
 
       let(:json) { JSON.parse(response.body, symbolize_names: true) }

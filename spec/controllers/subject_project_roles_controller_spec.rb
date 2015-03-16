@@ -1,19 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe SubjectProjectRolesController, type: :controller do
-  let(:user) do
-    create(:subject, :authorized,
-           permission: "organisations:#{organisation.id}:" \
-                       "projects:#{project.id}:*")
+  def permission_string
+    "organisations:#{organisation.id}:projects:#{project.id}:*"
   end
-  let(:orig_attrs) { attributes_for(:project).except(:organisation) }
-  let(:organisation) { create(:organisation) }
-  let(:project) do
-    create(:project,
-           orig_attrs.merge(organisation: organisation))
-  end
-  let(:project_role) { create(:project_role, project_id: project.id) }
 
+  let(:user) { create(:subject, :authorized, permission: permission_string) }
+  let(:organisation) { create(:organisation) }
+  let(:project) { create(:project, organisation: organisation) }
+  let(:project_role) { create(:project_role, project_id: project.id) }
   let(:object) { create(:subject) }
   let(:base_params) do
     { role_id: project_role.id,
@@ -26,7 +21,8 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
   subject { response }
 
   context 'get :new' do
-    before { get :new, base_params }
+    let(:params) { {} }
+    before { get :new, base_params.merge(params) }
 
     it { is_expected.to have_assigned(:project_role, project_role) }
     it { is_expected.to have_http_status(:ok) }
@@ -40,6 +36,20 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
     context 'as a non-authenticated user' do
       let(:user) { nil }
       it { is_expected.to redirect_to('/auth/login') }
+    end
+
+    context 'with a search term' do
+      let(:object) { create(:subject, name: 'Test User') }
+
+      context 'matching' do
+        let(:params) { { filter: 'Test User' } }
+        it { is_expected.to have_assigned(:subjects, include(object)) }
+      end
+
+      context 'nonmatching' do
+        let(:params) { { filter: 'Not a Match' } }
+        it { is_expected.not_to have_assigned(:subjects, include(object)) }
+      end
     end
   end
 
@@ -99,13 +109,12 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
 
   context 'delete :destroy' do
     def run
-      delete :destroy, base_params.merge(id: assoc.id)
+      delete :destroy, base_params.merge(id: assoc.subject.id)
     end
 
     let!(:assoc) { create(:subject_project_role, project_role: project_role) }
     subject { -> { run } }
     it { is_expected.to have_assigned(:project_role, project_role) }
-    it { is_expected.to have_assigned(:assoc, assoc) }
     it { is_expected.to change(model_class, :count).by(-1) }
 
     context 'the response' do
