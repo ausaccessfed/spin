@@ -21,7 +21,8 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
   subject { response }
 
   context 'get :new' do
-    before { get :new, base_params }
+    let(:params) { {} }
+    before { get :new, base_params.merge(params) }
 
     it { is_expected.to have_assigned(:project_role, project_role) }
     it { is_expected.to have_http_status(:ok) }
@@ -35,6 +36,20 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
     context 'as a non-authenticated user' do
       let(:user) { nil }
       it { is_expected.to redirect_to('/auth/login') }
+    end
+
+    context 'with a search term' do
+      let(:object) { create(:subject, name: 'Test User') }
+
+      context 'matching' do
+        let(:params) { { filter: 'Test User' } }
+        it { is_expected.to have_assigned(:subjects, include(object)) }
+      end
+
+      context 'nonmatching' do
+        let(:params) { { filter: 'Not a Match' } }
+        it { is_expected.not_to have_assigned(:subjects, include(object)) }
+      end
     end
   end
 
@@ -94,13 +109,12 @@ RSpec.describe SubjectProjectRolesController, type: :controller do
 
   context 'delete :destroy' do
     def run
-      delete :destroy, base_params.merge(id: assoc.id)
+      delete :destroy, base_params.merge(id: assoc.subject.id)
     end
 
     let!(:assoc) { create(:subject_project_role, project_role: project_role) }
     subject { -> { run } }
     it { is_expected.to have_assigned(:project_role, project_role) }
-    it { is_expected.to have_assigned(:assoc, assoc) }
     it { is_expected.to change(model_class, :count).by(-1) }
 
     context 'the response' do

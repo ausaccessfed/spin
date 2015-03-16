@@ -5,58 +5,8 @@
     )
 %>
 
-<%= page_header("Projects for #{@organisation.name}") %>
+<%= create_list_header("Projects for #{@organisation.name}", organisation_projects_path(@organisation), 'Filter on Name') %>
 
-<table class="ui basic striped table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Provider ARN</th>
-      <th>Active</th>
-      <th/>
-    </tr>
-  </thead>
-  <tbody>
-    <%- @projects.each do |project| -%>
-      <tr>
-        <td><%= project.name %></td>
-        <td><%= project.provider_arn %></td>
-        <td>
-          <%- if project.active? -%>
-            <%= icon_tag('green checkmark') %> Yes
-          <%- else -%>
-            <%= icon_tag('yellow warning sign') %> No
-          <%- end -%>
-        </td>
-        <td class="right aligned">
-          <%- if permitted?("organisations:#{@organisation.id}:projects:#{project.id}:roles:list") -%>
-              <%= button_link_to(organisation_project_roles_path(@organisation, project), class: 'tiny icon') do -%>
-                  <%= icon_tag('lock icon') %>
-                  Project Roles
-              <%- end -%>
-          <%- end -%>
+<div class="ui hidden divider"></div>
 
-        <%- if permitted?("organisations:#{@organisation.id}:projects:update") -%>
-          <%= button_link_to([:edit, @organisation, project], class: 'tiny icon') do -%>
-            <%= icon_tag('edit') %>
-            Edit
-          <%- end -%>
-        <%- end -%>
-
-        <%- if permitted?("organisations:#{@organisation.id}:projects:delete") -%>
-          <%= delete_button_tag([@organisation, project]) %>
-        <%- end -%>
-      </td>
-    </tr>
-  <%- end -%>
-  </tbody>
-</table>
-
-<%- if permitted?("organisations:#{@organisation.id}:projects:create") -%>
-  <div class="line-of-buttons">
-    <%= button_link_to(new_organisation_project_path(@organisation), class: 'large green icon') do -%>
-      <%= icon_tag('add') %>
-      New Project
-    <%- end -%>
-  </div>
-<%- end -%>
+<%= smart_listing_render(:projects_admin) %>

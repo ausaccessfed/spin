@@ -6,7 +6,17 @@ class ProjectRoleController < ApplicationController
 
   def index
     check_access!("#{access_prefix}:list")
-    @project_roles = @project.project_roles.all
+
+    project_roles_scope = @project.project_roles.all
+
+    if params[:filter].present?
+      project_roles_scope = project_roles_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    @project_roles = smart_listing_create(:project_role, project_roles_scope,
+                                          partial: 'project_role/listing',
+                                          default_sort: { name: 'asc' })
   end
 
   def new
@@ -47,6 +57,7 @@ class ProjectRoleController < ApplicationController
   def show
     check_access!("#{access_prefix}:read")
     @project_role = @project.project_roles.find(params[:id])
+    @subjects = scope_subjects(@project_role)
   end
 
   def destroy
@@ -61,6 +72,19 @@ class ProjectRoleController < ApplicationController
   end
 
   private
+
+  def scope_subjects(project_role)
+    subjects_scope = project_role.subjects
+
+    if params[:filter].present?
+      subjects_scope = subjects_scope.filter(params[:filter])
+    end
+
+    @filter = params[:filter]
+    smart_listing_create(:project_role_show, subjects_scope,
+                         partial: 'project_role/subject_listing',
+                         default_sort: { name: 'asc' })
+  end
 
   def project_params
     params.require(:project_role).permit(:name, :role_arn, :state)

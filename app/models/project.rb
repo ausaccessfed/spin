@@ -2,6 +2,8 @@ class Project < ActiveRecord::Base
   PROVIDER_ARN_REGEX =
       /\Aarn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}\z/
 
+  include Filterable
+
   audited associated_with: :organisation
   has_associated_audits
 
@@ -16,6 +18,15 @@ class Project < ActiveRecord::Base
                                       ':(number):saml-provider/(string)\'' }
 
   before_validation :strip_provider_arn_whitespace
+
+  def self.filter(query)
+    t = Project.arel_table
+
+    query.to_s.downcase.split(/\s+/).map { |s| prepare_query(s) }
+      .reduce(Project) do |a, e|
+        a.where(t[:name].matches(e))
+      end
+  end
 
   private
 

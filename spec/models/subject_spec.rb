@@ -196,4 +196,49 @@ RSpec.describe Subject, type: :model do
       expect { Subject.find_by_federated_id(targeted_id: 'x') }.to raise_error
     end
   end
+
+  context '::filter' do
+    let(:user) do
+      create(:subject, name: 'Test User')
+    end
+
+    subject { Subject.filter(search) }
+
+    shared_context 'a match' do
+      it 'includes the subject' do
+        expect(subject).to include(user)
+      end
+    end
+
+    shared_context 'a nonmatch' do
+      it 'excludes the subject' do
+        expect(subject).not_to include(user)
+      end
+    end
+
+    context 'prefix' do
+      let(:search) { 'Test' }
+      include_context 'a match'
+    end
+
+    context 'substring' do
+      let(:search) { 'User' }
+      include_context 'a match'
+    end
+
+    context 'multi word' do
+      let(:search) { 'User Test' }
+      include_context 'a match'
+    end
+
+    context 'nonmatching multi word' do
+      let(:search) { 'User Flarghn' }
+      include_context 'a nonmatch'
+    end
+
+    context 'nonmatch' do
+      let(:search) { 'Flarghn' }
+      include_context 'a nonmatch'
+    end
+  end
 end

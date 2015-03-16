@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  include SmartListing::Helper::ControllerExtensions
+  helper SmartListing::Helper
+
   Forbidden = Class.new(StandardError)
   private_constant :Forbidden
   rescue_from Forbidden, with: :forbidden

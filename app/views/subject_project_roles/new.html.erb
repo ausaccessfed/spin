@@ -8,45 +8,9 @@
     )
 %>
 
-<%= page_header("Grant Project Role '#{@project_role.name}'") %>
+<%= create_list_header("Grant project role '#{@project_role.name}'",
+                       new_organisation_project_role_member_path(@organisation, @project, @project_role), 'Filter on Name') %>
 
-<table class="ui basic compact table">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Email</th>
-    <th/>
-  </tr>
-  </thead>
-  <tbody>
-  <%- @subjects.each do |subject| -%>
-    <tr>
-      <td><%= subject.name %></td>
-      <td><%= subject.mail %></td>
-      <td>
-        <%- if permitted?("organisations:#{@organisation.id}:projects:#{@project.id}:roles:grant") -%>
-          <%- if SubjectProjectRole.exists?(project_role_id: @project_role.id,
-                                            subject_id: subject.id) -%>
+<div class="ui hidden divider"></div>
 
-            <%= button_tag(name: 'subject_project_roles[subject_id]',
-                           value: subject.id, class: 'tiny grey icon disabled') do -%>
-              <%= icon_tag('checkmark') %>
-              Granted
-            <%- end -%>
-          <%- else -%>
-            <%= form_for(@assoc, url: organisation_project_role_members_path(@organisation, @project, @project_role),
-                         html: {class: 'inline'}) do |f| -%>
-
-              <%= button_tag(name: 'subject_project_roles[subject_id]',
-                             value: subject.id, class: 'tiny green icon') do -%>
-                <%= icon_tag('checkmark') %>
-                Grant
-              <%- end -%>
-            <%- end -%>
-          <%- end -%>
-        <%- end -%>
-      </td>
-    </tr>
-  <%- end -%>
-  </tbody>
-</table>
+<%= smart_listing_render(:subject_project_role) %>

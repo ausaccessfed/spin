@@ -47,13 +47,7 @@ module API
       subject { -> { run } }
 
       it { is_expected.to change(Organisation, :count).by(0) }
-
-      context 'the updated organisation' do
-        it 'has the attributes' do
-          expect(to_map(organisation.reload))
-            .to eq(to_map(updated_organisation))
-        end
-      end
+      it { is_expected.to change { organisation.reload.name } }
 
       context 'the response' do
         before { run }

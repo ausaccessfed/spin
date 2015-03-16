@@ -1,0 +1,70 @@
+<%- if smart_listing.collection.present? -%>
+  <table class="ui basic striped table">
+    <thead>
+    <tr>
+      <th><%= smart_listing.sortable "Name", :name %></th>
+      <th><%= smart_listing.sortable "Unique Identifier", :unique_identifier %></th>
+      <th/>
+    </tr>
+    </thead>
+    <tbody>
+    <%- smart_listing.collection.each do |organisation| -%>
+      <tr>
+        <td><%= organisation.name %></td>
+        <td><%= organisation.unique_identifier %></td>
+        <td class="right aligned">
+          <%- if permitted?("organisations:#{organisation.id}:projects:list") -%>
+            <%= button_link_to([organisation, :projects], class: 'tiny icon') do -%>
+              <%= icon_tag('folder outline icon') %>
+              Projects
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('organisations:update') -%>
+
+            <%= button_link_to([:edit, organisation], class: 'tiny icon') do -%>
+              <%= icon_tag('edit') %>
+              Edit
+            <%- end -%>
+          <%- end -%>
+
+          <%- if permitted?('organisations:delete') -%>
+            <%= delete_button_tag(organisation) %>
+          <%- end -%>
+
+        </td>
+      </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+
+  <div class="ui grid">
+    <div class="five wide column">
+      <p>
+        A total of
+        <%= content_tag(:strong, smart_listing.count, class: "strong") %>
+        organisations match the current filter.
+      </p>
+    </div>
+    <div class="right aligned eleven wide column">
+      <%= smart_listing.paginate %>
+    </div>
+  </div>
+
+<%- else -%>
+  <div class="ui message">
+    <div class="header">
+      No Organisations found
+    </div>
+    <p>The current filter did not match any Organisations.</p>
+  </div>
+<%- end -%>
+
+<%- if permitted?('organisations:create') -%>
+  <div class="ui hidden divider"></div>
+
+  <%= button_link_to(new_organisation_path, class: 'large green icon') do -%>
+    <%= icon_tag('add') %>
+    New Organisation
+  <%- end -%>
+<%- end -%>

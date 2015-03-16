@@ -127,6 +127,48 @@ RSpec.describe Project, type: :model do
     end
   end
 
+  context '::filter' do
+    let(:project) { create(:project, name: 'Test Project') }
+    subject { Project.filter(search) }
+
+    shared_context 'a match' do
+      it 'includes the project' do
+        expect(subject).to include(project)
+      end
+    end
+
+    shared_context 'a nonmatch' do
+      it 'excludes the project' do
+        expect(subject).not_to include(project)
+      end
+    end
+
+    context 'prefix' do
+      let(:search) { 'Test' }
+      include_context 'a match'
+    end
+
+    context 'substring' do
+      let(:search) { 'Proj' }
+      include_context 'a match'
+    end
+
+    context 'multiword match' do
+      let(:search) { 'Project Test' }
+      include_context 'a match'
+    end
+
+    context 'nonmatch' do
+      let(:search) { 'Flarghn' }
+      include_context 'a nonmatch'
+    end
+
+    context 'nonmatch' do
+      let(:search) { 'Test Flarghn' }
+      include_context 'a nonmatch'
+    end
+  end
+
   context 'associated objects' do
     context 'project_roles' do
       let(:child) { create(:project_role) }

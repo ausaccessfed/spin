@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require semantic-ui
+//= require smart_listing
 //= require aaf-layout
 
 jQuery(function($) {

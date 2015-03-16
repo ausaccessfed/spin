@@ -1,0 +1,51 @@
+<table class="ui basic striped table">
+  <thead>
+  <tr>
+    <th><%= smart_listing.sortable "Name", :name %></th>
+    <th>Email Address</th>
+    <th>Functioning</th>
+    <th/>
+  </tr>
+  </thead>
+
+  <tbody>
+  <%- smart_listing.collection.each do |subject| -%>
+    <tr>
+      <td><%= subject.name %></td>
+      <td><%= mail_to(subject.mail) %></td>
+      <td>
+        <%- if subject.functioning? -%>
+          <%= icon_tag('green checkmark') %>
+        <%- else -%>
+          <%= icon_tag('yellow warning sign') %>
+        <%- end -%>
+      </td>
+      <td class="right aligned">
+        <%- if permitted?('admin:subjects:read') -%>
+          <%= button_link_to(subject, class: 'tiny icon') do -%>
+            <%= icon_tag('content') %>
+            View
+          <%- end -%>
+        <%- end -%>
+
+        <%- if permitted?('admin:subjects:delete') -%>
+          <%= delete_button_tag(subject) %>
+        <%- end -%>
+      </td>
+    </tr>
+  <%- end -%>
+  </tbody>
+</table>
+
+<div class="ui grid">
+  <div class="five wide column">
+    <p>
+      A total of
+      <%= content_tag(:strong, smart_listing.count, class: "strong") %>
+      users match the current filter.
+    </p>
+  </div>
+  <div class="right aligned eleven wide column">
+    <%= smart_listing.paginate %>
+  </div>
+</div>
