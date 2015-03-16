@@ -49,7 +49,6 @@ module CreateInvitation
 
   def email_body(invitation)
     format(NEW_INVITATION_EMAIL_BODY,
-           url: accept_invitations_url(identifier: invitation.identifier),
-           service_name: SpinEnvironment.service_name)
+           url: accept_invitations_url(identifier: invitation.identifier))
   end
 end
