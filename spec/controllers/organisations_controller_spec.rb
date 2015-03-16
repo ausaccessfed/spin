@@ -160,7 +160,9 @@ RSpec.describe OrganisationsController, type: :controller do
   end
 
   context 'get :index' do
-    before { get :index }
+    let(:params) { {} }
+    before { get :index, params }
+
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('organisations/index') }
 
@@ -172,6 +174,22 @@ RSpec.describe OrganisationsController, type: :controller do
     context 'as a non admin' do
       let(:user) { create(:subject) }
       it { is_expected.to have_http_status(:forbidden) }
+    end
+
+    context 'with a search term' do
+      let(:organisation) { create(:organisation, name: 'Test Organisation') }
+
+      subject { assigns[:organisations] }
+
+      context 'matching' do
+        let(:params) { { filter: 'Test Organisation' } }
+        it { is_expected.to include(organisation) }
+      end
+
+      context 'nonmatching' do
+        let(:params) { { filter: 'Not a Match' } }
+        it { is_expected.not_to include(organisation) }
+      end
     end
   end
 end

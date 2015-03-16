@@ -9,8 +9,9 @@ RSpec.describe SubjectsController, type: :controller do
 
   context 'get :index' do
     let!(:object) { create(:subject) }
+    let(:params) { {} }
 
-    before { get :index }
+    before { get :index, params }
 
     it { is_expected.to have_http_status(:ok) }
     it { is_expected.to render_template('subjects/index') }
@@ -24,6 +25,20 @@ RSpec.describe SubjectsController, type: :controller do
     context 'with no user' do
       let(:user) { nil }
       it { is_expected.to redirect_to('/auth/login') }
+    end
+
+    context 'with a search term' do
+      let(:object) { create(:subject, name: 'Test User') }
+
+      context 'matching' do
+        let(:params) { { filter: 'Test User' } }
+        it { is_expected.to have_assigned(:subjects, include(object)) }
+      end
+
+      context 'nonmatching' do
+        let(:params) { { filter: 'Not a Match' } }
+        it { is_expected.not_to have_assigned(:subjects, include(object)) }
+      end
     end
   end
 
