@@ -48,5 +48,5 @@
 
 <%= validate_form('#api-subject', :api_subject) do -%>
   <%= auto_validate(@api_subject, :name, :x509_cn, :contact_name, :contact_mail ) %>
-  <%= validate_field(:x509_cn, urlsafe_base64: 'Please enter the CN of your API certificate issued by the AAF') %>
+  <%= validate_field(:x509_cn, urlsafe_base64: 'Please enter the CN of your API certificate issued by your administrator') %>
 <%- end -%>
