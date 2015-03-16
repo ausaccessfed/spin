@@ -45,5 +45,4 @@ RSpec.feature 'Listing all Projects', type: :feature do
   scenario 'shows the Delete link for the project' do
     expect(page).to have_link('Delete')
   end
-
 end
