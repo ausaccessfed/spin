@@ -14,6 +14,17 @@ module CreateInvitation
     Invitation.create!(attrs)
   end
 
+  def invitation_exists?(mail)
+    Invitation.exists?(mail: mail)
+  end
+
+  def invitation_exists_error(mail)
+    invite_name = Invitation.find_by_mail(mail).name
+    "The user '#{invite_name}' has already received an invite. If you can't"\
+    ' find that user in the system, they may have a different email'\
+    ' address associated with their account.'
+  end
+
   def deliver(invitation)
     Mail.deliver(to: invitation.mail,
                  from: Rails.application.config.spin_service.mail[:from],
@@ -33,12 +44,11 @@ module CreateInvitation
   end
 
   def new_invitation_message
-    "Invitation to #{SpinEnvironment.environment_string}"
+    "Invitation to #{SpinEnvironment.service_name}"
   end
 
   def email_body(invitation)
     format(NEW_INVITATION_EMAIL_BODY,
-           url: accept_invitations_url(identifier: invitation.identifier),
-           environment_string: SpinEnvironment.environment_string)
+           url: accept_invitations_url(identifier: invitation.identifier))
   end
 end

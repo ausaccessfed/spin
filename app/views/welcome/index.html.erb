@@ -1,7 +1,7 @@
 <%= javascript_include_tag params[:controller] %>
 <%= stylesheet_link_tag params[:controller] %>
 
-<%= page_header('Welcome to SPIN') %>
+<%= page_header("Welcome to #{SpinEnvironment.service_name}") %>
 
 <%= divider_tag %>
 <div class="ui grid">

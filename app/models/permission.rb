@@ -1,4 +1,6 @@
 class Permission < ActiveRecord::Base
+  include Lipstick::AutoValidation
+
   audited associated_with: :role
 
   belongs_to :role

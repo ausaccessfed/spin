@@ -196,7 +196,7 @@ module API
         end
 
         context 'an invitation for the email already exists' do
-          before { create(:invitation, mail: mail) }
+          let!(:invitation) { create(:invitation, mail: mail) }
           let(:mail) { Faker::Internet.email }
 
           it { is_expected.to change(Subject, :count).by(0) }
@@ -209,8 +209,12 @@ module API
             context 'body' do
               subject { response.body }
               it 'describes the error'do
-                is_expected.to eq("{\"error\":\"Validation failed: " \
-                 "Mail has already been taken\"}")
+                is_expected.to eq("{\"message\":\"The request parameters"\
+                " could not be successfully processed.\",\"error\":\"The"\
+                " user '#{invitation.name}' has already received an invite. "\
+                "If you can't find that user in the system, they may have a "\
+                'different email address associated with their'\
+                " account.\"}")
               end
             end
           end

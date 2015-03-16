@@ -1,4 +1,6 @@
 class Project < ActiveRecord::Base
+  include Lipstick::AutoValidation
+
   PROVIDER_ARN_REGEX =
       /\Aarn:aws:iam::\d+:saml-provider\/[A-Za-z0-9\.\_\-]{1,128}\z/
 

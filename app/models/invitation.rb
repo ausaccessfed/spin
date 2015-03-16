@@ -1,4 +1,5 @@
 class Invitation < ActiveRecord::Base
+  include Lipstick::AutoValidation
   audited
 
   belongs_to :subject

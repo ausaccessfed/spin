@@ -1,4 +1,6 @@
 class Role < ActiveRecord::Base
+  include Lipstick::AutoValidation
+
   audited
 
   has_many :permissions, dependent: :destroy

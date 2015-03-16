@@ -10,7 +10,7 @@
   <%= field_block do -%>
     <%= f.label :provider_arn do -%>
       Provider ARN
-      <%= field_help_text('The unique Provider ARN for this project assigned by AWS after SPIN Identity Provider registration is completed.') %>
+      <%= field_help_text('The unique Provider ARN for this project assigned by AWS after Identity Provider registration is completed.') %>
     <%- end -%>
     <%= f.text_field :provider_arn %>
   <%- end -%>
@@ -42,11 +42,11 @@
 <%- end -%>
 
 <%-
-  message = %Q( <p>Provider ARN is a unique code created by AWS when projects correctly register the SPIN Identity Provider.</p>
+  message = %Q( <p>Provider ARN is a unique code created by AWS when projects correctly register your Identity Provider.</p>
 
                 <p>
                   To obtain this value visit the 'Identity and Access Management' > 'Identity Providers' page within the AWS console
-                  and navigate to the record for the SPIN Identity Provider (usually called 'SPIN').
+                  and navigate to the record for your Identity Provider.
                 </p>
 
                 <p>
@@ -55,7 +55,7 @@
                 </p>)
 -%>
 <%= validate_form('#project-form', :project) do -%>
-  <%= validate_field(:name, empty: 'Please provide the project\'s name') %>
+  <%= auto_validate(@project, :name, :provider_arn) %>
   <%= validate_field(:provider_arn, provider_arn: message) %>
 <%- end -%>
 

@@ -392,6 +392,19 @@ module Authentication
           expect(subject).to eq([302, { 'Location' => '/dashboard' }, []])
         end
       end
+
+      context 'with the invite flag set' do
+        before { receiver.finish(env) }
+        let(:env) do
+          { 'rack.session' =>
+                { 'subject_id' => user.id,
+                  invite: SecureRandom.urlsafe_base64(19) }
+          }
+        end
+        it 'is reset' do
+          expect(env['rack.session'].key?(:invite)).to be_falsey
+        end
+      end
     end
   end
 end

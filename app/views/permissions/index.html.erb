@@ -45,5 +45,5 @@
 <%- end -%>
 
 <%= validate_form('#new-permission', :permission) do -%>
-  <%= validate_field(:value, empty: 'Please provide a Permission String') %>
+  <%= auto_validate(@new_permission, :value) %>
 <%- end -%>

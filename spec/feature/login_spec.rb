@@ -12,11 +12,17 @@ RSpec.feature 'Visiting the welcome page', type: :feature do
     Sanitize.clean(sanitised_text)
   end
 
+  given(:spin_cfg_hash) do
+    YAML.load_file(
+      Rails.root.join('config/spin_service.yml'))
+  end
+  given(:spin_cfg_os) { OpenStruct.new(spin_cfg_hash) }
+
   context 'visiting /' do
     before { visit '/' }
 
     scenario 'displays welcome text' do
-      expect(page).to have_text('Welcome to SPIN')
+      expect(page).to have_text("Welcome to #{spin_cfg_os.service_name}")
       expect(page).to have_link('Welcome')
     end
 

@@ -1,5 +1,6 @@
 class APISubject < ActiveRecord::Base
   include Accession::Principal
+  include Lipstick::AutoValidation
 
   audited
   has_associated_audits

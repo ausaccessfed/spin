@@ -1,4 +1,6 @@
 class ProjectRole < ActiveRecord::Base
+  include Lipstick::AutoValidation
+
   ROLE_ARN_REGEX = /\Aarn:aws:iam::\d+:role\/[A-Za-z0-9\+\=\,\.\@\-\_]{1,64}\z/
 
   include Filterable
