@@ -3,6 +3,9 @@
 service_hostname: spin.example.org
 service_ip: 172.16.17.18
 
+# Freeform string for the service name. Shown in the application banner.
+service_name: 'SPIN'
+
 # Freeform string to describe the environment. Shown in the application banner.
 environment_string: 'My Node'
 
