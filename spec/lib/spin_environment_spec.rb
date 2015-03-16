@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe SpinEnvironment do
-  let(:spin_cfg_hash) { YAML.load_file(
-      Rails.root.join('config/spin_service.yml')) }
+  let(:spin_cfg_hash) do
+    YAML.load_file(
+      Rails.root.join('config/spin_service.yml'))
+  end
   let(:spin_cfg_os) { OpenStruct.new(spin_cfg_hash) }
 
   describe '#environment_string' do
