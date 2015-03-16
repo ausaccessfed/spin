@@ -43,7 +43,7 @@
 <h2>Administration</h2>
   <p>Your granted access rights allow you to administer the following components</p>
   <div class="ui relaxed vertical list">
-    <%- if permitted?('organisations') -%>
+    <%- if permitted?('organisations:list') -%>
       <div class="item">
         <div class="ui middle aligned image">
           <%= link_to(organisations_path) do %>
@@ -53,6 +53,19 @@
         <div class="content">
           <div class="ui header"><%= link_to('Organisations', organisations_path) %></div>
           Operate AWS projects
+        </div>
+      </div>
+    <%- end -%>
+    <%- if permitted?('projects:list') -%>
+      <div class="item">
+        <div class="ui middle aligned image">
+          <%= link_to(projects_list_path) do %>
+            <i class="bordered big cubes icon"></i>
+          <% end %>
+        </div>
+        <div class="content">
+          <div class="ui header"><%= link_to('AWS Projects', projects_list_path) %></div>
+          All registered AWS projects
         </div>
       </div>
     <%- end -%>

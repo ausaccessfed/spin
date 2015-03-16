@@ -23,6 +23,9 @@
     <%- if permitted?('organisations:list') -%>
       <%= nav_item('Organisations', organisations_path) %>
     <%- end -%>
+    <%- if permitted?('projects:list') -%>
+      <%= nav_item('AWS Projects', projects_list_path) %>
+    <%- end -%>
 
     <%- if permitted?('admin') -%>
       <%= nav_dropdown('Administration') do -%>
