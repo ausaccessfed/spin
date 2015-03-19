@@ -5,8 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <title>SPIN by ausaccessfed</title>
 
-  <link rel="stylesheet" href="{{site.baseurl}}/stylesheets/styles.css">
-  <link rel="stylesheet" href="{{site.baseurl}}/stylesheets/pygment_trac.css">
+  <link rel="stylesheet" href="{{site.url}}/stylesheets/styles.css">
+  <link rel="stylesheet" href="{{site.url}}/stylesheets/pygment_trac.css">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, user-scalable=no">
   <!--[if lt IE 9]>
@@ -22,45 +22,45 @@
 
     <ul>
       <li>
-        <a href="{{site.baseurl}}/README.html">Installation</a>
+        <a href="{{site.url}}/README.html">Installation</a>
         {% if page.url == "/README.html" %} <div id="toc"></div> {% endif %}
       </li>
       <li>
-        <a href="{{site.baseurl}}/doc/api/v1/README.html">API</a>
+        <a href="{{site.url}}/doc/api/v1/README.html">API</a>
         <ul>
           <li>
-            <a href="{{site.baseurl}}/doc/api/v1/README.html">Overview</a>
+            <a href="{{site.url}}/doc/api/v1/README.html">Overview</a>
             {% if page.url == "/doc/api/v1/README.html" %} <div id="toc"></div> {% endif %}
           </li>
           <li>
-            <a href="{{site.baseurl}}/doc/api/v1/endpoints.html">Endpoints</a>
+            <a href="{{site.url}}/doc/api/v1/endpoints.html">Endpoints</a>
             {% if page.url contains "/doc/api/v1/endpoints" %}
             <ul>
               <li>
-                <a href="{{site.baseurl}}/doc/api/v1/endpoints/subjects.html">Subjects</a>
+                <a href="{{site.url}}/doc/api/v1/endpoints/subjects.html">Subjects</a>
                 {% if page.url == "/doc/api/v1/endpoints/subjects.html" %} <div id="toc"></div> {% endif %}
               </li>
               <li>
-                <a href="{{site.baseurl}}/doc/api/v1/endpoints/organisations.html">Organisations</a>
+                <a href="{{site.url}}/doc/api/v1/endpoints/organisations.html">Organisations</a>
                 {% if page.url == "/doc/api/v1/endpoints/organisations.html" %} <div id="toc"></div> {% endif %}
               </li>
               <li>
-                <a href="{{site.baseurl}}/doc/api/v1/endpoints/projects.html">Projects</a>
+                <a href="{{site.url}}/doc/api/v1/endpoints/projects.html">Projects</a>
                 {% if page.url == "/doc/api/v1/endpoints/projects.html" %} <div id="toc"></div> {% endif %}
               </li>
               <li>
-                <a href="{{site.baseurl}}/doc/api/v1/endpoints/project_roles.html">Project Roles</a>
+                <a href="{{site.url}}/doc/api/v1/endpoints/project_roles.html">Project Roles</a>
                 {% if page.url == "/doc/api/v1/endpoints/project_roles.html" %} <div id="toc"></div> {% endif %}
               </li>
               <li>
-                <a href="{{site.baseurl}}/doc/api/v1/endpoints/subject_project_roles.html">Subject / ProjectRole</a>
+                <a href="{{site.url}}/doc/api/v1/endpoints/subject_project_roles.html">Subject / ProjectRole</a>
                 {% if page.url == "/doc/api/v1/endpoints/subject_project_roles.html" %} <div id="toc"></div> {% endif %}
               </li>
             </ul>
             {% endif %}
           </li>
           <li>
-            <a href="{{site.baseurl}}/api-client-demo/README.html">Example Client</a>
+            <a href="{{site.url}}/api-client-demo/README.html">Example Client</a>
             {% if page.url == "/api-client-demo/README.html" %} <div id="toc"></div> {% endif %}
           </li>
         </ul>
@@ -82,9 +82,9 @@
     {{ content }}
   </section>
 </div>
-<script src="{{site.baseurl}}/javascripts/scale.fix.js"></script>
+<script src="{{site.url}}/javascripts/scale.fix.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="{{site.baseurl}}/javascripts/toc.js"></script>
+<script src="{{site.url}}/javascripts/toc.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     $('#toc').toc({ listType: 'ul',
