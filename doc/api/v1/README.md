@@ -50,6 +50,8 @@ All requests to the API are logged for future audit purposes against the verifie
 ### Security Issues
 Should you become aware of a problem with your client certificate you **MUST** advise your technical support team as soon as you're aware of it so it can be revoked.
 
+---
+
 ## HTTP Redirects
 
 The API uses HTTP redirection where appropriate. Clients should assume that any request may result in a redirection. Receiving an HTTP redirection is not an error and clients should follow that redirect. Redirect responses will have a Location header field which contains the URI of the resource to which the client should repeat the requests.
