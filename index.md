@@ -1,6 +1,9 @@
 ---
 ---
 
+### SPIN provides a means for researchers to authenticate via the AAF to access to a project account in Amazon Web Services (AWS).
+---
+
 ## Deployment configuration
 
 Begin with a minimal CentOS 7 installation. Recommended machine specifications

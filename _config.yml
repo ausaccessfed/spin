@@ -3,6 +3,7 @@ encoding: utf-8
 highlighter: pygments
 safe: true
 lsi: false
+baseurl: /spin
 
 kramdown:
   input: GFM
