@@ -9,6 +9,8 @@ If you have any problems please contact your technical support team for SPIN.
 
 All API access is over HTTPS without exception. All data is sent and received as JSON.
 
+---
+
 ## Specifying API version
 
 You **MUST** supply an Accept header with all API requests. It **MUST** specify the version of API which your client is expecting to communicate with.
@@ -22,6 +24,8 @@ Change *within* a version number will only be **by extension**, either with addi
 Either of these changes should not impact well behaved clients that correctly parse and use JSON as intended.
 
 All clients **MUST** be well behaved, extensions to the API will not be broadcast in advance.
+
+---
 
 ## Authentication
 All clients **MUST** posses and supply a valid SSL certificate signed by the AAF Certificate Authority for the federation in which they are operating to establish their validity. For current details on certificate generation and signing contact your technical support team who will work with you to securely complete the request.
@@ -56,6 +60,8 @@ The following redirect responses are possible:
 2. 307, Temporary redirection: The request should be repeated to the URI specified in the Location header field, *including the request type*, but clients should continue to use the original URI for future requests.
 
 Other redirection status codes may be used and if so are done in accordance with the HTTP 1.1 spec.
+
+---
 
 ## Client Errors
 
