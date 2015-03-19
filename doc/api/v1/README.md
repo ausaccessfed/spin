@@ -1,4 +1,5 @@
-# Overview
+---
+---
 
 This describes the resources that make up the SPIN API v1.
 
@@ -89,17 +90,3 @@ There are three possible types of client errors on API calls that receive reques
 
 Responses to client errors **SHOULD** contain JSON with the *message* field completed providing a general indication of what went wrong. In circumstances where SPIN wishes to supplement the message field with technical specifics of error it will provide the more verbose **error** field.
 
-## Available endpoints
-The information supplied thus far is applicable to **all endpoints provided** by the SPIN API.
-
-Specific details on interacting with supplied endpoint categories are provided in the following documents:
-
-1. [Subjects](subjects.md)
-2. [Organisations](organisations.md)
-3. [Projects](projects.md)
-4. [ProjectRoles](project_roles.md)
-5. [Subject / ProjectRole association](subject_project_roles.md)
-
-## SPIN API Client
-
-See [Sample SPIN API Client](../../../api-client-demo/README.md).

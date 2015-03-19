@@ -1,12 +1,14 @@
-# Subject / ProjectRole association)
+---
+---
 
-## Associate Subject with Project Roles
+## Associate
 
 ```
 POST /api/organisations/:id/projects/:id/roles/:id/members
 Content-Type: application/json
 ```
 Request Body:
+
 ```json
 {
    "subject_project_roles":{
@@ -21,7 +23,7 @@ Request Body:
 Status: 201 OK
 ```
 
-## Disassociate Subject and Project Roles
+## Disassociate
 
 ```
 DELETE /api/organisations/:id/projects/:id/roles/:id/members/:subject_id

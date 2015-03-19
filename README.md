@@ -1,6 +1,5 @@
-# SPIN
-
-SPIN provides a means for researchers to authenticate via the AAF to access to a project account in Amazon Web Services (AWS)
+---
+---
 
 ## Deployment configuration
 
@@ -31,7 +30,7 @@ Steps:
     If you have a zip archive, extract it to `/opt`. This will create `/opt/spin` with the necessary directory structure beneath.
 
     Alternatively, you clone from git directly:
-    ```shell
+    ```bash
     git clone https://github.com/ausaccessfed/spin.git /opt/spin/app
     ```
     N.B. The destination path of `/opt/spin/app` is required.
@@ -56,7 +55,7 @@ Steps:
     - `/opt/spin/app/setup/assets/apache/intermediate.crt`
 
 4.  Bootstrap the platform:
-    ```shell
+    ```bash
     [root@spin ~]# cd /opt/spin/app/setup
     [root@spin setup]# sh init.sh
     ```
@@ -164,7 +163,7 @@ https://<<your spin host>>/idp/profile/Metadata/SAML
 8. Under **Roles** / **Administrator**, the **Role ARN** shown should be
    assigned to the project role in SPIN.
 
-# Issuing an API Certificate
+## Issuing an API Certificate
 
 A simple tool is provided to help with issuing API certificates. As part of
 installation, a CA is created for you in `/opt/spin/ca`. The tool accepts an
@@ -203,35 +202,3 @@ Do you wish to sign this request? (yes/no) yes
 ...
 ```
 You would enter **`2AC8MfGxTR40WRmLw6H8ZNyjPcRqsmLNdX_DK0-c`** into the UI when requested.
-
-# Developer Notes
-
-## Seeding the database
-
-After logging into the application, the following steps will create some useful
-sample data:
-
-```ruby
-s = Subject.first
-r = Role.first
-
-o = Organisation.create!(name: "Test Org", unique_identifier: "ID1" )
-p = Project.create!(name:"Test Proj 1", provider_arn: "arn:aws:iam::1:saml-provider/1", active: true, organisation_id: o.id)
-pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "arn:aws:iam::1:role/1", project_id: p.id)
-spr = SubjectProjectRole.create!(subject_id: s.id, project_role_id: pr.id)
-sr = SubjectRole.create!(subject_id:Subject.last.id, role_id:r.id)
-```
-
-## Packaging SPIN
-
-*This is intended for SPIN developers, and documents the process of creating the
-SPIN distribution archive used in Step 2 of the deployment process.*
-
-```shell
-git archive --prefix=spin/app/ HEAD | gzip -c > spin.tar.gz
-```
-
-## SPIN API Client
-
-See [Sample SPIN API Client](api-client-demo/README.md).
-

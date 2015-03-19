@@ -1,3 +1,5 @@
+---
+---
 # Overview
 
 This document provides an overview of the [Example SPIN API client](spin_api_client.thor).

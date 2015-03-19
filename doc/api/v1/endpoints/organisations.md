@@ -1,6 +1,7 @@
-# Organisations
+---
+---
 
-## List Organisations
+## List
 
 List all Organisations
 
@@ -31,7 +32,7 @@ Status: 200 OK
 }
 ```
 
-## Delete Organisation
+## Delete
 
 Delete Organisation by id
 
@@ -44,7 +45,7 @@ DELETE /api/organisations/:id
 Status: 200 OK
 ```
 
-## Create Organisation
+## Create
 
 ```
 POST /api/organisations
@@ -66,7 +67,7 @@ Request Body:
 Status: 201 OK
 ```
 
-## Update Organisation
+## Update
 
 ```
 PATCH /api/organisations/:id

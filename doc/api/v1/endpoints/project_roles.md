@@ -1,6 +1,8 @@
-# Project Roles
+---
+---
 
-## List Project Roles
+
+## List
 
 List all Project Roles
 
@@ -27,7 +29,7 @@ Status: 200 OK
 }
 ```
 
-## Delete Project Role
+## Delete
 
 Delete Project Role by id
 
@@ -40,7 +42,7 @@ DELETE /api/organisations/:id/projects/:id/roles/:id
 Status: 200 OK
 ```
 
-## Create Project Role
+## Create
 
 ```
 POST /api/organisations/:id/projects/:id/roles
@@ -62,7 +64,7 @@ Request Body:
 Status: 201 OK
 ```
 
-## Update Project Role
+## Update
 
 ```
 PATCH /api/organisations/:id/projects/:id/roles/:id

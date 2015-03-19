@@ -57,4 +57,5 @@ group :development, :test do
                      branch: 'develop'
 
   gem 'rest-client'
+  gem 'jekyll'
 end

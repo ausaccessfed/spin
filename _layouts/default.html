@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>SPIN by ausaccessfed</title>
+
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/pygment_trac.css">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, user-scalable=no">
+  <!--[if lt IE 9]>
+  <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <h1>SPIN</h1>
+
+    <p>SAML Provisioning for Independent Nodes</p>
+
+    <ul>
+      <li>
+        <a href="{{site.baseurl}}/README.html">Installation</a>
+        {% if page.url == "/README.html" %} <div id="toc"></div> {% endif %}
+      </li>
+      <li>
+        <a href="{{site.baseurl}}/doc/api/v1/README.html">API</a>
+        <ul>
+          <li>
+            <a href="{{site.baseurl}}/doc/api/v1/README.html">Overview</a>
+            {% if page.url == "/doc/api/v1/README.html" %} <div id="toc"></div> {% endif %}
+          </li>
+          <li>
+            <a href="{{site.baseurl}}/doc/api/v1/endpoints.html">Endpoints</a>
+            {% if page.url contains "/doc/api/v1/endpoints" %}
+            <ul>
+              <li>
+                <a href="{{site.baseurl}}/doc/api/v1/endpoints/subjects.html">Subjects</a>
+                {% if page.url == "/doc/api/v1/endpoints/subjects.html" %} <div id="toc"></div> {% endif %}
+              </li>
+              <li>
+                <a href="{{site.baseurl}}/doc/api/v1/endpoints/organisations.html">Organisations</a>
+                {% if page.url == "/doc/api/v1/endpoints/organisations.html" %} <div id="toc"></div> {% endif %}
+              </li>
+              <li>
+                <a href="{{site.baseurl}}/doc/api/v1/endpoints/projects.html">Projects</a>
+                {% if page.url == "/doc/api/v1/endpoints/projects.html" %} <div id="toc"></div> {% endif %}
+              </li>
+              <li>
+                <a href="{{site.baseurl}}/doc/api/v1/endpoints/project_roles.html">Project Roles</a>
+                {% if page.url == "/doc/api/v1/endpoints/project_roles.html" %} <div id="toc"></div> {% endif %}
+              </li>
+              <li>
+                <a href="{{site.baseurl}}/doc/api/v1/endpoints/subject_project_roles.html">Subject / ProjectRole</a>
+                {% if page.url == "/doc/api/v1/endpoints/subject_project_roles.html" %} <div id="toc"></div> {% endif %}
+              </li>
+            </ul>
+            {% endif %}
+          </li>
+          <li>
+            <a href="{{site.baseurl}}/api-client-demo/README.html">Example Client</a>
+            {% if page.url == "/api-client-demo/README.html" %} <div id="toc"></div> {% endif %}
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <br/>
+    <br/>
+    <p>This project is maintained by <a href="https://github.com/ausaccessfed">ausaccessfed</a>
+    </p>
+
+    <p class="view"><a href="https://github.com/ausaccessfed/spin">View the
+      Project on GitHub
+      <small>ausaccessfed/spin</small>
+    </a>
+    </p>
+
+  </header>
+  <section>
+    {{ content }}
+  </section>
+</div>
+<script src="/javascripts/scale.fix.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="/javascripts/toc.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#toc').toc({ listType: 'ul',
+                    headers: 'h1, h2',
+                    showEffect: 'slideDown',
+                    minimumHeaders: 2 });
+  });
+</script>
+
+</body>
+</html>

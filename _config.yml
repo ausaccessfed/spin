@@ -1,0 +1,19 @@
+source: .
+encoding: utf-8
+highlighter: pygments
+safe: true
+lsi: false
+
+kramdown:
+  input: GFM
+
+markdown: redcarpet
+redcarpet:
+    extensions: [with_toc_data, tables]
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"

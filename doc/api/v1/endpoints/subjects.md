@@ -1,6 +1,7 @@
-# Subjects
+---
+---
 
-## Get Subject
+## Get
 
 The following `Subject` attributes will be returned:
 
@@ -33,7 +34,7 @@ Status: 200 OK
 {
    "subject": {
        "id":1,
-       "name":Russell Ianniello,
+       "name":"Russell Ianniello",
        "mail":"russell.ianniello@aaf.edu.au",
        "shared_token":"W4ohH-6FCupmiBdwRv_w18AToQ"
        "complete":"true"
@@ -49,7 +50,7 @@ Status: 200 OK
 }
 ```
 
-## List Subjects
+## List
 
 List all Subjects
 
@@ -82,7 +83,7 @@ Status: 200 OK
 }
 ```
 
-## Delete Subject
+## Delete
 
 Delete Subject by id
 
@@ -95,7 +96,7 @@ DELETE /api/subjects/:id
 Status: 200 OK
 ```
 
-## Create Subject
+## Create
 
 To create a new `Subject` the following components can be specified in JSON as part of the request:
 

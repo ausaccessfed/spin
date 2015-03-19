@@ -1,6 +1,7 @@
-# Projects
+---
+---
 
-## List Projects
+## List
 
 List all Projects
 
@@ -33,7 +34,7 @@ Status: 200 OK
 }
 ```
 
-## Delete Project
+## Delete
 
 Delete Project by id
 
@@ -46,7 +47,7 @@ DELETE /api/organisations/:id/projects/:id
 Status: 200 OK
 ```
 
-## Create Project
+## Create
 
 ```
 POST /api/organisations/:id/projects/
@@ -69,7 +70,7 @@ Request Body:
 Status: 201 OK
 ```
 
-## Update Project
+## Update
 
 ```
 PATCH /api/organisations/:id/projects/:id
