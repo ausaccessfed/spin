@@ -56,9 +56,11 @@ Steps:
       - `/opt/spin/app/setup/assets/app/favicon.png`
 
     Install your SSL key, certificate and intermediate CA in these locations:
-      - `/opt/spin/app/setup/assets/apache/server.key`
-      - `/opt/spin/app/setup/assets/apache/server.crt`
-      - `/opt/spin/app/setup/assets/apache/intermediate.crt`
+      <ul>
+        <li>`/opt/spin/app/setup/assets/apache/server.key`</li>
+        <li>`/opt/spin/app/setup/assets/apache/server.crt`</li>
+        <li>`/opt/spin/app/setup/assets/apache/intermediate.crt`</li>
+      </ul>
 
 4.  Bootstrap the platform:
 
