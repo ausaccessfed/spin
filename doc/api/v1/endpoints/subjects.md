@@ -1,6 +1,9 @@
 ---
 ---
 
+### Subjects (```/api/subjects/```)
+
+---
 
 ## Get
 
@@ -37,9 +40,9 @@ Status: 200 OK
        "id":1,
        "name":"Russell Ianniello",
        "mail":"russell.ianniello@aaf.edu.au",
-       "shared_token":"W4ohH-6FCupmiBdwRv_w18AToQ"
-       "complete":"true"
-       "created_at":"2015-03-04T23:52:58Z"
+       "shared_token":"W4ohH-6FCupmiBdwRv_w18AToQ",
+       "complete":"true",
+       "created_at":"2015-03-04T23:52:58Z",
        "updated_at":"2015-03-03T00:01:23Z"
     },
     "invitations":[
@@ -78,7 +81,7 @@ Status: 200 OK
       },
       {
          "id":2,
-         "shared_token":"6FCupmW4ohH-iBdwRv_w18AToQ"
+         "shared_token":"6FCupmW4ohH-iBdwRv_w18AToQ",
          "mail":"joe.blogs@aaf.edu.au",
          "name":"Joe Blogs"
       }
