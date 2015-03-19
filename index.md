@@ -1,7 +1,10 @@
 ---
 ---
 
-### SPIN provides a means for researchers to authenticate via the AAF to access to a project account in Amazon Web Services (AWS).
+### This document describes how to install and configure a new SPIN instance.
+
+If you have any problems please contact your technical support team for SPIN.
+
 ---
 
 ## Deployment configuration

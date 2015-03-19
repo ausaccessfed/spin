@@ -2,8 +2,8 @@
 ---
 # Overview
 
-This document provides an overview of the [Example SPIN API client](spin_api_client.thor).
-It's strongly recommended to get an understanding of the [SPIN API](../doc/api/v1/README.md) before continuing.
+This document provides an overview of the example SPIN API client.
+It's strongly recommended to get an understanding of the [SPIN API](../doc/api/v1/overview.html) before continuing.
 
 This client is intended for ad-hoc testing and demonstration of the SPIN API only.
 
@@ -15,16 +15,17 @@ This client is intended for ad-hoc testing and demonstration of the SPIN API onl
 
 # Configuration
 
-The client may be configured by modifying the [thor file](spin_api_client.thor) directly:
+The client may be configured by modifying the thor file (spin\_api\_client.thor) directly:
+
 ```ruby
   API_BASE_URL = 'https://spin-demo.test.aaf.edu.au/api'
   API_VERSION = '1'
   API_KEY = 'api.key'
   API_CERT = 'api.crt'
 ```
-For details about SPIN API certificate please see [Issuing an API Certificate](../README.md#issuing-an-api-certificate).
+For details about SPIN API certificate please see [Issuing an API Certificate](../index.html#issuing-an-api-certificate).
 
-For details about API headers and versioning see [Specifying API version](../doc/api/v1/README.md#specifying-api-version).
+For details about API headers and versioning see [Specifying API version](../doc/api/v1/overview.html#specifying-api-version).
 
 # Commands
 
@@ -51,11 +52,15 @@ thor spin_api_client:revoke_project_role_from_subject --organisation-id=ORGANISA
 ```
 
 After executing a spin_api_client command you will typically see the following:
+
  - The request method and path generated i.e. ```GET https://spin-demo.test.aaf.edu.au/api/organisations```
  - The response code i.e. ```200```
  - The response body (if present)
 
+---
+
 # Example usage
+
 
 ## Subjects
 ### ```get_subjects```
@@ -82,6 +87,8 @@ DELETE https://spin-demo.test.aaf.edu.au/api/subjects/1
 -->
 200
 ```
+
+---
 
 ## Organisations
 ### ```get_organisations```
@@ -128,6 +135,8 @@ DELETE https://spin-demo.test.aaf.edu.au/api/organisations/3
 200
 ```
 
+---
+
 ## Projects
 ### ```get_projects```
 ```
@@ -169,6 +178,8 @@ DELETE https://spin-demo.test.aaf.edu.au/api/organisations/3/projects/1
 -->
 200
 ```
+
+---
 
 ## Roles
 
@@ -213,6 +224,8 @@ DELETE https://spin-demo.test.aaf.edu.au/api/organisations/3/projects/2/roles/1
 -->
 200
 ```
+
+---
 
 ## Grant / Revoke Roles
 

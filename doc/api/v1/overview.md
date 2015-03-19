@@ -1,13 +1,9 @@
 ---
 ---
 
-This describes the resources that make up the SPIN API v1.
+### This document describes the resources that make up the SPIN API (v1).
 
 If you have any problems please contact your technical support team for SPIN.
-
-## Access
-
-All API access is over HTTPS without exception. All data is sent and received as JSON.
 
 ---
 
@@ -24,6 +20,12 @@ Change *within* a version number will only be **by extension**, either with addi
 Either of these changes should not impact well behaved clients that correctly parse and use JSON as intended.
 
 All clients **MUST** be well behaved, extensions to the API will not be broadcast in advance.
+
+---
+
+## Access
+
+All API access is over HTTPS without exception. All data is sent and received as JSON.
 
 ---
 
