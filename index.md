@@ -33,6 +33,7 @@ Steps:
     If you have a zip archive, extract it to `/opt`. This will create `/opt/spin` with the necessary directory structure beneath.
 
     Alternatively, you clone from git directly:
+
     ```bash
     git clone https://github.com/ausaccessfed/spin.git /opt/spin/app
     ```
@@ -42,25 +43,25 @@ Steps:
 
     Create the following files with customised versions for your SPIN instance.
     Templates are provided with a `.dist` suffix.
-    - `/opt/spin/app/setup/spin.config`
-    - `/opt/spin/app/setup/assets/app/support.md`
-    - `/opt/spin/app/setup/assets/app/consent.md`
-    - `/opt/spin/app/setup/assets/app/welcome.md`
-    - `/opt/spin/app/setup/assets/app/new_invitation_body.md`
-    - `/opt/spin/app/setup/assets/app/logo.png`
-    - `/opt/spin/app/setup/assets/app/email_branding.png`
-    - `/opt/spin/app/setup/assets/app/favicon.png`
+      - `/opt/spin/app/setup/spin.config`
+      - `/opt/spin/app/setup/assets/app/support.md`
+      - `/opt/spin/app/setup/assets/app/consent.md`
+      - `/opt/spin/app/setup/assets/app/welcome.md`
+      - `/opt/spin/app/setup/assets/app/new_invitation_body.md`
+      - `/opt/spin/app/setup/assets/app/logo.png`
+      - `/opt/spin/app/setup/assets/app/email_branding.png`
+      - `/opt/spin/app/setup/assets/app/favicon.png`
 
-    Install your SSL key, certificate and intermediate CA with the following
-    names:
-    - `/opt/spin/app/setup/assets/apache/server.key`
-    - `/opt/spin/app/setup/assets/apache/server.crt`
-    - `/opt/spin/app/setup/assets/apache/intermediate.crt`
+    Install your SSL key, certificate and intermediate CA in these locations:
+      - `/opt/spin/app/setup/assets/apache/server.key`
+      - `/opt/spin/app/setup/assets/apache/server.crt`
+      - `/opt/spin/app/setup/assets/apache/intermediate.crt`
 
 4.  Bootstrap the platform:
+
     ```bash
-    [root@spin ~]# cd /opt/spin/app/setup
-    [root@spin setup]# sh init.sh
+    [root@spin ~]$ cd /opt/spin/app/setup
+    [root@spin setup]$ sh init.sh
     ```
 
     This will install some dependencies from YUM, and then proceed to configure
@@ -81,6 +82,8 @@ Steps:
 
 [rapid-test]: https://rapid.test.aaf.edu.au
 [rapid-prod]: https://rapid.aaf.edu.au
+
+---
 
 ## Initial setup of a new SPIN instance
 
@@ -122,6 +125,8 @@ local access, to ease this process.
 that the web interface be used for all further operations. Operations performed
 directly against the database are not subject to application logic, and can
 result in an invalid database state.
+
+---
 
 ## Configure an AWS Project
 
@@ -165,6 +170,8 @@ https://<<your spin host>>/idp/profile/Metadata/SAML
    assigned to the project in SPIN.
 8. Under **Roles** / **Administrator**, the **Role ARN** shown should be
    assigned to the project role in SPIN.
+
+---
 
 ## Issuing an API Certificate
 

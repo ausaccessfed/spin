@@ -3,7 +3,7 @@
 
 This describes the resources that make up the SPIN API v1.
 
-If you have any problems please your technical support team for SPIN.
+If you have any problems please contact your technical support team for SPIN.
 
 ## Access
 

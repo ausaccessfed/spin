@@ -32,6 +32,8 @@ Status: 200 OK
 }
 ```
 
+---
+
 ## Delete
 
 Delete Organisation by id
@@ -45,6 +47,8 @@ DELETE /api/organisations/:id
 Status: 200 OK
 ```
 
+---
+
 ## Create
 
 ```
@@ -52,6 +56,7 @@ POST /api/organisations
 Content-Type: application/json
 ```
 Request Body:
+
 ```json
 {
    "organisation":{
@@ -67,6 +72,8 @@ Request Body:
 Status: 201 OK
 ```
 
+---
+
 ## Update
 
 ```
@@ -74,6 +81,7 @@ PATCH /api/organisations/:id
 Content-Type: application/json
 ```
 Request Body:
+
 ```json
 {
    "organisation":{

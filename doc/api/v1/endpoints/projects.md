@@ -34,6 +34,8 @@ Status: 200 OK
 }
 ```
 
+---
+
 ## Delete
 
 Delete Project by id
@@ -46,6 +48,8 @@ DELETE /api/organisations/:id/projects/:id
 ```
 Status: 200 OK
 ```
+
+---
 
 ## Create
 
@@ -69,6 +73,8 @@ Request Body:
 ```
 Status: 201 OK
 ```
+
+---
 
 ## Update
 

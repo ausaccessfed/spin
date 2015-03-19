@@ -1,6 +1,7 @@
 ---
 ---
 
+
 ## Get
 
 The following `Subject` attributes will be returned:
@@ -16,7 +17,7 @@ The following `Subject` attributes will be returned:
 In addition if the `Subject` is considered incomplete (there is an outstanding invitation pending) the following is be provided:
 
 1. invitation_url
-2. invitation_created_at
+2. invitation\_created\_at
 
 ### Request
 
@@ -49,6 +50,8 @@ Status: 200 OK
     ]
 }
 ```
+
+---
 
 ## List
 
@@ -83,6 +86,8 @@ Status: 200 OK
 }
 ```
 
+------
+
 ## Delete
 
 Delete Subject by id
@@ -95,6 +100,8 @@ DELETE /api/subjects/:id
 ```
 Status: 200 OK
 ```
+
+---
 
 ## Create
 

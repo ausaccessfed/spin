@@ -23,6 +23,8 @@ Request Body:
 Status: 201 OK
 ```
 
+---
+
 ## Disassociate
 
 ```
