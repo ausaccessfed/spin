@@ -41,6 +41,25 @@ RSpec.describe Invitation, type: :model do
     it { is_expected.to eq(project_name) }
   end
 
+  describe '#active_project_present?' do
+    let(:project) { create(:project) }
+    let(:project_role) { create(:project_role, project: project) }
+    let(:subject_project_role) do
+      create(:subject_project_role, project_role: project_role)
+    end
+    let(:invitation) do
+      create(:invitation, subject: subject_project_role.subject)
+    end
+    subject { invitation.active_project_present? }
+
+    it { is_expected.to be_truthy }
+
+    context 'with an inactive project' do
+      let(:project) { create(:project, active: false) }
+      it { is_expected.to be_falsey }
+    end
+  end
+
   context 'default values' do
     subject { create(:invitation) }
     it 'sets used to default value' do

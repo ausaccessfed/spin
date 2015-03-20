@@ -17,7 +17,11 @@ class Invitation < ActiveRecord::Base
     expires < Time.now
   end
 
+  def active_project_present?
+    subject.active_project_roles.present?
+  end
+
   def project_name
-    subject.project_roles.first.project.name
+    subject.active_project_roles.first.project.name
   end
 end
