@@ -1,13 +1,20 @@
 <div class="ui welcome message">
   <h1>Welcome to <%= SpinEnvironment.service_name %></h1>
 
-  <p>
-    You have been invited to the <strong><%= @invitation.project_name %></strong> project.
-  </p>
+  <%- if @invitation.active_project_present? -%>
+    <p>
+      You have been invited to the <strong><%= @invitation.project_name %></strong> project.
+    </p>
+  <%- else -%>
+    <p>
+      This service provides access to AWS Projects. You have been invited to login to be a part of future projects.
+    </p>
+  <%- end -%>
 
   <p>
-  After clicking the <em>Accept Invitation</em> button below you will be asked to log in via the Australian Access Federation to prove your identity.
+    After clicking the <em>Accept Invitation</em> button below you will be asked to log in via the Australian Access Federation to prove your identity.
   </p>
+
 
   <div class="line-of-buttons">
     <%= form_tag(method: :post) do -%>
