@@ -1,8 +1,6 @@
 <div class="ui welcome message">
   <h1>Welcome to <%= SpinEnvironment.service_name %></h1>
 
-  <%= render(partial: 'project_access') %>
-
   <p>
     Unfortunately your invitation expired <%= time_ago_in_words(@invitation.expires) %>
     ago and can no longer be used.
