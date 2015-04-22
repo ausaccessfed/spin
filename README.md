@@ -30,9 +30,9 @@ Steps:
 
     Clone the latest release from Github:
     ```shell
-    git clone https://github.com/ausaccessfed/spin.git /opt/spin
+    git clone https://github.com/ausaccessfed/spin.git /opt/spin/repository
     ```
-    N.B. The destination path of `/opt/spin` is required.
+    N.B. The destination path of `/opt/spin/repository` is required.
 
 3.  Install site-specific assets.
 

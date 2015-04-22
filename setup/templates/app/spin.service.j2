@@ -6,7 +6,7 @@ After=syslog.target network.target mariadb.target
 User=spin
 Group=spin
 Type=forking
-PIDFile=/opt/spin/app/tmp/god.pid
+PIDFile=/opt/spin/repository/tmp/god.pid
 
 Environment="SPIN_DB_USERNAME={{ db.username }}"
 Environment="SPIN_DB_PASSWORD={{ app_db_password }}"
@@ -15,7 +15,7 @@ Environment="RBENV_ROOT=/opt/spin/rbenv"
 Environment="RAILS_ENV=production"
 Environment="SECRET_KEY_BASE={{ secret_key_base }}"
 
-WorkingDirectory=/opt/spin/app
+WorkingDirectory=/opt/spin/repository
 ExecStartPre=/opt/spin/rbenv/bin/rbenv exec bundle exec rake assets:precompile db:migrate
 ExecStart=/opt/spin/rbenv/bin/rbenv exec bundle exec god -c config/god.rb -P tmp/god.pid
 

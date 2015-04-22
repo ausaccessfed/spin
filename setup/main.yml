@@ -27,7 +27,7 @@
 
     - name: 'Ensure SPIN distribution has been extracted correctly'
       shell: >
-        if [ ! -e /opt/spin/app/config/application.rb ]; then
+        if [ ! -e /opt/spin/repository/config/application.rb ]; then
           echo
           echo
           echo '*** Please ensure the contents of the SPIN distribution are extracted to /opt/spin ***'
@@ -50,7 +50,7 @@
         mode: 0755
       with_items:
         - /opt/spin
-        - /opt/spin/app
+        - /opt/spin/repository
 
     - name: 'Create required directories'
       file:
@@ -60,7 +60,7 @@
         group: spin
         mode: 0750
       with_items:
-        - /opt/spin/app/setup
+        - /opt/spin/repository/setup
         - /opt/spin/downloads
         - /opt/spin/tomcat
         - /opt/spin/shibboleth
@@ -77,7 +77,7 @@
 
     - name: 'Symlink credentials directory'
       file:
-        name: /opt/spin/app/setup/passwords
+        name: /opt/spin/repository/setup/passwords
         src: /opt/spin/passwords
         state: link
         owner: root
