@@ -28,36 +28,34 @@ Steps:
 
 2.  Install SPIN.
 
-    If you have a zip archive, extract it to `/opt`. This will create `/opt/spin` with the necessary directory structure beneath.
-
-    Alternatively, you clone from git directly:
+    Clone the latest release from Github:
     ```shell
-    git clone https://github.com/ausaccessfed/spin.git /opt/spin/app
+    git clone https://github.com/ausaccessfed/spin.git /opt/spin
     ```
-    N.B. The destination path of `/opt/spin/app` is required.
+    N.B. The destination path of `/opt/spin` is required.
 
 3.  Install site-specific assets.
 
     Create the following files with customised versions for your SPIN instance.
     Templates are provided with a `.dist` suffix.
-    - `/opt/spin/app/setup/spin.config`
-    - `/opt/spin/app/setup/assets/app/support.md`
-    - `/opt/spin/app/setup/assets/app/consent.md`
-    - `/opt/spin/app/setup/assets/app/welcome.md`
-    - `/opt/spin/app/setup/assets/app/new_invitation_body.md`
-    - `/opt/spin/app/setup/assets/app/logo.png`
-    - `/opt/spin/app/setup/assets/app/email_branding.png`
-    - `/opt/spin/app/setup/assets/app/favicon.png`
+    - `/opt/spin/setup/spin.config`
+    - `/opt/spin/setup/assets/app/support.md`
+    - `/opt/spin/setup/assets/app/consent.md`
+    - `/opt/spin/setup/assets/app/welcome.md`
+    - `/opt/spin/setup/assets/app/new_invitation_body.md`
+    - `/opt/spin/setup/assets/app/logo.png`
+    - `/opt/spin/setup/assets/app/email_branding.png`
+    - `/opt/spin/setup/assets/app/favicon.png`
 
     Install your SSL key, certificate and intermediate CA with the following
     names:
-    - `/opt/spin/app/setup/assets/apache/server.key`
-    - `/opt/spin/app/setup/assets/apache/server.crt`
-    - `/opt/spin/app/setup/assets/apache/intermediate.crt`
+    - `/opt/spin/setup/assets/apache/server.key`
+    - `/opt/spin/setup/assets/apache/server.crt`
+    - `/opt/spin/setup/assets/apache/intermediate.crt`
 
 4.  Bootstrap the platform:
     ```shell
-    [root@spin ~]# cd /opt/spin/app/setup
+    [root@spin ~]# cd /opt/spin/setup
     [root@spin setup]# sh init.sh
     ```
 
@@ -174,7 +172,7 @@ random CN for use with SPIN.
 To run the tool, execute the following command **as the `root` user**:
 
 ```
-/opt/spin/app/bin/api-ca sign
+/opt/spin/bin/api-ca sign
 ```
 
 After pasting the CSR, the details will be printed out and confirmation
@@ -195,7 +193,7 @@ You'll require the value for CN for this certificate which was output on complet
 Example of retrieving correct CN value to create API account within SPIN
 
 ```
-$>/opt/spin/app/bin/api-ca sign
+$>/opt/spin/bin/api-ca sign
 ...
 Do you wish to sign this request? (yes/no) yes
 ...
@@ -220,15 +218,6 @@ p = Project.create!(name:"Test Proj 1", provider_arn: "arn:aws:iam::1:saml-provi
 pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "arn:aws:iam::1:role/1", project_id: p.id)
 spr = SubjectProjectRole.create!(subject_id: s.id, project_role_id: pr.id)
 sr = SubjectRole.create!(subject_id:Subject.last.id, role_id:r.id)
-```
-
-## Packaging SPIN
-
-*This is intended for SPIN developers, and documents the process of creating the
-SPIN distribution archive used in Step 2 of the deployment process.*
-
-```shell
-git archive --prefix=spin/app/ HEAD | gzip -c > spin.tar.gz
 ```
 
 ## SPIN API Client
