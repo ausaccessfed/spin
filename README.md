@@ -172,7 +172,7 @@ random CN for use with SPIN.
 To run the tool, execute the following command **as the `root` user**:
 
 ```
-/opt/spin/bin/api-ca sign
+/opt/spin/repository/bin/api-ca sign
 ```
 
 After pasting the CSR, the details will be printed out and confirmation
@@ -193,7 +193,7 @@ You'll require the value for CN for this certificate which was output on complet
 Example of retrieving correct CN value to create API account within SPIN
 
 ```
-$>/opt/spin/bin/api-ca sign
+$>/opt/spin/repository/bin/api-ca sign
 ...
 Do you wish to sign this request? (yes/no) yes
 ...
