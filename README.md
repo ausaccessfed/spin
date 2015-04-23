@@ -1,226 +1,25 @@
 # SPIN
 
-SPIN provides a means for researchers to authenticate via the AAF to access to a project account in Amazon Web Services (AWS)
+SPIN provides a means for researchers to authenticate via SAML federations and gain access to the administrative portal for Amazon Web Services (AWS) instances.
 
-## Deployment configuration
+For full details on deploying and operating a SPIN instance please see [http://ausaccessfed.github.io/spin](http://ausaccessfed.github.io/spin/)
 
-Begin with a minimal CentOS 7 installation. Recommended machine specifications
-are:
+This software was developed by the [Australian Access Federation](http://www.aaf.edu.au) on behalf of Intersect, the RDSI project and the University of Queensland.
 
-* 2 CPU
-* 4GB RAM
-* 10GB+ partition for OS + SPIN
-* Public IP address, with inbound access on ports 80, 443 and 8443
-* Internet access (the installation process automatically fetches dependencies
-  over HTTP / HTTPS)
+# License
 
-Steps:
+Copyright (C) 2015 University of Queensland
 
-1.  Register your service with AAF Rapid Connect
-    ([test](https://rapid.test.aaf.edu.au) /
-    [production](https://rapid.aaf.edu.au))
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
 
-    NB: Ensure your SECRET **does not contain a ' character** as this is used within configuration files
-    as a delimiter and will cause startup to fail.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
 
-    After registration, please contact AAF to request that your registration be
-    converted to an `auresearch` service to ensure SPIN works correctly.
-
-2.  Install SPIN.
-
-    Clone the latest release from Github:
-    ```shell
-    git clone https://github.com/ausaccessfed/spin.git /opt/spin/repository
-    ```
-    N.B. The destination path of `/opt/spin/repository` is required.
-
-3.  Install site-specific assets.
-
-    Create the following files with customised versions for your SPIN instance.
-    Templates are provided with a `.dist` suffix.
-    - `/opt/spin/repository/setup/spin.config`
-    - `/opt/spin/repository/setup/assets/app/support.md`
-    - `/opt/spin/repository/setup/assets/app/consent.md`
-    - `/opt/spin/repository/setup/assets/app/welcome.md`
-    - `/opt/spin/repository/setup/assets/app/new_invitation_body.md`
-    - `/opt/spin/repository/setup/assets/app/logo.png`
-    - `/opt/spin/repository/setup/assets/app/email_branding.png`
-    - `/opt/spin/repository/setup/assets/app/favicon.png`
-
-    Install your SSL key, certificate and intermediate CA with the following
-    names:
-    - `/opt/spin/repository/setup/assets/apache/server.key`
-    - `/opt/spin/repository/setup/assets/apache/server.crt`
-    - `/opt/spin/repository/setup/assets/apache/intermediate.crt`
-
-4.  Bootstrap the platform:
-    ```shell
-    [root@spin ~]# cd /opt/spin/repository/setup
-    [root@spin setup]# sh init.sh
-    ```
-
-    This will install some dependencies from YUM, and then proceed to configure
-    SPIN using your provided settings.
-
-5.  Additional platform configuration.
-
-    The SPIN installation provides no backup or monitoring of the platform. It
-    is strongly suggested that deployers configure:
-    - Regular backups
-    - Monitoring of service availability
-    - Monitoring of platform concerns, such as disk space and load average
-
-6.  Reboot server.
-
-    Verify that the service is started correctly after a reboot by rebooting the
-    server.
-
-[rapid-test]: https://rapid.test.aaf.edu.au
-[rapid-prod]: https://rapid.aaf.edu.au
-
-## Initial setup of a new SPIN instance
-
-A blank SPIN instance is not able to be used for anything until an initial
-administrator is set up. To do this, first log in to SPIN by accessing it in
-your web browser.
-
-After logging in to SPIN, your details will be automatically provisioned in the
-database, and you can grant yourself permission to act as a global
-administrator:
-
-```sql
-[root@spin setup]# mysql spin
-
-MariaDB [spin]> select id, name, mail from subjects;
-+----+-------------------+------------------------------+
-| id | name              | mail                         |
-+----+-------------------+------------------------------+
-|  1 | Example User ABCD | example.user.abcd@aaf.edu.au |
-+----+-------------------+------------------------------+
-1 row in set (0.00 sec)
-
-MariaDB [spin]> select id, name from roles;
-+----+----------------------+
-| id | name                 |
-+----+----------------------+
-|  1 | Global Administrator |
-+----+----------------------+
-1 row in set (0.00 sec)
-
-MariaDB [spin]> insert into subject_roles (subject_id, role_id) values (1, 1);
-Query OK, 1 row affected (0.02 sec)
-```
-
-The `root` user on the SPIN server has the database credentials configured for
-local access, to ease this process.
-
-**Note:** After the first administrator is created, it is highly recommended
-that the web interface be used for all further operations. Operations performed
-directly against the database are not subject to application logic, and can
-result in an invalid database state.
-
-## Configure an AWS Project
-
-These instructions will create a minimal configuration which provides
-administrative rights within the AWS Project to users. Further enhancement can
-be done by creating additional roles with differing permissions. Refer to AWS
-documentation for information about their access control.
-
-Before beginning, ensure you have a working deployment of SPIN. You should
-download your SPIN IdP's metadata document from:
-
-```
-https://<<your spin host>>/idp/profile/Metadata/SAML
-```
-
-1. Under the root account visit the "Identity & Access Management" page.
-2. Click 'Identity Providers' in the left navigation menu.
-3. Click 'Create Provider', and create a provider as follows:
-    - Provider Type: **SAML**
-    - Provider Name: **SPIN**
-    - Metadata Document: The document you downloaded above
-4. Click 'Next Step' and then 'Create'
-5. Click 'Roles' in the left navigation menu.
-6. Click 'Create New Role', and create a role as follows:
-    - Role Name: **Administrator**
-    - Click 'Next Step'
-    - Under **Role for Identity Provider Access**, select
-        **Grant Web Single Sign-On (WebSSO) access to SAML providers**
-    - SAML provider: **SPIN**
-    - Attribute: **SAML:aud** *(this is automatically set)*
-    - Value: **https://signin.aws.amazon.com/saml**
-        *(this is automatically set)*
-    - Click 'Next Step'
-    - Trust Policy Document: *(no modifications required)*
-    - Click 'Next Step'
-    - Policy Template: Select **Administrator Access**
-    - Policy Document: *(no modifications required)*
-    - Click 'Next Step'
-    - Click 'Create Role'
-7. Under **Identity Providers** / **SPIN**, the **Provider ARN** shown should be
-   assigned to the project in SPIN.
-8. Under **Roles** / **Administrator**, the **Role ARN** shown should be
-   assigned to the project role in SPIN.
-
-# Issuing an API Certificate
-
-A simple tool is provided to help with issuing API certificates. As part of
-installation, a CA is created for you in `/opt/spin/ca`. The tool accepts an
-X.509 Certificate Signing Request, and uses it to issue a certificate with a
-random CN for use with SPIN.
-
-To run the tool, execute the following command **as the `root` user**:
-
-```
-/opt/spin/repository/bin/api-ca sign
-```
-
-After pasting the CSR, the details will be printed out and confirmation
-requested. Type `yes` when asked, and the certificate will be signed and printed
-out.
-
-**Note:** This command relies on the `SPIN_CA_DIR` environment variable, which
-is set during installation. If you're having issues, ensure this environment
-variable has been correctly set.
-
-Once the API certificate has been issued there are 3 further steps to undertake:
-
-1. Provide the created certificate to the user requesting access to the SPIN API
-1. Within SPIN create a new API subject to represent this certificate under the Administration menu.
-You'll require the value for CN for this certificate which was output on completion the signing command above.
-1. Add the API account to the Global Administrator role so it can control all aspects of SPIN
-
-Example of retrieving correct CN value to create API account within SPIN
-
-```
-$>/opt/spin/repository/bin/api-ca sign
-...
-Do you wish to sign this request? (yes/no) yes
-...
-     Subject: CN=2AC8MfGxTR40WRmLw6H8ZNyjPcRqsmLNdX_DK0-c
-...
-```
-You would enter **`2AC8MfGxTR40WRmLw6H8ZNyjPcRqsmLNdX_DK0-c`** into the UI when requested.
-
-# Developer Notes
-
-## Seeding the database
-
-After logging into the application, the following steps will create some useful
-sample data:
-
-```ruby
-s = Subject.first
-r = Role.first
-
-o = Organisation.create!(name: "Test Org", unique_identifier: "ID1" )
-p = Project.create!(name:"Test Proj 1", provider_arn: "arn:aws:iam::1:saml-provider/1", active: true, organisation_id: o.id)
-pr = ProjectRole.create!(name:"ALL for Test Proj 1", role_arn: "arn:aws:iam::1:role/1", project_id: p.id)
-spr = SubjectProjectRole.create!(subject_id: s.id, project_role_id: pr.id)
-sr = SubjectRole.create!(subject_id:Subject.last.id, role_id:r.id)
-```
-
-## SPIN API Client
-
-See [Sample SPIN API Client](api-client-demo/README.md).
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
