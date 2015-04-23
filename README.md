@@ -38,24 +38,24 @@ Steps:
 
     Create the following files with customised versions for your SPIN instance.
     Templates are provided with a `.dist` suffix.
-    - `/opt/spin/setup/spin.config`
-    - `/opt/spin/setup/assets/app/support.md`
-    - `/opt/spin/setup/assets/app/consent.md`
-    - `/opt/spin/setup/assets/app/welcome.md`
-    - `/opt/spin/setup/assets/app/new_invitation_body.md`
-    - `/opt/spin/setup/assets/app/logo.png`
-    - `/opt/spin/setup/assets/app/email_branding.png`
-    - `/opt/spin/setup/assets/app/favicon.png`
+    - `/opt/spin/repository/setup/spin.config`
+    - `/opt/spin/repository/setup/assets/app/support.md`
+    - `/opt/spin/repository/setup/assets/app/consent.md`
+    - `/opt/spin/repository/setup/assets/app/welcome.md`
+    - `/opt/spin/repository/setup/assets/app/new_invitation_body.md`
+    - `/opt/spin/repository/setup/assets/app/logo.png`
+    - `/opt/spin/repository/setup/assets/app/email_branding.png`
+    - `/opt/spin/repository/setup/assets/app/favicon.png`
 
     Install your SSL key, certificate and intermediate CA with the following
     names:
-    - `/opt/spin/setup/assets/apache/server.key`
-    - `/opt/spin/setup/assets/apache/server.crt`
-    - `/opt/spin/setup/assets/apache/intermediate.crt`
+    - `/opt/spin/repository/setup/assets/apache/server.key`
+    - `/opt/spin/repository/setup/assets/apache/server.crt`
+    - `/opt/spin/repository/setup/assets/apache/intermediate.crt`
 
 4.  Bootstrap the platform:
     ```shell
-    [root@spin ~]# cd /opt/spin/setup
+    [root@spin ~]# cd /opt/spin/repository/setup
     [root@spin setup]# sh init.sh
     ```
 
