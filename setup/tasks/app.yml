@@ -7,12 +7,12 @@
     group: spin
     mode: 0700
   with_items:
-    - /opt/spin/app/tmp
+    - /opt/spin/repository/tmp
     - /var/log/spin/application
 
 - name: 'Create assets directory'
   file:
-    name: /opt/spin/app/public/assets
+    name: /opt/spin/repository/public/assets
     state: directory
     owner: spin
     group: apache
@@ -28,7 +28,7 @@
 
 - name: 'Symlink log directory'
   file:
-    name: /opt/spin/app/log
+    name: /opt/spin/repository/log
     src: /var/log/spin/application
     owner: root
     group: root
@@ -37,7 +37,7 @@
 - name: 'Install gem dependencies'
   command: >
     /opt/spin/rbenv/bin/rbenv exec bundle install --deployment --without development test
-    chdir=/opt/spin/app
+    chdir=/opt/spin/repository
   register: result
   changed_when: '"Installing" in result.stdout'
   notify: Restart spin
@@ -50,7 +50,7 @@
 - name: 'Initialize CA certificate'
   shell: >
     /opt/spin/rbenv/bin/rbenv exec bundle exec bin/api-ca init --cn '{{ service_hostname }} {{ environment_string }} API Client CA'
-    chdir=/opt/spin/app
+    chdir=/opt/spin/repository
     creates=/opt/spin/ca/ca.crt
   environment:
     SPIN_CA_DIR: /opt/spin/ca
@@ -68,7 +68,7 @@
 - name: 'Install SPIN configuration'
   template:
     src: templates/app/{{ item }}.j2
-    dest: /opt/spin/app/config/{{ item }}
+    dest: /opt/spin/repository/config/{{ item }}
     owner: root
     group: spin
     mode: 0640
@@ -80,7 +80,7 @@
 - name: 'Install site configuration'
   copy:
     src: assets/app/{{ item }}
-    dest: /opt/spin/app/config/{{ item }}
+    dest: /opt/spin/repository/config/{{ item }}
     owner: root
     group: spin
     mode: 0640
@@ -94,7 +94,7 @@
 - name: 'Install site branding'
   copy:
     src: assets/app/{{ item }}
-    dest: /opt/spin/app/app/assets/images/{{ item }}
+    dest: /opt/spin/repository/app/assets/images/{{ item }}
     owner: root
     group: spin
     mode: 0644

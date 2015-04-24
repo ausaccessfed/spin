@@ -28,7 +28,7 @@ Listen {{ service_ip }}:8443
   ProxyPass /assets !
   ProxyPass / unix:/opt/spin/sockets/unicorn.sock|http://localhost/
 
-  Alias /assets /opt/spin/app/public/assets
+  Alias /assets /opt/spin/repository/public/assets
 
   <Location /assets>
     Require all granted

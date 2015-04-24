@@ -39,17 +39,17 @@ expect_file() {
   }
 }
 
-expect_file '/opt/spin/app/setup/spin.config'
-expect_file '/opt/spin/app/setup/assets/app/support.md'
-expect_file '/opt/spin/app/setup/assets/app/consent.md'
-expect_file '/opt/spin/app/setup/assets/app/welcome.md'
-expect_file '/opt/spin/app/setup/assets/app/new_invitation_body.md'
-expect_file '/opt/spin/app/setup/assets/app/logo.png'
-expect_file '/opt/spin/app/setup/assets/app/email_branding.png'
-expect_file '/opt/spin/app/setup/assets/app/favicon.png'
-expect_file '/opt/spin/app/setup/assets/apache/server.key'
-expect_file '/opt/spin/app/setup/assets/apache/server.crt'
-expect_file '/opt/spin/app/setup/assets/apache/intermediate.crt'
+expect_file '/opt/spin/repository/setup/spin.config'
+expect_file '/opt/spin/repository/setup/assets/app/support.md'
+expect_file '/opt/spin/repository/setup/assets/app/consent.md'
+expect_file '/opt/spin/repository/setup/assets/app/welcome.md'
+expect_file '/opt/spin/repository/setup/assets/app/new_invitation_body.md'
+expect_file '/opt/spin/repository/setup/assets/app/logo.png'
+expect_file '/opt/spin/repository/setup/assets/app/email_branding.png'
+expect_file '/opt/spin/repository/setup/assets/app/favicon.png'
+expect_file '/opt/spin/repository/setup/assets/apache/server.key'
+expect_file '/opt/spin/repository/setup/assets/apache/server.crt'
+expect_file '/opt/spin/repository/setup/assets/apache/intermediate.crt'
 
 yum -y install epel-release
 yum -y install ansible
