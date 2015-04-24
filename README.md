@@ -4,7 +4,7 @@ SPIN provides a means for researchers to authenticate via SAML federations and g
 
 For full details on deploying and operating a SPIN instance please see [http://ausaccessfed.github.io/spin](http://ausaccessfed.github.io/spin/)
 
-This software was developed by the [Australian Access Federation](http://www.aaf.edu.au) on behalf of Intersect, the RDSI project and the University of Queensland.
+This software was developed by the [Australian Access Federation](http://www.aaf.edu.au) on behalf of [Intersect](http://www.intersect.org.au), the [RDSI project](https://www.rdsi.edu.au) and [The University of Queensland](http://www.uq.edu.au).
 
 # License
 
