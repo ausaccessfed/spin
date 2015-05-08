@@ -3,11 +3,11 @@
 
 # SPIN
 
-SPIN stands for SAML Provisioning for Independent Nodes. SPIN provides a means for which subscribers to an Identity Federation such as the [Australian Access Federation](http://aaf.edu.au/) can access [Amazon Web Services](http://aws.amazon.com/) (AWS).
+SPIN stands for SAML Provisioning for Independent Nodes. SPIN provides a means for subscribers of an Identity Federation to provide  [Amazon Web Services](http://aws.amazon.com/) access to their end-users.
 
-Typical end-users of SPIN are researchers and research support staff that need to login to the AWS administrative console in order to control resources such as EC2 instances and S3 storage. SPIN may also be used to assist with limiting access to specific parts of the AWS administrative console by linking end-users federated credentials to AWS Identity and Access Management (IAM) roles. Finally SPIN assists with login when users are working on several projects concurrently and thus require access to several different AWS administrative consoles.
+Typical end-users of SPIN are researchers and research support staff that need to login to the AWS administrative console in order to control resources such as EC2 instances and S3 storage. SPIN may also be used to assist with limiting access to specific parts of the AWS administrative console by linking end-users federated credentials to AWS Identity and Access Management (IAM) roles. Finally SPIN assists with login when end-users are working on several projects concurrently and thus require access to several different AWS administrative consoles.
 
-As with any federated service, the key feature of SPIN for end-users is usage of their well known institutional credentials to access AWS without the need to be issued new, less often used and thus easily forgotten credentials, for each AWS administrative domain they require access to.
+As with any federated service, the key feature of SPIN for end-users is usage of their well known institutional credentials to access AWS without the need to be issued new, less often used and thus easily forgotten credentials, for each AWS administrative console they require access to.
 
 The general flow an end-user would expect to undertake when using SPIN to the AWS administrative console is outlined in figure 1 below:
 
