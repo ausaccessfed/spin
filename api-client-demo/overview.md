@@ -23,7 +23,7 @@ The client may be configured by modifying the thor file (spin\_api\_client.thor)
   API_KEY = 'api.key'
   API_CERT = 'api.crt'
 ```
-For details about SPIN API certificate please see [Issuing an API Certificate](../index.html#issuing-an-api-certificate).
+For details about SPIN API certificate please see [Issuing an API Certificate](../detailed_guide.html#issuing-an-api-certificate).
 
 For details about API headers and versioning see [Specifying API version](../doc/api/v1/overview.html#specifying-api-version).
 
