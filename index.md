@@ -11,7 +11,7 @@ As with any federated service, the key feature of SPIN for end-users is usage of
 
 The general flow an end-user would expect to undertake when using SPIN to the AWS administrative console is outlined in figure 1 below:
 
-![Figure 1](image_0.png)
+![Figure 1](user-flow.png)
 
 Figure 1: End User Login Work Flow
 
@@ -30,7 +30,7 @@ The technical components of SPIN are:
 
 Figure 2  outlines these components and their interaction.
 
-![Figure 2](image_1.png)
+![Figure 2](architecture.png)
 
 Figure 2: Technical Components of SPIN
 
@@ -98,6 +98,31 @@ The SPIN installation provides **no backup or monitoring** of the platform. It i
 
 ---
 
+# Invitation workflow
+
+Administrators in SPIN can invite users to access AWS Projects. The following diagram demonstrates the invitation workflow:
+
+![Figure 3](invitation-flow.png)
+Figure 3: Invitation flow
+
+The following section gives an example of this flow.
+
+**1. The project administrator invites a user:**
+![Figure 4](invitation-flow_grant_access.png)
+
+**2. The user will receive the invitation email:**
+![Figure 5](invitation-flow_receive-email.png)
+
+**3. The user accepts the invitation by following the link:**
+![Figure 6](invitation-flow_accept-invitation.png)
+
+**4. The user is redirected to the consent page to perform federated login:**
+![Figure 7](invitation-flow_redirect-consent.png)
+
+**5. After successful login, the user is able to access AWS:**
+![Figure 8](invitation-flow_access-aws.png)
+
+---
 # Detailed Installation Guide
 
 When you’re comfortable with the overview, please continue with the [detailed guide](detailed_guide.html) to get started.
