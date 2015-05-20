@@ -123,7 +123,8 @@ The following section gives an example of this flow.
 ![Figure 8](invitation-flow_access-aws.png)
 
 ---
-# Detailed Installation Guide
+# Installation Guide
 
-When you’re comfortable with the overview, please continue with the [detailed guide](detailed_guide.html) to get started.
+When you’re comfortable with the overview you can continue to the [technical install guide](detailed_guide.html).
+
 
