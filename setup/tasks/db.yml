@@ -27,8 +27,7 @@
 
 - name: 'Generate MariaDB root password'
   set_fact:
-    mariadb_password: >
-      {{ lookup('password', '../passwords/mariadb_password chars=letters,digits length=64') }}
+    mariadb_password: "{{ lookup('password', '../passwords/mariadb_password chars=letters,digits length=64') }}"
 
 - name: 'Create lock_down_db.sql'
   template:
