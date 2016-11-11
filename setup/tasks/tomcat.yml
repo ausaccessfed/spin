@@ -22,12 +22,13 @@
 
 - name: 'Download MariaDB connector library'
   get_url:
-    url: 'http://mirror.aarnet.edu.au/pub/MariaDB/client-java-{{ tomcat.mariadb.version }}/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
+    url: 'http://archive.mariadb.org/client-java-{{ tomcat.mariadb.version }}/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
     dest: '/opt/spin/downloads/mariadb-java-client-{{ tomcat.mariadb.version }}.jar'
-    sha256sum: '{{ tomcat.mariadb.sha256sum }}'
+    checksum: '{{ tomcat.mariadb.checksum }}'
     owner: root
     group: spin
     mode: 0640
+
 
 - name: 'Symlink MariaDB connector library'
   file:

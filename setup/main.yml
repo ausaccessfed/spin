@@ -11,7 +11,7 @@
       sha256sum: 2cc244070d01193c541e526564068e6f4e9ecade22380e38e681e931f3dc3699
       mariadb:
         version: 1.1.7
-        sha256sum: ff0b807b9209fbd5e05d62152006f6a43868ba7f55bb9716035dc6d8a5382390
+        checksum: md5:1d779d93425b82f01757bf6f7b82379f
     idp:
       version: 2.4.3
       sha256sum: 23cd7b5170c36add811939e225f049f1505b9a02be3a1a5d6937761a0b23868b
