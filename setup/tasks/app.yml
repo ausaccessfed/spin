@@ -120,7 +120,7 @@
     group: root
     mode: 0600
 
-- meta: flush_handers
+- meta: flush_handlers
 
 - name: 'Enable SPIN service'
   service:
