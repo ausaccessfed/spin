@@ -5,7 +5,7 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'jquery-rails'
 gem 'uglifier', require: false
 gem 'therubyracer', require: false
-gem 'mysql2' # MySQL support
+gem 'mysql2', '~> 0.3.20' # MySQL support
 gem 'rapid-rack' # RapidConnect authenticator
 gem 'accession',  '1.0.0'
 gem 'aaf-lipstick', '1.1.0'
@@ -23,8 +23,8 @@ gem 'coffee-rails'
 gem 'smart_listing'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-semantic-ui', '~> 1.11'
-  gem 'rails-assets-jquery', '~> 1.11' # JQuery
+  gem 'rails-assets-semantic-ui', '1.11'
+  gem 'rails-assets-jquery', '1.11' # JQuery
 end
 
 group :development, :test do
@@ -50,11 +50,10 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-bundler', require: false
   gem 'guard-brakeman', require: false
-  gem 'guard-unicorn', require: false, ref: 'ca5177dd',
-                       github: 'andreimaxim/guard-unicorn'
+  gem 'guard-unicorn', require: false
   gem 'terminal-notifier-guard', require: false
-  gem 'aaf-gumboot', git: 'https://github.com/ausaccessfed/aaf-gumboot',
-                     branch: 'develop'
+  gem 'aaf-gumboot'
+
 
   gem 'rest-client'
 end
