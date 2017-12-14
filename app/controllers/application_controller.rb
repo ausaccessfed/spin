@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def ensure_authenticated
-    return redirect_to('/auth/login') unless session[:subject_id]
+    return force_authentication unless session[:subject_id]
 
     @subject = Subject.find_by_id(session[:subject_id])
     fail(Unauthorized, 'User invalid') unless @subject
@@ -63,5 +63,11 @@ class ApplicationController < ActionController::Base
 
   def error_from_validations(object)
     object.errors.full_messages.join("\n\n")
+  end
+
+  def force_authentication
+    session[:return_url] = request.url if request.get?
+
+    redirect_to('/auth/login')
   end
 end
