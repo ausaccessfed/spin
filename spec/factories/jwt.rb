@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :aaf_attributes, class: 'Hash' do
     displayname { Faker::Name.name }
     mail { Faker::Internet.email(displayname) }

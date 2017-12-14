@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :aws_session_instance do
     association :subject
     association :project_role

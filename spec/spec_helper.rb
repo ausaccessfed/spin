@@ -1,6 +1,6 @@
 require 'simplecov'
 
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'faker'
 require 'mail'
 require 'pry-rails'
@@ -23,7 +23,7 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.include Mail::Matchers
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
