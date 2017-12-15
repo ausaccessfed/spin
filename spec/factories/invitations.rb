@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :invitation do
     association :subject
     identifier { SecureRandom.urlsafe_base64(19) }
